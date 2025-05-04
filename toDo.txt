@@ -1,0 +1,46 @@
+
+* Definisci ADT
+* Definisci Funzioni
+* Definisci Lista
+* Crea ADT.c/.h
+* Crea List.c/.h
+* Crea Interfaccia/Main.c
+* Crea TestSuite
+
+
+
+
+
+
+_______________________________
+
+          A P P U N T I
+_________________________________
+
+ADT activity:
+
+struct item{
+	char* name; //
+	char* descr; //
+	char* course; //
+	time_t insertDate; // SERVE???? per contenere la data in UNIX di quando è stata inserita;
+	time_t expiryDate; // long double, conta i secondi da 1 gennaio 1970, ricordati di convertire in tempo "leggibile" quando stampi, https://www.geeksforgeeks.org/time-h-header-file-in-c-with-examples/
+	time_t completionDate; // data in cui l'attività è stata completata
+	time_t totalTime; // usalo per contenere il numero di secondi TOTALI per completare l'attività (durata della attività)
+	time_t remainingTime; // usalo per contenere il numero di secondi RIMANENTI per completare l'attività (durata della attività);
+	short unsigned int priority;	
+}
+inizializzazione
+tutti i char* = NULL;
+tutti i time_t = 0;
+priority = 0;			0=basso 1=medio 2=alto
+
+Definisci Funzioni:
+
+_______________FUNZIONI________________
+
+struct item createActivity();
+
+
+
+
