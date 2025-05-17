@@ -3,21 +3,8 @@
 
 #include "utils.h"
 
-
-// Activity data structure definition
-typedef struct activity {
-	int id;	// Unique identifier of the activity
-	char* name;
-	char* descr;
-	char* course;
-	time_t insertDate;
-	time_t expiryDate;
-	time_t completionDate;
-	unsigned int totalTime;
-	unsigned int usedTime;
-	short unsigned int priority;
-} Activity;
-
+// Declare an opaque type for the activity type
+typedef struct activity Activity;
 
 
 int compare(Activity * a, Activity * b);
