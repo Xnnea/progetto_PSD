@@ -13,9 +13,9 @@ typedef struct node {
 } Node;
 
 
-// Definition of the activityItem structure that points to the initial node of the tree (root).
+// Definition of the containerItem structure that points to the initial node of the tree (root).
 // It also contains the next id to use when inserting a node.
-struct activityItem {
+struct containerItem {
 	Node* avlTree;
 	int nextId;
 };
@@ -181,7 +181,7 @@ ActivitiesContainer insertActivity(ActivitiesContainer container, Activity * act
 	
 	// 0 - Tree is null or empty
 	if (!container) {
-		struct activityItem* tree = (struct activityItem*) malloc(sizeof(struct activityItem));
+		struct containerItem* tree = (struct containerItem*) malloc(sizeof(struct containerItem));
 		tree->nextId = 1;
 		if(currentActivityId == 0 && currentActivityId < tree->nextId) setActivityId(activity, tree->nextId);
 		tree->avlTree = createNode(activity);
@@ -349,7 +349,7 @@ void postOrder(Node* root) {
 
 // Creates and returns a new empty activity container (tree)
 ActivitiesContainer newActivityContainer(void) {
-	ActivitiesContainer tree = malloc(sizeof(struct activityItem)); 
+	ActivitiesContainer tree = malloc(sizeof(struct containerItem)); 
 	if (tree != NULL) {
 		tree->avlTree = NULL;
 		tree->nextId = 1;

@@ -3,7 +3,8 @@
 
 #include "activity.h"
 
-typedef struct activityItem* ActivitiesContainer;
+// Declare an opaque type for the activities container
+typedef struct containerItem* ActivitiesContainer;
 
 ActivitiesContainer buildActivities();
 void printActivities(ActivitiesContainer);
