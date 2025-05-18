@@ -3,9 +3,12 @@
 
 #include "activity.h"
 
+#define DEFAULT_ACTIVITIES_FILE "activities_list.txt"
+
 // Declare an opaque type for the activities container
 typedef struct containerItem* ActivitiesContainer;
 
+ActivitiesContainer newActivityContainer(void);
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
 int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
 void deleteActivityContainer(ActivitiesContainer container);

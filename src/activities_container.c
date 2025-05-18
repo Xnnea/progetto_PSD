@@ -473,7 +473,7 @@ ActivitiesContainer buildActivities() {
   	newContainer = insertActivity(newContainer, activity4);*/
   	
   	int countActivities = 0;
-  	ActivitiesContainer newContainer = readActivitiesFromFile("activities_list.txt", &countActivities);
+  	ActivitiesContainer newContainer = readActivitiesFromFile(DEFAULT_ACTIVITIES_FILE, &countActivities);
   	
   	printf("========================= dopo inserimento iniziale ========================\n");
   	printActivities(newContainer);
