@@ -6,6 +6,10 @@
 // Declare an opaque type for the activities container
 typedef struct containerItem* ActivitiesContainer;
 
+ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
+int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
+void deleteActivityContainer(ActivitiesContainer container);
+
 ActivitiesContainer buildActivities();
 void printActivities(ActivitiesContainer);
 

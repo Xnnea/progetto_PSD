@@ -427,6 +427,34 @@ int saveActivitiesToFile(const char* filename, ActivitiesContainer container) {
 
 
 
+// Function to perform postorder delete of nodes
+void deleteActivityContainerSubtree(Node* root) {
+	if (root != NULL) {
+		deleteActivityContainerSubtree(root->left);
+		deleteActivityContainerSubtree(root->right);
+		
+		deleteActivity(root->activity);
+		free(root->activity);
+		free(root);
+	}
+}
+
+// Function to delete the container
+void deleteActivityContainer(ActivitiesContainer container) {
+	if (container == NULL) return;
+	
+	if (container->avlTree == NULL) {
+		free(container);
+		return;
+	}
+	
+	deleteActivityContainerSubtree(container->avlTree);
+	free(container);
+}
+
+
+
+
 
 
 // Utility function to do some test
