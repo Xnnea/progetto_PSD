@@ -1,0 +1,10 @@
+1
+[TITLE] Prima activity
+[DESCR] La mia prima activity di studio
+[COURSE] Programmazione I
+1746613562000
+1748600762000
+1747736762000
+7200
+600
+1
