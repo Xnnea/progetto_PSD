@@ -1,10 +1,11 @@
 NAME = gestatt
 SRC_DIR = src
-TESTS_DIR = tests #todo
+TESTS_DIR = tests
 BIN_DIR = bin
 
 
 SOURCE = $(SRC_DIR)/activity.c $(SRC_DIR)/activities_container.c $(SRC_DIR)/utils.c $(SRC_DIR)/main.c
+SOURCE_TESTS = $(SRC_DIR)/activity.c $(SRC_DIR)/activities_container.c $(SRC_DIR)/utils.c $(SRC_DIR)/test_main.c
 CC = gcc
 
 all: $(NAME)
@@ -17,3 +18,7 @@ dirstructure:
 
 clean:
 	rm -f $(BIN_DIR)/$(NAME)
+	
+test:
+	$(CC) $(SOURCE_TESTS) -o $(TESTS_DIR)/$(NAME)_test
+	cd $(TESTS_DIR); ./$(NAME)_test
