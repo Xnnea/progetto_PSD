@@ -67,7 +67,7 @@ int tc_1() {
 	int numActivities = 0;
 	ActivitiesContainer container = readActivitiesFromFile("tc_1.txt", &numActivities);
 	int saveResult = saveActivitiesToFile("tc_1_output.txt", container);
-	//deleteActivityContainer(container);
+	deleteActivityContainer(container);
 	if (saveResult != 0) return 1;
 	int compareResult = compareFiles("tc_1_output.txt", "tc_1_oracle.txt");
 	return (compareResult == 0) ? 0 : 1;
