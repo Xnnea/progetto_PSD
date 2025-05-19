@@ -304,14 +304,30 @@ ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId
 
 
 // Search a node in the AVL tree
-Node * search(Node* root, int activityId) {
+Node* search(Node* root, int activityId) {
 	if (root == NULL) return NULL;
 	
 	int compareResult = compareWithId(root->activity, activityId);
 	
-	if(compareResult == 0) return root;
-	else if(compareResult > 0) search(root->right, activityId);
-	else search(root->left, activityId);
+	if(compareResult == 0) {
+		printf("\n1-ROOT : %d (cerco: %d)", getActivityId(root->activity),  activityId);
+		return root;
+	} else if(compareResult < 0) { // root->activity is < of activityId
+		printf("\n2-RIGHT : %d (cerco: %d)", getActivityId(root->activity),  activityId);
+		search(root->right, activityId);
+	} else {
+		printf("\n3-LEFT : %d (cerco: %d)", getActivityId(root->activity),  activityId);
+		search(root->left, activityId);
+	}
+}
+
+void printActivityWithId(ActivitiesContainer container, int activityId) {
+	if(container == NULL || container->avlTree == NULL ) return;
+
+	Node* activityNode = search(container->avlTree, activityId);
+	if (activityNode != NULL && activityNode->activity != NULL) {
+		print(activityNode->activity);
+	}
 }
 
 
@@ -320,7 +336,8 @@ Node * search(Node* root, int activityId) {
 void inOrder(Node* root) {
 	if (root != NULL) {
 		inOrder(root->left);
-		print(root->activity);
+		//print(root->activity);
+		printActivityForList(root->activity);
 		inOrder(root->right);
 	}
 }
@@ -391,6 +408,7 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 	}
 	  
 	fclose(file);
+	printf("Lette %d attività dal file %s.\n", count, filename);
 	return newContainer;
 }
 
@@ -457,6 +475,90 @@ void deleteActivityContainer(ActivitiesContainer container) {
 
 
 
+ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
+	
+	if (container == NULL) return 0;
+	
+	
+	printf("\n====== Inserisci una nuova attività ======\n");
+	
+	char* activityName = NULL;
+	while (activityName == NULL) {
+		activityName = getInfoFromUser("Nome dell'attività (non vuoto): ");
+		if (activityName == NULL) {
+			printf("\nNome non valido. Per favore inserisci un nome valido.\n");
+		}
+	}
+
+	char* activityDesr = NULL;
+	while (activityDesr == NULL) {
+		activityDesr = getInfoFromUser("Descrizione dell'attività (non vuota): ");
+		if (activityDesr == NULL) {
+			printf("\nDescrizione non valida. Per favore inserisci una descrizione valida.\n");
+		}
+	}
+
+	char* activityCourse = NULL;
+	while (activityCourse == NULL) {
+		activityCourse = getInfoFromUser("Corso dell'attività (non vuoto): ");
+		if (activityCourse == NULL) {
+			printf("\nCorso non valido. Per favore inserisci un corso valido.\n");
+		}
+	}
+	
+	time_t insertDate = time(NULL);
+	
+	printf("\nVuoi inserire la data di scadenza per questa attività?\n");
+	printf("1. Si\n");
+	printf("0. No\n");
+	printf("Scelta: ");
+	int insertExpiryDate = getChoice(1);
+	
+	time_t expiryDate = 0; 
+	if (insertExpiryDate == 1) {
+		printf("\nInserisci l'anno della scadenza (nel formato YYYY, compreso tra il 2000 e il 2037):");
+		int year = getChoiceWithLimits(2000, 2037);
+		
+		printf("\nInserisci il mese della scadenza (nel formato MM):");
+		int month = getChoiceWithLimits(1, 12);
+		
+		int isLeapYear = ( (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ) ? 1 : 0;
+		int febDays = 28 + isLeapYear;
+		int daysInMonth[] = {31, febDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		
+		printf("\nInserisci il giorno della scadenza (nel formato DD):");
+		int day = getChoiceWithLimits(1, daysInMonth[month - 1] );
+		
+		printf("\nInserisci l'ora della scadenza (nel formato hh):");
+		int hour = getChoiceWithLimits(0, 23);
+		
+		printf("\nInserisci i minuti dell'orario della scadenza (nel formato mm):");
+		int min = getChoiceWithLimits(0, 59);
+		
+		expiryDate = dateToEpoch(year, month, day, hour, min);
+	}
+	
+	time_t completionDate = 0;
+	
+	printf("\nCi siamo quasi! Inserisci il tempo stimato per il completamento dell'attività (espresso in MINUTI, compreso 1 e un anno):");
+	unsigned int totalTime = getChoiceWithLimits(1, 525600);
+	unsigned int usedTime = 0;
+	
+	printf("\nUltimo passo. Inserisci la priorità.\n");
+	printf("1. ALTA\n");
+	printf("2. MEDIA\n");
+	printf("3. BASSA\n");
+	printf("Scelta: ");
+	short unsigned int priority = (short unsigned int) getChoiceWithLimits(1, 3);
+	
+	//With 0 id is automatically calculated
+	Activity* activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
+	
+	return insertActivity(container, activity);
+}
+
+
+
 // Utility function to do some test
 ActivitiesContainer buildActivities() {
 	/*ActivitiesContainer newContainer = newActivityContainer();
@@ -494,8 +596,36 @@ ActivitiesContainer buildActivities() {
 
 // Prints all activities
 void printActivities(ActivitiesContainer container) {
-	inOrder(container->avlTree);
+	if (container != NULL) {
+		inOrder(container->avlTree);
+	}
 }
 
 
 
+void printInOrderProgress(Node* root) {
+	if (root != NULL) {
+		printInOrderProgress(root->left);
+		printActivityProgressForList(root->activity);
+		printInOrderProgress(root->right);
+	}
+}
+
+// Prints activities progress
+void printActivitiesProgress(ActivitiesContainer container) {
+	if (container != NULL) {
+		printf("\n=============================\n");
+		printf("=== MONITORAGGIO PROGRESSO ===\n");
+		printf("==============================\n");
+		printf("\n=============================================================================================================================================\n");
+		printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo rimanente (min) | Tempo totale (min) | Data scadenza\n");
+		printf("=============================================================================================================================================\n\n");
+		printInOrderProgress(container->avlTree);
+	}
+}
+
+int getNextId(ActivitiesContainer container) {
+	if (container == NULL) return -1;
+	
+	return container->nextId;
+}

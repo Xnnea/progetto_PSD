@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "activities_container.h"
-//#include "activities_container_avl.h"
 
 
 
@@ -27,7 +26,8 @@ void displayMainMenu() {
 	printf("3. Elimina attività\n");
 	printf("4. Visualizza avanzamento attività\n");
 	printf("5. Visualizza report settimanale\n");
-	printf("6. Salva su file\n");
+	printf("6. Visualizza dettaglio attività\n");
+	printf("7. Salva su file\n");
 	printf("0. Esci\n");
 	printf("Scelta: ");
 }
@@ -40,39 +40,6 @@ void displayConfirmMenu(const char* confirmInfo) {
 	printf("Scelta: ");
 }
 
-int getChoice(int limit) {
-	int choice = -1;
-	char buffer[10];
-    
-	while (choice < 0 || choice > limit) {
-        
-		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-			if (sscanf(buffer, "%d", &choice) != 1) {
-				choice = -1;
-			}
-		}
-      
-      if (choice < 0 || choice > limit) {
-      	printf("Scelta non valida. Riprova.\n");
-      }
-   }
-   
-   return choice;
-}
-
-char* getInfoFromUser() {
-	char* info = NULL;
-	char buffer[1024]; // input buffer
-	
-	if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-		buffer[strcspn(buffer, "\n")] = 0;  // remove newline, overwrite with string terminator
-		if (strlen(buffer) > 0) {
-			info = copyString(buffer);
-		}
-	}
-	
-	return info;
-}
 
 int getConfirmMenuChoice(const char* confirmInfo) {
 	displayConfirmMenu(confirmInfo);
@@ -91,8 +58,14 @@ ActivitiesContainer handleStartMenu() {
 			break;
 
 		case 1: {
+			char* userFile = getInfoFromUser("Nome file da caricare (lascia vuoto per default): ");
 			int numActivities = 0;
-			container = readActivitiesFromFile(DEFAULT_ACTIVITIES_FILE, &numActivities);
+			if (userFile == NULL) {
+				container = readActivitiesFromFile(DEFAULT_ACTIVITIES_FILE, &numActivities);
+			} else {
+				container = readActivitiesFromFile(userFile, &numActivities);
+				free(userFile);
+			}
 			break;
 		}
 
@@ -109,44 +82,67 @@ ActivitiesContainer handleStartMenu() {
 	return container;
 }
 
-int handleMainMenu(ActivitiesContainer container) {
+int handleMainMenu(ActivitiesContainer * container) {
 	displayMainMenu();
-	int choice = getChoice(6);
+	int choice = getChoice(7);
 	
 	switch (choice) {
-		case 0: {
-			int isConfirmed = getConfirmMenuChoice("I dati non salvati verranno persi.");
+		case 0: { // 0. Esci
+			int isConfirmed = getConfirmMenuChoice("i dati non salvati verranno persi.\nVuoi uscire dal programma?");
 			if (isConfirmed == 1) {
 				printf("Uscita in corso...\n");
-				deleteActivityContainer(container);
+				deleteActivityContainer(*container);
 				return -1;
 			}
 			break;
 		}
 
-		case 1: {
-			printActivities(container);
+		case 1: { // 1. Visualizza tutte le attività
+			printActivities(*container);
 			break;
 		}
 
-		case 2: {
-			//TODO
+		case 2: { // 2. Aggiungi nuova attività
+			//This action can modify the tree...
+			*container = addNewActivityToContainer(*container);
+			break;
       }
 
-		case 3:
+		case 3: // 3. Elimina attività
 			//TODO
 			break;
 
-		case 4:
+		case 4: { // 4. Visualizza avanzamento attività
+			printActivitiesProgress(*container);
+			break;
+		}
+
+		case 5: //5. Visualizza report settimanale
 			//TODO
 			break;
 
-		case 5:
-			//TODO
+		case 6: { //6. Visualizza dettaglio attività
+			int maxId = getNextId(*container);
+			if (maxId > 0) {
+				printf("\nInserisci l'id dell'attività (numero < %d): ", maxId);
+				int id = getChoice(maxId);
+				printActivityWithId(*container, id);
+			} else {
+				printf("\nAl momento non puoi cercare attività.");
+			}
 			break;
+		}
 
-		case 6: {
-			int saveResult = saveActivitiesToFile(DEFAULT_ACTIVITIES_FILE, container);
+		case 7: { //7. Salva su file
+			char* userFile = getInfoFromUser("Nome file per salvataggio (se esiste sarà sovrascritto - lascia vuoto per default): ");
+			int saveResult = 0;
+			if (userFile == NULL) {
+				saveResult = saveActivitiesToFile(DEFAULT_ACTIVITIES_FILE, *container);
+			} else {
+				saveResult = saveActivitiesToFile(userFile, *container);
+				free(userFile);
+			}
+			
 			break;
 		}
 
@@ -157,17 +153,18 @@ int handleMainMenu(ActivitiesContainer container) {
 	
 	return choice;
 }
-
-
+	
 int main() {
 	ActivitiesContainer activities =  handleStartMenu();
 	
 	if (activities != NULL) {
 		int userChoice = 0;
 		while( userChoice >= 0) {
-			userChoice = handleMainMenu(activities);
-			activities = NULL;
+			userChoice = handleMainMenu(&activities);
 		}
+		
+		//ActivitiesContainer was deleted on exit choice...
+		activities = NULL;
 	}
 	
 	//ActivitiesContainer activities = buildActivities();

@@ -9,11 +9,16 @@
 typedef struct containerItem* ActivitiesContainer;
 
 ActivitiesContainer newActivityContainer(void);
+ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
 int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
 void deleteActivityContainer(ActivitiesContainer container);
 
+int getNextId(ActivitiesContainer container);
+void printActivityWithId(ActivitiesContainer container, int activityId);
+
 ActivitiesContainer buildActivities();
 void printActivities(ActivitiesContainer);
+void printActivitiesProgress(ActivitiesContainer);
 
 #endif // ACTIVITIES_CONTAINER_H          // End of inclusion block

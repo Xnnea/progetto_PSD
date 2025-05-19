@@ -13,8 +13,8 @@ struct activity {
 	time_t insertDate;
 	time_t expiryDate;
 	time_t completionDate;
-	unsigned int totalTime;
-	unsigned int usedTime;
+	unsigned int totalTime; //minutes
+	unsigned int usedTime;  //minutes
 	short unsigned int priority;
 };
 
@@ -119,6 +119,18 @@ Activity * copyActivity(Activity * old) {
 }
 
 
+char * textForActivityPriority(int priority) {
+	switch(priority) {
+		case 1: return "ALTA";
+		case 2: return "MEDIA";
+		case 3: return "BASSA";
+		default: break;
+	}
+	
+	return "?";
+}
+
+
 int getActivityId(Activity * a) {
 	if(!a) return 0;
 	return a->id;
@@ -129,45 +141,335 @@ void setActivityId(Activity * a, int newId) {
 }
 
 
+
+
+
+
+
+
+
+char* getActivityName(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return a->name;
+}
+
+char* getActivityDescr(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return a->descr;
+}
+
+char* getActivityCourse(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return a->course;
+}
+
+time_t getActivityInsertDate(Activity * a) {
+	if (a == NULL) return 0;
+	
+	return a->insertDate;
+}
+
+time_t getActivityExpiryDate(Activity * a) {
+	if (a == NULL) return 0;
+	
+	return a->expiryDate;
+}
+
+time_t getActivityCompletionDate(Activity * a) {
+	if (a == NULL) return 0;
+	
+	return a->completionDate;
+}
+
+char* getActivityInsertDateFormatted(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return dateToFormattedText( &(a->insertDate) );
+}
+
+char* getActivityExpiryDateFormatted(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return dateToFormattedText( &(a->expiryDate) );
+}
+
+char* getActivityCompletionDateFormatted(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return dateToFormattedText( &(a->completionDate) );
+}
+
+unsigned int getActivityTotalTime(Activity * a) {
+	if (a == NULL) return 0;
+	
+	return a->totalTime;
+}
+
+unsigned int getActivityUsedTime(Activity * a) {
+	if (a == NULL) return 0;
+	
+	return a->usedTime;
+}
+
+short unsigned int getActivityPriority(Activity * a) {
+	if (a == NULL) return 0;
+	
+	return a->priority;
+}
+
+char*  getActivityPriorityFormatted(Activity * a) {
+	if (a == NULL) return NULL;
+	
+	return textForActivityPriority(a->priority);
+}
+
+
+
+
+
+void setActivityName(Activity * a, char* name) {
+	if (a == NULL) return;
+	
+	if (a->name != NULL) {
+		free(a->name);
+	}
+	
+	a->name = copyString(name);
+}
+
+void setActivityDescr(Activity * a, char* descr) {
+	if (a == NULL) return;
+	
+	if (a->descr != NULL) {
+		free(a->descr);
+	}
+	
+	a->descr = copyString(descr);
+}
+
+void setActivityCourse(Activity * a, char* course) {
+	if (a == NULL) return;
+	
+	if (a->course != NULL) {
+		free(a->course);
+	}
+	
+	a->course = copyString(course);
+}
+
+void setActivityInsertDate(Activity * a, time_t insertDate) {
+	if (a == NULL) return;
+	
+	a->insertDate = insertDate;
+}
+
+void setActivityExpiryDate(Activity * a, time_t expiryDate) {
+	if (a == NULL) return;
+	
+	a->expiryDate = expiryDate;
+}
+
+void setActivityCompletionDate(Activity * a, time_t completionDate) {
+	if (a == NULL) return;
+	
+	a->completionDate = completionDate;
+}
+
+void setActivityInsertDateFormatted(Activity * a, int year, int month, int day, int hour, int min) {
+	if (a == NULL) return;
+	
+	time_t date = dateToEpoch(year, month, day, hour, min);
+	a->insertDate = date;
+}
+
+void setActivityExpiryDateFormatted(Activity * a, int year, int month, int day, int hour, int min) {
+	if (a == NULL) return;
+	
+	time_t date = dateToEpoch(year, month, day, hour, min);
+	a->expiryDate = date;
+}
+
+void setActivityCompletionDateFormatted(Activity *a, int year, int month, int day, int hour, int min) {
+	if (a == NULL) return;
+	
+	time_t date = dateToEpoch(year, month, day, hour, min);
+	a->completionDate = date;
+}
+
+void setActivityTotalTime(Activity * a, unsigned int totalTime) {
+	if (a == NULL) return;
+	
+	a->totalTime = totalTime;
+}
+
+void setActivityUsedTime(Activity * a, unsigned int usedTime) {
+	if (a == NULL) return;
+	
+	a->usedTime = usedTime;
+}
+
+void setActivityPriority(Activity * a, short unsigned int priority) {
+	if (a == NULL) return;
+	
+	a->priority = priority;
+}
+
+void setActivityPriorityFormatted(Activity * a, char* priority) {
+	if (a == NULL) return;
+	
+	if ( strcmp(priority, "ALTA") == 0 ) {
+		a->priority = 1;
+	} else if ( strcmp(priority, "MEDIA") == 0 ) {
+		a->priority = 2;
+	} else if ( strcmp(priority, "BASSA") == 0 ) {
+		a->priority = 3;
+	} else {
+		a->priority = 0;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+// Used "int" consciously
+int activityCompletionPercentage(Activity* activity) {
+	if (activity == NULL) return 0;
+	
+	int completionPercentage = (activity->usedTime * 100) / activity->totalTime;
+	return completionPercentage;
+}
+
+void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned int * minOut) {
+	*hoursOut = minIn / 60;
+	*minOut = minIn % 60;
+}
+
 void print(Activity* activity) {
-    if (activity == NULL) return;
+	if (activity == NULL) return;
+	printf("\n===========================================\n");
+	printf("==== Dettaglio attività con id %d \n", activity->id);
+	printf("===========================================\n\n");
     
-    printf("Id: %d \n", activity->id);
-    printf("Nome: %s\n", activity->name ? activity->name : "NULL");
-    printf("Descrizione: %s\n", activity->descr ? activity->descr : "NULL");
-    printf("Corso: %s\n", activity->course ? activity->course : "NULL");
+	printf("Id: %d \n", activity->id);
+	printf("Nome: %s\n", activity->name ? activity->name : "NULL");
+	printf("Descrizione: %s\n", activity->descr ? activity->descr : "NULL");
+	printf("Corso: %s\n", activity->course ? activity->course : "NULL");
+
+	char timeBuffer[100];
+	struct tm* tmInfo;
+	
+	if (activity->insertDate != 0) {
+		tmInfo = localtime(&activity->insertDate);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+		printf("Data inserimento: %s\n", timeBuffer);
+	} else {
+		printf("Data inserimento: Non impostata\n");
+	}
+
+	if (activity->expiryDate != 0) {
+		tmInfo = localtime(&activity->expiryDate);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+		printf("Data scadenza: %s\n", timeBuffer);
+	} else {
+		printf("Data scadenza: Non impostata\n");
+	}
+
+ 	if (activity->completionDate != 0) {
+		tmInfo = localtime(&activity->completionDate);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+		printf("Data completamento: %s\n", timeBuffer);
+	} else {
+		printf("Data completamento: ancora da completare\n");
+	}
+	
+	printf("Tempo speso/usato (min): %u\n", activity->usedTime);
+	unsigned int hours = 0;
+	unsigned int minutes = 0;
+	minToHoursAnMinutes(activity->usedTime, &hours, &minutes);
+	printf("Tempo speso/usato (ore e min): %u ore e %u minuti\n", hours, minutes);
+	
+	printf("Durata totale attività (min): %u\n", activity->totalTime);
+	minToHoursAnMinutes(activity->totalTime, &hours, &minutes);
+	printf("Durata totale attività (ore e min): %u ore e %u minuti\n", hours, minutes);
+	
+	if (activity->totalTime >= activity->usedTime) {
+		unsigned int diff = activity->totalTime - activity->usedTime;
+		printf("Tempo stimato per il completamento (min): %u\n", diff);
+		minToHoursAnMinutes(diff, &hours, &minutes);
+		printf("Tempo stimato per il completamento (ore e min): %u ore e %u minuti\n", hours, minutes);
+	}
+	
+	printf("Priorità: %s\n", textForActivityPriority(activity->priority) );
+
+	printf("========= Fine dettaglio attività =========\n");
+}
+
+
+
+void printActivityForList(Activity* activity) {
+	if (activity == NULL) return;
+	    
+	// Format dates in a human-readable way
+	char expiryDateBuffer[100];
+	char completionDateBuffer[100];
+	int isCompleted = 0;
+	char priorityBuffer[10];
+	struct tm* tm_info;
+
+	if (activity->expiryDate != 0) {
+		tm_info = localtime(&activity->expiryDate);
+		strftime(expiryDateBuffer, sizeof(expiryDateBuffer), "%d/%m/%Y %H:%M", tm_info);
+	} else {
+		strcpy(expiryDateBuffer, "Non impostata");
+	}
     
-    // Format dates in a human-readable way
-    char timeBuffer[100];
-    struct tm* tm_info;
-    
-    if (activity->insertDate != 0) {
-        tm_info = localtime(&activity->insertDate);
-        strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tm_info);
-        printf("Data inserimento: %s\n", timeBuffer);
-    } else {
-        printf("Data inserimento: Non impostata\n");
-    }
-    
-    if (activity->expiryDate != 0) {
-        tm_info = localtime(&activity->expiryDate);
-        strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tm_info);
-        printf("Data scadenza: %s\n", timeBuffer);
-    } else {
-        printf("Data scadenza: Non impostata\n");
-    }
-    
-    if (activity->completionDate != 0) {
-        tm_info = localtime(&activity->completionDate);
-        strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tm_info);
-        printf("Data completamento: %s\n", timeBuffer);
-    } else {
-        printf("Data completamento: Non impostata\n");
-    }
-    
-    printf("Tempo totale (min): %u\n", activity->totalTime);
-    printf("Tempo usato (min): %u\n", activity->usedTime);
-    printf("Priorità: %hu\n", activity->priority);
+	if (activity->completionDate != 0) {
+		isCompleted = 1;
+		tm_info = localtime(&activity->completionDate);
+		strftime(completionDateBuffer, sizeof(completionDateBuffer), "%d/%m/%Y %H:%M", tm_info);
+	}
+	
+	strcpy(priorityBuffer, textForActivityPriority(activity->priority));
+	
+	if (isCompleted == 0) {
+		printf("[%d] %.20s | %.20s | %.20s | %s | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, expiryDateBuffer);
+	} else {
+		printf("[%d] %.20s | %.20s | %.20s | %s | COMPLETATA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionDateBuffer);
+	}
+}
+
+
+//Don't show completed activities
+void printActivityProgressForList(Activity* activity) {
+	if (activity == NULL || activity->completionDate != 0) return;
+	    
+	// Format dates in a human-readable way
+	char expiryDateBuffer[100];
+	char priorityBuffer[10];
+	struct tm* tmInfo;
+
+	if (activity->expiryDate != 0) {
+		tmInfo = localtime(&activity->expiryDate);
+		strftime(expiryDateBuffer, sizeof(expiryDateBuffer), "%d/%m/%Y %H:%M", tmInfo);
+	} else {
+		strcpy(expiryDateBuffer, "Non impostata");
+	}
+   
+	strcpy(priorityBuffer, textForActivityPriority(activity->priority));
+	int completionPercentage = activityCompletionPercentage(activity);
+	
+	// [id] title | descr | course | priority | PROGRESS | usedTime | TIME REMAINING | totalTime | expiryDate
+	printf("[%d] %.20s | %.10s | %.10s | %s | %d%% | %d min | %d min | %d min | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionPercentage, activity->usedTime, activity->totalTime - activity->usedTime,  activity->totalTime, expiryDateBuffer);
 }
 
 
@@ -296,6 +598,7 @@ Activity * readActivityFromFile(FILE* file) {
 // Function to save activities to a file that is supposed to be already correctly opened for writing
 // Returns 0 if everything is ok 1 if something went wrong
 void saveActivityToFile(FILE* file, Activity * activity) {
+	if (activity == NULL) return;
 	fprintf(file, "%d\n", activity->id);
 	fprintf(file, "%s\n", activity->name ? activity->name : "");
 	fprintf(file, "%s\n", activity->descr ? activity->descr : "");
