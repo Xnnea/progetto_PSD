@@ -50,3 +50,102 @@ char* copyString(const char* str) {
 	strcpy(newStr, str);
 	return newStr;
 }
+
+
+//Only positive number
+unsigned int getChoiceWithLimits(unsigned int minLimit, unsigned int maxLimit) {
+	int choice = -1;
+	char buffer[10];
+    
+	while (choice < minLimit || choice > maxLimit) {
+        
+		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+			if (sscanf(buffer, "%d", &choice) != 1) {
+				choice = -1;
+			}
+		}
+      
+      if (choice < minLimit || choice > maxLimit) {
+      	printf("Scelta non valida. Riprova.\n");
+      }
+   }
+   
+   return choice;
+}
+
+/*int getChoice(unsigned int limit) {
+	int choice = -1;
+	char buffer[10];
+    
+	while (choice < 0 || choice > limit) {
+        
+		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+			if (sscanf(buffer, "%d", &choice) != 1) {
+				choice = -1;
+			}
+		}
+      
+      if (choice < 0 || choice > limit) {
+      	printf("Scelta non valida. Riprova.\n");
+      }
+   }
+   
+   return choice;
+}*/
+
+unsigned int getChoice(unsigned int limit) {
+   return getChoiceWithLimits(0, limit);
+}
+
+char* getInfoFromUser(const char* prompt) {
+	char* info = NULL;
+	char buffer[1024]; // input buffer
+	
+	printf("\n%s", prompt);
+	
+	if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+		buffer[strcspn(buffer, "\n")] = 0;  // remove newline, overwrite with string terminator
+		if (strlen(buffer) > 0) {
+			info = copyString(buffer);
+		}
+	}
+	
+	return info;
+}
+
+char* dateToFormattedText(const time_t *timer) {
+	if (timer == NULL) return NULL;
+
+	// Format dates in a human-readable way
+	char timeBuffer[100];
+	struct tm* tm_info;
+    
+	if (*timer != 0) {
+		tm_info = localtime(timer);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tm_info);
+		return copyString(timeBuffer);
+	}
+	
+	return NULL;
+}
+
+time_t dateToEpoch(int year, int month, int day, int hour, int min) {
+	if (year < 1900 || year > 9999) return 0;
+	if (month < 1 || month > 12) return 0;
+	if (day < 1 || day > 31) return 0;
+	if (hour < 0 || hour > 23) return 0;
+	if (min < 0 || min > 59) return 0;
+	
+	struct tm date;
+
+	date.tm_sec = 00;
+	date.tm_min = min;
+	date.tm_hour = hour;
+	date.tm_mday = day;
+	date.tm_mon = month - 1;
+	date.tm_year = year - 1900;
+	date.tm_wday = 0;
+	date.tm_isdst = 0;
+	
+	return mktime(&date);
+}
