@@ -6,7 +6,7 @@
 
 // Defining the node structure for the AVL tree
 typedef struct node {
-	Activity * activity;   // Data structure pointer: activity stored in the node
+	Activity activity;   // Data structure pointer: activity stored in the node
 	struct node* left;
 	struct node* right; 
 	int height;
@@ -60,7 +60,7 @@ int getHeight(Node* n) {
 }
 
 // Function to create a new node
-Node* createNode(Activity * activity) {
+Node* createNode(Activity activity) {
 	if (!activity) return NULL;
 	Node* node = (Node*) malloc(sizeof(Node));
 	node->activity = activity;
@@ -113,7 +113,7 @@ Node* leftRotate(Node* x) {
 
 
 // Function to insert a new node (and an activity) into a subtree
-Node* insertNode(Node* node, Activity * activity) {
+Node* insertNode(Node* node, Activity activity) {
 	
 	// 0 - If node is null
 	if (!node) {
@@ -174,7 +174,7 @@ Node* insertNode(Node* node, Activity * activity) {
 
 // Function to insert a new Activity into AVL tree.
 // The activity key (activity->id) is automatically generated if id is initially valorized with 0. 
-ActivitiesContainer insertActivity(ActivitiesContainer container, Activity * activity) {
+ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activity) {
 	if (!activity) return container; // No action
 	
 	int currentActivityId = getActivityId(activity);
@@ -233,7 +233,7 @@ Node* deleteNode(Node* root, int activityId) {
 		// Node with only one child or no child
 		if( (root->left == NULL) || (root->right == NULL) ) {
 			Node *temp = root->left ? root->left : root->right;
-			Activity * activityToDelete = root->activity;
+			Activity activityToDelete = root->activity;
 				
 			// No child case
 			if (temp == NULL) {
@@ -250,7 +250,7 @@ Node* deleteNode(Node* root, int activityId) {
 			Node* temp = minValueNode(root->right);
 
 			// Copy the inorder successor's data to this node
-			Activity * tempActivity = root->activity;
+			Activity tempActivity = root->activity;
 			root->activity = copyActivity(temp->activity);
 
 			// Delete the inorder successor
@@ -398,7 +398,7 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 	*count = 0;
 	
 	while (!feof(file)) {  
-		Activity * currentActivity = readActivityFromFile(file);
+		Activity currentActivity = readActivityFromFile(file);
 		if (currentActivity == NULL) {
 			fclose(file);
 			return newContainer;
@@ -552,7 +552,7 @@ ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
 	short unsigned int priority = (short unsigned int) getChoiceWithLimits(1, 3);
 	
 	//With 0 id is automatically calculated
-	Activity* activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
+	Activity activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
 	
 	return insertActivity(container, activity);
 }
@@ -564,10 +564,10 @@ ActivitiesContainer buildActivities() {
 	/*ActivitiesContainer newContainer = newActivityContainer();
 	if (newContainer == NULL) return newContainer;    // Se la lista è NULL, ritorna NULL (errore)
  
-	Activity* activity = newActivity( 1, "Nome attività", "Descr attività", "Corso 1", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-	Activity* activity2 = newActivity( 5, "Nome attività", "Descr attività", "Corso 2", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-	Activity* activity3 = newActivity( 3, "Nome attività", "Descr attività", "Corso 3", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-	Activity* activity4 = newActivity( 7, "Nome attività", "Descr attività", "Corso 4", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
+	Activity activity = newActivity( 1, "Nome attività", "Descr attività", "Corso 1", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
+	Activity activity2 = newActivity( 5, "Nome attività", "Descr attività", "Corso 2", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
+	Activity activity3 = newActivity( 3, "Nome attività", "Descr attività", "Corso 3", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
+	Activity activity4 = newActivity( 7, "Nome attività", "Descr attività", "Corso 4", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
   	
   	newContainer = insertActivity(newContainer, activity);
   	newContainer = insertActivity(newContainer, activity2);

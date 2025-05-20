@@ -18,7 +18,7 @@ struct activity {
 	short unsigned int priority;
 };
 
-int compareWithId(Activity * a, int activityId) {
+int compareWithId(Activity a, int activityId) {
 	if (!a) return -2;
 	
 	if (a->id == activityId) return 0;
@@ -27,7 +27,7 @@ int compareWithId(Activity * a, int activityId) {
 }
 
 //Based on "id". Like strcmp (<0 if a < b, 0 is a == b, >0 if a > b)
-int compare(Activity * a, Activity * b) {
+int compare(Activity a, Activity b) {
 	if (!a && !b) return 0;
 	if (a && !b) return 1;
 	if (b && !a) return -1;
@@ -36,8 +36,8 @@ int compare(Activity * a, Activity * b) {
 }
 
 
-Activity * newEmptyActivity() {
-	Activity* activity = (Activity*)malloc(sizeof(Activity));
+Activity newEmptyActivity() {
+	Activity activity = (Activity)malloc(sizeof(struct activity));
 	if (activity == NULL) {
    		return NULL;
 	}
@@ -55,7 +55,7 @@ Activity * newEmptyActivity() {
 }
 
 
-Activity * newActivity( int id,
+Activity newActivity( int id,
 								char* name, 
 								char* descr, 
 								char* course, 
@@ -65,7 +65,7 @@ Activity * newActivity( int id,
 								unsigned int totalTime, 
 								unsigned int usedTime, 
 								short unsigned int priority ) {
-	Activity* activity = newEmptyActivity();
+	Activity activity = newEmptyActivity();
 	if (activity == NULL) {
    		return NULL;
 	}
@@ -85,7 +85,7 @@ Activity * newActivity( int id,
 }
 
 
-void deleteActivity(Activity * a) {
+void deleteActivity(Activity a) {
 	if(!a) return;
 	
 	free(a->name);
@@ -94,10 +94,10 @@ void deleteActivity(Activity * a) {
 }
 
 
-Activity * copyActivity(Activity * old) {
+Activity copyActivity(Activity old) {
 	if(!old) return NULL;
 	
-	Activity* activity = (Activity*)malloc(sizeof(Activity));
+	Activity activity = (Activity)malloc(sizeof(struct activity));
 	if (activity == NULL) {
    		return NULL;
 	}
@@ -131,12 +131,12 @@ char * textForActivityPriority(int priority) {
 }
 
 
-int getActivityId(Activity * a) {
+int getActivityId(Activity a) {
 	if(!a) return 0;
 	return a->id;
 }
 
-void setActivityId(Activity * a, int newId) {
+void setActivityId(Activity a, int newId) {
 	if(a) a->id = newId;
 }
 
@@ -148,79 +148,79 @@ void setActivityId(Activity * a, int newId) {
 
 
 
-char* getActivityName(Activity * a) {
+char* getActivityName(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return a->name;
 }
 
-char* getActivityDescr(Activity * a) {
+char* getActivityDescr(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return a->descr;
 }
 
-char* getActivityCourse(Activity * a) {
+char* getActivityCourse(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return a->course;
 }
 
-time_t getActivityInsertDate(Activity * a) {
+time_t getActivityInsertDate(Activity a) {
 	if (a == NULL) return 0;
 	
 	return a->insertDate;
 }
 
-time_t getActivityExpiryDate(Activity * a) {
+time_t getActivityExpiryDate(Activity a) {
 	if (a == NULL) return 0;
 	
 	return a->expiryDate;
 }
 
-time_t getActivityCompletionDate(Activity * a) {
+time_t getActivityCompletionDate(Activity a) {
 	if (a == NULL) return 0;
 	
 	return a->completionDate;
 }
 
-char* getActivityInsertDateFormatted(Activity * a) {
+char* getActivityInsertDateFormatted(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return dateToFormattedText( &(a->insertDate) );
 }
 
-char* getActivityExpiryDateFormatted(Activity * a) {
+char* getActivityExpiryDateFormatted(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return dateToFormattedText( &(a->expiryDate) );
 }
 
-char* getActivityCompletionDateFormatted(Activity * a) {
+char* getActivityCompletionDateFormatted(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return dateToFormattedText( &(a->completionDate) );
 }
 
-unsigned int getActivityTotalTime(Activity * a) {
+unsigned int getActivityTotalTime(Activity a) {
 	if (a == NULL) return 0;
 	
 	return a->totalTime;
 }
 
-unsigned int getActivityUsedTime(Activity * a) {
+unsigned int getActivityUsedTime(Activity a) {
 	if (a == NULL) return 0;
 	
 	return a->usedTime;
 }
 
-short unsigned int getActivityPriority(Activity * a) {
+short unsigned int getActivityPriority(Activity a) {
 	if (a == NULL) return 0;
 	
 	return a->priority;
 }
 
-char*  getActivityPriorityFormatted(Activity * a) {
+char*  getActivityPriorityFormatted(Activity a) {
 	if (a == NULL) return NULL;
 	
 	return textForActivityPriority(a->priority);
@@ -230,7 +230,7 @@ char*  getActivityPriorityFormatted(Activity * a) {
 
 
 
-void setActivityName(Activity * a, char* name) {
+void setActivityName(Activity a, char* name) {
 	if (a == NULL) return;
 	
 	if (a->name != NULL) {
@@ -240,7 +240,7 @@ void setActivityName(Activity * a, char* name) {
 	a->name = copyString(name);
 }
 
-void setActivityDescr(Activity * a, char* descr) {
+void setActivityDescr(Activity a, char* descr) {
 	if (a == NULL) return;
 	
 	if (a->descr != NULL) {
@@ -250,7 +250,7 @@ void setActivityDescr(Activity * a, char* descr) {
 	a->descr = copyString(descr);
 }
 
-void setActivityCourse(Activity * a, char* course) {
+void setActivityCourse(Activity a, char* course) {
 	if (a == NULL) return;
 	
 	if (a->course != NULL) {
@@ -260,64 +260,64 @@ void setActivityCourse(Activity * a, char* course) {
 	a->course = copyString(course);
 }
 
-void setActivityInsertDate(Activity * a, time_t insertDate) {
+void setActivityInsertDate(Activity a, time_t insertDate) {
 	if (a == NULL) return;
 	
 	a->insertDate = insertDate;
 }
 
-void setActivityExpiryDate(Activity * a, time_t expiryDate) {
+void setActivityExpiryDate(Activity a, time_t expiryDate) {
 	if (a == NULL) return;
 	
 	a->expiryDate = expiryDate;
 }
 
-void setActivityCompletionDate(Activity * a, time_t completionDate) {
+void setActivityCompletionDate(Activity a, time_t completionDate) {
 	if (a == NULL) return;
 	
 	a->completionDate = completionDate;
 }
 
-void setActivityInsertDateFormatted(Activity * a, int year, int month, int day, int hour, int min) {
+void setActivityInsertDateFormatted(Activity a, int year, int month, int day, int hour, int min) {
 	if (a == NULL) return;
 	
 	time_t date = dateToEpoch(year, month, day, hour, min);
 	a->insertDate = date;
 }
 
-void setActivityExpiryDateFormatted(Activity * a, int year, int month, int day, int hour, int min) {
+void setActivityExpiryDateFormatted(Activity a, int year, int month, int day, int hour, int min) {
 	if (a == NULL) return;
 	
 	time_t date = dateToEpoch(year, month, day, hour, min);
 	a->expiryDate = date;
 }
 
-void setActivityCompletionDateFormatted(Activity *a, int year, int month, int day, int hour, int min) {
+void setActivityCompletionDateFormatted(Activity a, int year, int month, int day, int hour, int min) {
 	if (a == NULL) return;
 	
 	time_t date = dateToEpoch(year, month, day, hour, min);
 	a->completionDate = date;
 }
 
-void setActivityTotalTime(Activity * a, unsigned int totalTime) {
+void setActivityTotalTime(Activity a, unsigned int totalTime) {
 	if (a == NULL) return;
 	
 	a->totalTime = totalTime;
 }
 
-void setActivityUsedTime(Activity * a, unsigned int usedTime) {
+void setActivityUsedTime(Activity a, unsigned int usedTime) {
 	if (a == NULL) return;
 	
 	a->usedTime = usedTime;
 }
 
-void setActivityPriority(Activity * a, short unsigned int priority) {
+void setActivityPriority(Activity a, short unsigned int priority) {
 	if (a == NULL) return;
 	
 	a->priority = priority;
 }
 
-void setActivityPriorityFormatted(Activity * a, char* priority) {
+void setActivityPriorityFormatted(Activity a, char* priority) {
 	if (a == NULL) return;
 	
 	if ( strcmp(priority, "ALTA") == 0 ) {
@@ -342,7 +342,7 @@ void setActivityPriorityFormatted(Activity * a, char* priority) {
 
 
 // Used "int" consciously
-int activityCompletionPercentage(Activity* activity) {
+int activityCompletionPercentage(Activity activity) {
 	if (activity == NULL) return 0;
 	
 	int completionPercentage = (activity->usedTime * 100) / activity->totalTime;
@@ -354,7 +354,7 @@ void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned i
 	*minOut = minIn % 60;
 }
 
-void print(Activity* activity) {
+void print(Activity activity) {
 	if (activity == NULL) return;
 	printf("\n===========================================\n");
 	printf("==== Dettaglio attività con id %d \n", activity->id);
@@ -416,7 +416,7 @@ void print(Activity* activity) {
 
 
 
-void printActivityForList(Activity* activity) {
+void printActivityForList(Activity activity) {
 	if (activity == NULL) return;
 	    
 	// Format dates in a human-readable way
@@ -450,7 +450,7 @@ void printActivityForList(Activity* activity) {
 
 
 //Don't show completed activities
-void printActivityProgressForList(Activity* activity) {
+void printActivityProgressForList(Activity activity) {
 	if (activity == NULL || activity->completionDate != 0) return;
 	    
 	// Format dates in a human-readable way
@@ -475,7 +475,7 @@ void printActivityProgressForList(Activity* activity) {
 
 
 // Read an activity from file (file is supposed to be in read mode), line by line
-Activity * readActivityFromFile(FILE* file) {
+Activity readActivityFromFile(FILE* file) {
 	int id = 0;
 	char* name = NULL; 
 	char* descr = NULL; 
@@ -575,7 +575,7 @@ Activity * readActivityFromFile(FILE* file) {
 	free(lines[9]);
 
 
-	Activity* activity = newEmptyActivity();
+	Activity activity = newEmptyActivity();
 	if (activity == NULL) {
    		return NULL;
 	}
@@ -597,7 +597,7 @@ Activity * readActivityFromFile(FILE* file) {
 
 // Function to save activities to a file that is supposed to be already correctly opened for writing
 // Returns 0 if everything is ok 1 if something went wrong
-void saveActivityToFile(FILE* file, Activity * activity) {
+void saveActivityToFile(FILE* file, Activity activity) {
 	if (activity == NULL) return;
 	fprintf(file, "%d\n", activity->id);
 	fprintf(file, "%s\n", activity->name ? activity->name : "");
