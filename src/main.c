@@ -108,18 +108,31 @@ int handleMainMenu(ActivitiesContainer * container) {
 			break;
       }
 
-		case 3: // 3. Elimina attività
-			//TODO
+		case 3: {// 3. Elimina attività
+			int maxId = getNextId(*container);
+			if (maxId > 0) {
+				printf("\nInserisci l'id dell'attività da ELIMINARE (numero < %d): ", maxId);
+				int id = getChoice(maxId);
+				int isConfirmed = getConfirmMenuChoice("Sei sicuro di voler eliminare questa attività?");
+				if (isConfirmed == 1) {
+					*container = removeActivity(*container, id);
+					printf("\nAttività eliminata.\n");
+				}
+			} else {
+				printf("\nAl momento non puoi eliminare attività.");
+			}
 			break;
+		}
 
 		case 4: { // 4. Visualizza avanzamento attività
 			printActivitiesProgress(*container);
 			break;
 		}
 
-		case 5: //5. Visualizza report settimanale
+		case 5: { //5. Visualizza report settimanale
 			//TODO
 			break;
+		}
 
 		case 6: { //6. Visualizza dettaglio attività
 			int maxId = getNextId(*container);
@@ -147,7 +160,7 @@ int handleMainMenu(ActivitiesContainer * container) {
 		}
 
 		default:
-			printf("Scelta non gestita. Esco.\n");
+			printf("Scelta non gestita.\n");
 			break;
 	}
 	

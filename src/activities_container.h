@@ -10,6 +10,7 @@ typedef struct containerItem* ActivitiesContainer;
 
 ActivitiesContainer newActivityContainer(void);
 ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
+ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId);
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
 int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
 void deleteActivityContainer(ActivitiesContainer container);
