@@ -327,7 +327,8 @@ void printActivityWithId(ActivitiesContainer container, int activityId) {
 
 	Node* activityNode = search(container->avlTree, activityId);
 	if (activityNode != NULL && activityNode->activity != NULL) {
-		print(activityNode->activity);
+		//print(activityNode->activity);
+		printAcivityDetailWithMenu(activityNode->activity);
 	}
 }
 

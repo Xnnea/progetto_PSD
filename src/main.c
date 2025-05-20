@@ -32,19 +32,6 @@ void displayMainMenu() {
 	printf("Scelta: ");
 }
 
-void displayConfirmMenu(const char* confirmInfo) {
-	printf("\n=========================\n");
-	if (confirmInfo != NULL) printf("Attenzione: %s\n", confirmInfo);
-	printf("1. Continua\n");
-	printf("0. Annulla\n");
-	printf("Scelta: ");
-}
-
-
-int getConfirmMenuChoice(const char* confirmInfo) {
-	displayConfirmMenu(confirmInfo);
-	return getChoice(1);
-}
 
 ActivitiesContainer handleStartMenu() {
 	displayStartMenu();

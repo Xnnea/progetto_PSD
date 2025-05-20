@@ -15,5 +15,7 @@ char* getInfoFromUser(const char* prompt);
 char* dateToFormattedText(const time_t *timer);
 time_t dateToEpoch(int year, int month, int day, int hour, int min);
 time_t getDateFromUser();
+void displayConfirmMenu(const char* confirmInfo);
+int getConfirmMenuChoice(const char* confirmInfo);
 
 #endif // UTILS_H          // End of inclusion block

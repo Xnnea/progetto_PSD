@@ -386,6 +386,154 @@ void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned i
 	*minOut = minIn % 60;
 }
 
+
+
+
+
+
+void displayAcivityDetailMenu() {
+	printf("===================================\n");
+	printf("====[ Menu dettaglio attività ]====\n");
+	printf("===================================\n");
+	printf("1. Aggiorna nome\n");
+	printf("2. Aggiorna descrizione\n");
+	printf("3. Aggiorna corso\n");
+	printf("4. Cambia data di scadenza\n");
+	printf("5. Cambia la durata totale\n");
+	printf("6. Aggiorna il tempo impiegato sull'attività\n");
+	printf("7. Cambia la priorità\n");
+	printf("8. Imposta come COMPLETATA\n");
+	printf("0. Torna al menu precedente\n");
+	printf("Scelta: ");
+}
+
+Activity handleAcivityDetailMenu(Activity activity) {
+	displayAcivityDetailMenu();
+	int choice = getChoice(8);
+	
+	Activity returnActivity = activity;
+	
+	char* tmpString = NULL;
+	printf("\n");
+	
+	switch (choice) {
+		case 0: { //0. Torna al menu precedente
+			printf("Torno al menu precedente...\n");
+			returnActivity = NULL;
+			break;
+		}
+
+		case 1: { //1. Aggiorna nome
+			printf("[Aggiorna nome]\n");
+			tmpString = getActivityName(activity);
+			printf("Nome (valore attuale): %s\n", tmpString ? tmpString : "NULL" );
+			tmpString = getInfoFromUser("Inserisci in nuovo valore (lascia vuoto per non cambiarlo): ");
+			if (tmpString != NULL) {
+				setActivityName(activity, tmpString);
+				free(tmpString);
+			}
+			break;
+		}		
+		
+		case 2: { //2. Aggiorna descrizione
+			printf("[Aggiorna descrizione]\n");
+			tmpString = getActivityDescr(activity);
+			printf("Descrizione (valore attuale): %s\n", tmpString ? tmpString : "NULL" );
+			tmpString = getInfoFromUser("Inserisci in nuovo valore (lascia vuoto per non cambiarlo): ");
+			if (tmpString != NULL) {
+				setActivityDescr(activity, tmpString);
+				free(tmpString);
+			}
+			break;
+		}
+		
+		case 3: { //3. Aggiorna corso
+			printf("[Aggiorna corso]\n");
+			tmpString = getActivityCourse(activity);
+			printf("Corso (valore attuale): %s\n", tmpString ? tmpString : "NULL" );
+			tmpString = getInfoFromUser("Inserisci in nuovo valore (lascia vuoto per non cambiarlo): ");
+			if (tmpString != NULL) {
+				setActivityCourse(activity, tmpString);
+				free(tmpString);
+			}
+			break;
+		}
+		
+		case 4: { //4. Cambia data di scadenza
+			printf("[Cambia data di scadenza]\n");
+			time_t expDate = getActivityExpiryDate(activity);
+			if ( expDate > 0) {
+				char timeBuffer[100];
+				struct tm* tmInfo;
+				tmInfo = localtime(&expDate);
+				strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+				printf("Data di scadenza (valore attuale): %s\n", timeBuffer);
+			} else {
+				printf("Data di scadenza (valore attuale): Non impostata\n");
+			}
+			
+			int userConfirmation = getConfirmMenuChoice("Vuoi davvero modificare la data di scadenza? ");
+			if (userConfirmation == 1) {
+				time_t dateFromUser = getDateFromUser();
+				setActivityExpiryDate(activity, dateFromUser);
+			}
+			break;
+		}
+		
+		case 5: { //5. Cambia la durata totale
+			printf("[Cambia la durata totale]\n");
+			unsigned int totalTime = getActivityTotalTime(activity);
+			printf("Durata totale (valore attuale in min): %u\n", totalTime );
+			printf("Inserisci il nuovo valore (espresso in MINUTI, compreso 1 e un anno): ");
+			totalTime = getChoiceWithLimits(1, 525600);
+			setActivityTotalTime(activity, totalTime);
+			break;
+		}
+		
+		case 6: { //6. Aggiorna il tempo impiegato sull'attività
+			printf("[Aggiorna il tempo impiegato sull'attività]\n");
+			unsigned int totalTime = getActivityTotalTime(activity);
+			unsigned int usedTime = getActivityUsedTime(activity);
+			printf("Tempo impiegato (valore attuale in min): %u\n", usedTime );
+			printf("Inserisci il nuovo valore (espresso in MINUTI, compreso 0 e %u): ", totalTime);
+			usedTime = getChoiceWithLimits(0, totalTime);
+			setActivityUsedTime(activity, usedTime);
+			break;
+		}
+		
+		case 7: { //7. Cambia la priorità
+			printf("[Cambia la priorità]\n");
+			printf("Priorità (valore attuale): %s\n", getActivityPriorityFormatted(activity) );
+			printf("\nInserisci la nuova priorità.\n");
+			printf("1. ALTA\n");
+			printf("2. MEDIA\n");
+			printf("3. BASSA\n");
+			printf("Scelta: ");
+			short unsigned int priority = (short unsigned int) getChoiceWithLimits(1, 3);
+			setActivityPriority(activity, priority);
+			break;
+		}
+		
+		case 8: { //8. Imposta come COMPLETATA
+			printf("[Imposta come COMPLETATA]\n");
+			int userConfirmation = getConfirmMenuChoice("Vuoi davvero segnare questa attività come completata? ");
+			if (userConfirmation == 1) {
+				setActivityCompletionDate(activity, time(NULL) );
+			}
+			break;
+		}
+		
+		default: {
+			printf("Scelta non gestita...\n");
+			returnActivity = NULL;
+			break;
+		}
+	}
+	
+	tmpString = NULL;
+	return returnActivity;
+}
+
 void print(Activity activity) {
 	if (activity == NULL) return;
 	printf("\n===========================================\n");
@@ -441,10 +589,23 @@ void print(Activity activity) {
 		printf("Tempo stimato per il completamento (ore e min): %u ore e %u minuti\n", hours, minutes);
 	}
 	
+	int completionPercentage = activityCompletionPercentage(activity);
+	printf("Percentuale di completamento: %d%%\n", completionPercentage);
+	
 	printf("Priorità: %s\n", textForActivityPriority(activity->priority) );
 
-	printf("========= Fine dettaglio attività =========\n");
+	printf("========= Fine dettaglio attività =========\n\n");
 }
+
+void printAcivityDetailWithMenu(Activity activity) {
+	Activity current = activity;
+	while(current != NULL) {
+		print(current); 
+		current = handleAcivityDetailMenu(current);
+	}
+}
+
+
 
 
 

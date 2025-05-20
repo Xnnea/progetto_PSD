@@ -101,7 +101,9 @@ char* getInfoFromUser(const char* prompt) {
 	char* info = NULL;
 	char buffer[1024]; // input buffer
 	
-	printf("\n%s", prompt);
+	if (prompt != NULL) {
+		printf("\n%s", prompt);
+	}
 	
 	if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
 		buffer[strcspn(buffer, "\n")] = 0;  // remove newline, overwrite with string terminator
@@ -138,7 +140,7 @@ time_t dateToEpoch(int year, int month, int day, int hour, int min) {
 	
 	struct tm date;
 
-	date.tm_sec = 00;
+	date.tm_sec = 0;
 	date.tm_min = min;
 	date.tm_hour = hour;
 	date.tm_mday = day;
@@ -171,4 +173,18 @@ time_t getDateFromUser() {
 	int min = getChoiceWithLimits(0, 59);
 		
 	return dateToEpoch(year, month, day, hour, min);
+}
+
+void displayConfirmMenu(const char* confirmInfo) {
+	printf("\n=========================\n");
+	if (confirmInfo != NULL) printf("Attenzione: %s\n", confirmInfo);
+	printf("1. Continua\n");
+	printf("0. Annulla\n");
+	printf("Scelta: ");
+}
+
+
+int getConfirmMenuChoice(const char* confirmInfo) {
+	displayConfirmMenu(confirmInfo);
+	return getChoice(1);
 }

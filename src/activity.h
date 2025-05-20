@@ -68,6 +68,7 @@ void setActivityPriorityFormatted(Activity a, char* priority);
 
 //print
 void print(Activity activity);
+void printAcivityDetailWithMenu(Activity activity);
 void printActivityForList(Activity activity);
 void printActivityProgressForList(Activity activity);
 
