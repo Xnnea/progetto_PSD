@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include "activities_container.h"
+#include "activities_container_support_list.h"
 
 // Defining the node structure for the AVL tree
 typedef struct node {
@@ -366,7 +367,7 @@ void postOrder(Node* root) {
 
 // Creates and returns a new empty activity container (tree)
 ActivitiesContainer newActivityContainer(void) {
-	ActivitiesContainer tree = malloc(sizeof(struct containerItem)); 
+	ActivitiesContainer tree = (struct containerItem*)malloc(sizeof(struct containerItem)); 
 	if (tree != NULL) {
 		tree->avlTree = NULL;
 		tree->nextId = 1;
@@ -628,4 +629,103 @@ int getNextId(ActivitiesContainer container) {
 	if (container == NULL) return -1;
 	
 	return container->nextId;
+}
+
+
+
+
+
+void buildInOrdeSupportListsForActivitiesReport(Node* root, ActivitiesContainerSupportList completedList, ActivitiesContainerSupportList ongoingList, ActivitiesContainerSupportList expiredList, ActivitiesContainerSupportList yetToBeginList, time_t beginDate, time_t nowDate) {
+	if (root != NULL) {
+		buildInOrdeSupportListsForActivitiesReport(root->left, completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //left
+
+		int isCompleted = isActivityCompleted(root->activity);
+		if (isCompleted == 1) { //all complete activities
+			int wasCompletedInLastPeriod = wasActivityCompletedAfterDate(root->activity, beginDate);
+			if (wasCompletedInLastPeriod == 1) { //completed in the last period
+				addActivityToSupportList(completedList, root->activity);
+			}
+		} else if ( wasActivityExpiredBeforeDate(root->activity, nowDate) == 1 ) { //expired and not completed
+			addActivityToSupportList(expiredList, root->activity);
+		} else if ( isActivityYetToBegin(root->activity) == 1 ) { //yet to begin
+			addActivityToSupportList(yetToBeginList, root->activity);
+		} else { //ongoing
+			addActivityToSupportList(ongoingList, root->activity);
+		}
+
+		
+		buildInOrdeSupportListsForActivitiesReport(root->right, completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //right
+	}
+}
+
+void printActivitiesReport(ActivitiesContainer container) {
+	if (container == NULL || container->avlTree == NULL) return;
+	
+	time_t beginDate = time(NULL); //now
+	beginDate = beginDate - 60*60*24*7; //one week ago
+	
+	char timeBuffer[100];
+	struct tm* tmInfo;
+	
+	tmInfo = localtime(&beginDate);
+	strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+	
+	printf("\n\nIl report settimanale di default mostra i cambiamenti nell'ultima settimana.\n", timeBuffer);
+	printf("\nVuoi visualizzare il report a partire da %s (se scegli 'No' dovrai inserire una data)?\n", timeBuffer);
+	printf("1. Si\n");
+	printf("0. No\n");
+	printf("Scelta: ");
+	int insertReportDate = getChoice(1);
+	
+	if (insertReportDate == 0) {
+		printf("\nInserisci l'anno (nel formato YYYY, compreso tra il 2000 e il 2037):");
+		int year = getChoiceWithLimits(2000, 2037);
+		
+		printf("\nInserisci il mese (nel formato MM):");
+		int month = getChoiceWithLimits(1, 12);
+		
+		int isLeapYear = ( (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ) ? 1 : 0;
+		int febDays = 28 + isLeapYear;
+		int daysInMonth[] = {31, febDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		
+		printf("\nInserisci il giorno (nel formato DD):");
+		int day = getChoiceWithLimits(1, daysInMonth[month - 1] );
+		
+		printf("\nInserisci l'ora, senza i minuti (nel formato hh):");
+		int hour = getChoiceWithLimits(0, 23);
+		
+		printf("\nInserisci i minuti dell'orario (nel formato mm):");
+		int min = getChoiceWithLimits(0, 59);
+		
+		time_t userDate = dateToEpoch(year, month, day, hour, min);
+		
+		if (userDate >= time(NULL)) {
+			printf("\nLa data inserita è nel futuro: verrà usata la data di default.");
+		} else {
+			beginDate = userDate;
+		}
+	}
+	
+	ActivitiesContainerSupportList completedList = newSupportList();
+	ActivitiesContainerSupportList ongoingList = newSupportList();
+	ActivitiesContainerSupportList expiredList = newSupportList();
+	ActivitiesContainerSupportList yetToBeginList = newSupportList();
+	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
+
+	printf("\nCOMPLETATE:\n");
+	doActionOnSupportListActivities(completedList, printActivityForList);
+	
+	printf("\nANCORA DA INIZIARE:\n");
+	doActionOnSupportListActivities(yetToBeginList, printActivityForList);
+	
+	printf("\nIN CORSO:\n");
+	doActionOnSupportListActivities(ongoingList, printActivityForList);
+	
+	printf("\nIN RITARDO:\n");
+	doActionOnSupportListActivities(expiredList, printActivityForList);
+	
+	deleteSupportList(&completedList);
+	deleteSupportList(&yetToBeginList);
+	deleteSupportList(&ongoingList);
+	deleteSupportList(&expiredList);
 }

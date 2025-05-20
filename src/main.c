@@ -130,7 +130,7 @@ int handleMainMenu(ActivitiesContainer * container) {
 		}
 
 		case 5: { //5. Visualizza report settimanale
-			//TODO
+			printActivitiesReport(*container);
 			break;
 		}
 

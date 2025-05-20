@@ -36,6 +36,38 @@ int compare(Activity a, Activity b) {
 }
 
 
+
+// 1 = activity is yet to begin, 0 = is completed or ongoing
+int isActivityYetToBegin(Activity a) {
+	if (a == NULL) return 0;
+	
+	return (a->usedTime == 0) ? 1 : 0;
+}
+
+// 1 = activity is completed, 0 = is NOT completed
+int isActivityCompleted(Activity a) {
+	if (a == NULL) return 0;
+	
+	return (a->completionDate != 0) ? 1 : 0;
+}
+
+// 1 = activity was completed after the threshold date, 0 = otherwise
+int wasActivityCompletedAfterDate(Activity a, time_t thresholdDate) {
+	if (a == NULL) return 0;
+	
+	return (a->completionDate > thresholdDate) ? 1 : 0;
+}
+
+// 0 = activity was expired before the threshold date, 1 = otherwise
+int wasActivityExpiredBeforeDate(Activity a, time_t thresholdDate) {
+	if (a == NULL) return 0;
+	
+	//expiryDate = 0 mean no expiry date
+	return (a->expiryDate > 0 && a->expiryDate < thresholdDate) ? 1 : 0;
+}
+
+
+
 Activity newEmptyActivity() {
 	Activity activity = (Activity)malloc(sizeof(struct activity));
 	if (activity == NULL) {

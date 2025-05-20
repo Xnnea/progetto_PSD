@@ -28,6 +28,12 @@ void deleteActivity(Activity a);
 Activity copyActivity(Activity old);
 
 
+int isActivityYetToBegin(Activity a);
+int isActivityCompleted(Activity a);
+int wasActivityCompletedAfterDate(Activity a, time_t thresholdDate);
+int wasActivityExpiredBeforeDate(Activity a, time_t thresholdDate);
+
+
 // getters
 int getActivityId(Activity a);
 char* getActivityName(Activity a);

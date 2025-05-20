@@ -21,5 +21,6 @@ void printActivityWithId(ActivitiesContainer container, int activityId);
 ActivitiesContainer buildActivities();
 void printActivities(ActivitiesContainer);
 void printActivitiesProgress(ActivitiesContainer);
+void printActivitiesReport(ActivitiesContainer);
 
 #endif // ACTIVITIES_CONTAINER_H          // End of inclusion block
