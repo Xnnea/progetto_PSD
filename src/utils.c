@@ -144,8 +144,31 @@ time_t dateToEpoch(int year, int month, int day, int hour, int min) {
 	date.tm_mday = day;
 	date.tm_mon = month - 1;
 	date.tm_year = year - 1900;
-	date.tm_wday = 0;
-	date.tm_isdst = 0;
+	//date.tm_wday = 0;
+	//date.tm_isdst = 0;
 	
 	return mktime(&date);
+}
+
+time_t getDateFromUser() {
+	printf("\nInserisci l'anno (nel formato YYYY, compreso tra il 2000 e il 2037):");
+	int year = getChoiceWithLimits(2000, 2037);
+		
+	printf("\nInserisci il mese (nel formato MM):");
+	int month = getChoiceWithLimits(1, 12);
+		
+	int isLeapYear = ( (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ) ? 1 : 0;
+	int febDays = 28 + isLeapYear;
+	int daysInMonth[] = {31, febDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		
+	printf("\nInserisci il giorno (nel formato DD):");
+	int day = getChoiceWithLimits(1, daysInMonth[month - 1] );
+		
+	printf("\nInserisci l'ora (senza i minuti e nel formato hh):");
+	int hour = getChoiceWithLimits(0, 23);
+		
+	printf("\nInserisci i minuti dell'orario (nel formato mm):");
+	int min = getChoiceWithLimits(0, 59);
+		
+	return dateToEpoch(year, month, day, hour, min);
 }

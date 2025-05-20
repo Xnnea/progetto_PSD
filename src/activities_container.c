@@ -517,26 +517,7 @@ ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
 	
 	time_t expiryDate = 0; 
 	if (insertExpiryDate == 1) {
-		printf("\nInserisci l'anno della scadenza (nel formato YYYY, compreso tra il 2000 e il 2037):");
-		int year = getChoiceWithLimits(2000, 2037);
-		
-		printf("\nInserisci il mese della scadenza (nel formato MM):");
-		int month = getChoiceWithLimits(1, 12);
-		
-		int isLeapYear = ( (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ) ? 1 : 0;
-		int febDays = 28 + isLeapYear;
-		int daysInMonth[] = {31, febDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		
-		printf("\nInserisci il giorno della scadenza (nel formato DD):");
-		int day = getChoiceWithLimits(1, daysInMonth[month - 1] );
-		
-		printf("\nInserisci l'ora della scadenza (nel formato hh):");
-		int hour = getChoiceWithLimits(0, 23);
-		
-		printf("\nInserisci i minuti dell'orario della scadenza (nel formato mm):");
-		int min = getChoiceWithLimits(0, 59);
-		
-		expiryDate = dateToEpoch(year, month, day, hour, min);
+		expiryDate = getDateFromUser();
 	}
 	
 	time_t completionDate = 0;
@@ -677,31 +658,15 @@ void printActivitiesReport(ActivitiesContainer container) {
 	printf("Scelta: ");
 	int insertReportDate = getChoice(1);
 	
-	if (insertReportDate == 0) {
-		printf("\nInserisci l'anno (nel formato YYYY, compreso tra il 2000 e il 2037):");
-		int year = getChoiceWithLimits(2000, 2037);
-		
-		printf("\nInserisci il mese (nel formato MM):");
-		int month = getChoiceWithLimits(1, 12);
-		
-		int isLeapYear = ( (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ) ? 1 : 0;
-		int febDays = 28 + isLeapYear;
-		int daysInMonth[] = {31, febDays, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		
-		printf("\nInserisci il giorno (nel formato DD):");
-		int day = getChoiceWithLimits(1, daysInMonth[month - 1] );
-		
-		printf("\nInserisci l'ora, senza i minuti (nel formato hh):");
-		int hour = getChoiceWithLimits(0, 23);
-		
-		printf("\nInserisci i minuti dell'orario (nel formato mm):");
-		int min = getChoiceWithLimits(0, 59);
-		
-		time_t userDate = dateToEpoch(year, month, day, hour, min);
+	if (insertReportDate == 0) {		
+		time_t userDate = getDateFromUser();
 		
 		if (userDate >= time(NULL)) {
 			printf("\nLa data inserita è nel futuro: verrà usata la data di default.");
 		} else {
+			tmInfo = localtime(&userDate);
+			strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+			printf("\nSarà usata la seguente data per il report: %s\n", timeBuffer);
 			beginDate = userDate;
 		}
 	}
