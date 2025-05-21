@@ -12,4 +12,7 @@ void deleteSupportList(ActivitiesContainerSupportList* list);
 void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (*actionFunction)(Activity) );
 void sortSupportList(ActivitiesContainerSupportList list, int (*compareFunction)(Activity, Activity) );
 
+//Used for debug
+int countSupportListItems(ActivitiesContainerSupportList list);
+
 #endif // ACTIVITIES_CONTAINER_SUPPORT_LIST_H          //  End of inclusion block

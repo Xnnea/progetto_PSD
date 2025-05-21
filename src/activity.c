@@ -37,6 +37,160 @@ int compare(Activity a, Activity b) {
 
 
 
+
+
+// Used "int" consciously
+int activityCompletionPercentage(Activity activity) {
+	if (activity == NULL) return 0;
+	
+	int completionPercentage = (activity->usedTime * 100) / activity->totalTime;
+	return completionPercentage;
+}
+
+void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned int * minOut) {
+	*hoursOut = minIn / 60;
+	*minOut = minIn % 60;
+}
+
+
+int compareNullActivity(const Activity a, const Activity b) {
+	if (!a && !b) return 0;
+	if (a && !b) return 1;
+	if (b && !a) return -1;
+	
+	return 0;
+}
+
+int compareNullString(const char* a, const char*  b) {
+	if (!a && !b) return 0;
+	if (a && !b) return 1;
+	if (b && !a) return -1;
+	
+	return 0;
+}
+
+int compareAcivityById(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	return compareWithId(a, b->id);
+}
+
+int compareAcivityByName(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->name == NULL || b->name == NULL) {
+		return compareNullString(a->name, b->name);
+	}
+	
+	return strcmp(a->name, b->name);
+}
+
+int compareAcivityByDescr(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->descr == NULL || b->descr == NULL) {
+		return compareNullString(a->descr, b->descr);
+	}
+	
+	return strcmp(a->descr, b->descr);
+}
+
+int compareAcivityByCourse(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->course == NULL || b->course == NULL) {
+		return compareNullString(a->course, b->course);
+	}
+	
+	return strcmp(a->course, b->course);
+}
+
+int compareAcivityByInsertDate(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->insertDate == b->insertDate) return 0;
+	
+	return (a->insertDate < b->insertDate) ? -1 : 1;
+}
+
+int compareAcivityByExpiryDate(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->expiryDate == b->expiryDate) return 0;
+	
+	return (a->expiryDate < b->expiryDate) ? -1 : 1;
+}
+
+int compareAcivityByCompletionDate(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->completionDate == b->completionDate) return 0;
+	
+	return (a->completionDate < b->completionDate) ? -1 : 1;
+}
+
+int compareAcivityByTotalTime(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->totalTime == b->totalTime) return 0;
+	
+	return (a->totalTime < b->totalTime) ? -1 : 1;
+}
+
+int compareAcivityByUsedTime(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->usedTime == b->usedTime) return 0;
+	
+	return (a->usedTime < b->usedTime) ? -1 : 1;
+}
+
+int compareAcivityByPriority(const Activity a, const Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	if (a->priority == b->priority) return 0;
+	
+	return (a->priority < b->priority) ? -1 : 1;
+}
+
+int compareAcivityByPercentCompletion(Activity a, Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	int aPercent = activityCompletionPercentage(a);
+	int bPercent = activityCompletionPercentage(b);
+	
+	if (aPercent == bPercent) return 0;
+	
+	return (aPercent < bPercent) ? -1 : 1;
+}
+
+int compareAcivityByTimeToCompletion(Activity a, Activity b) {
+	if (!a || !b) return compareNullActivity(a, b);
+	
+	unsigned int aTimeToCompletion = 0;
+	unsigned int bTimeToCompletion = 0;
+	
+	if (a->totalTime >= a->usedTime) {
+		aTimeToCompletion = a->totalTime - a->usedTime;
+	}
+	
+	if (b->totalTime >= b->usedTime) {
+		bTimeToCompletion = b->totalTime - b->usedTime;
+	}
+	
+	if (aTimeToCompletion == bTimeToCompletion) return 0;
+	
+	return (aTimeToCompletion < bTimeToCompletion) ? -1 : 1;
+}
+
+
+
+
+
+
+
+
+
 // 1 = activity is yet to begin, 0 = is completed or ongoing
 int isActivityYetToBegin(Activity a) {
 	if (a == NULL) return 0;
@@ -368,23 +522,6 @@ void setActivityPriorityFormatted(Activity a, char* priority) {
 
 
 
-
-
-
-
-
-// Used "int" consciously
-int activityCompletionPercentage(Activity activity) {
-	if (activity == NULL) return 0;
-	
-	int completionPercentage = (activity->usedTime * 100) / activity->totalTime;
-	return completionPercentage;
-}
-
-void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned int * minOut) {
-	*hoursOut = minIn / 60;
-	*minOut = minIn % 60;
-}
 
 
 

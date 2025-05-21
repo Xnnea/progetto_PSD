@@ -48,9 +48,10 @@ int isSupportListEmpty(ActivitiesContainerSupportList list) {
 // Add an Activity to the head of the list
 void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity) {
 	if (list == NULL) return;
+
 	NodeList* newNode = (NodeList *)malloc(sizeof(NodeList));
 	if (newNode == NULL) return; // return (list is unchanged)
-	
+
 	newNode->activity = activity;
 	newNode->next = list->head;
 	list->head = newNode;
@@ -68,8 +69,19 @@ void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (
 	}
 }
 
+//Used for debug
+int countSupportListItems(ActivitiesContainerSupportList list) {
+	if (list == NULL || list->head == NULL) return 0;
 
-
+	int count = 0;
+	NodeList* currentNode = list->head;
+	while(currentNode != NULL) {
+		count += 1;
+		currentNode = currentNode->next;
+	}
+	
+	return count;
+}
 
 
 
@@ -96,7 +108,7 @@ NodeList* splitSupportList(NodeList* head) {
 
 // Function to merge two sorted lists (support function for merge sort)
 NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int (*compareFunction)(Activity, Activity)) {
-	if (listA == NULL && listA == NULL) return NULL;
+	if (listA == NULL && listB == NULL) return NULL;
 
 	// If either list is empty, return the other list
 	if (listA == NULL) return listB;

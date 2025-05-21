@@ -620,7 +620,7 @@ int getNextId(ActivitiesContainer container) {
 void buildInOrdeSupportListsForActivitiesReport(Node* root, ActivitiesContainerSupportList completedList, ActivitiesContainerSupportList ongoingList, ActivitiesContainerSupportList expiredList, ActivitiesContainerSupportList yetToBeginList, time_t beginDate, time_t nowDate) {
 	if (root != NULL) {
 		buildInOrdeSupportListsForActivitiesReport(root->left, completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //left
-
+		
 		int isCompleted = isActivityCompleted(root->activity);
 		if (isCompleted == 1) { //all complete activities
 			int wasCompletedInLastPeriod = wasActivityCompletedAfterDate(root->activity, beginDate);
@@ -634,7 +634,6 @@ void buildInOrdeSupportListsForActivitiesReport(Node* root, ActivitiesContainerS
 		} else { //ongoing
 			addActivityToSupportList(ongoingList, root->activity);
 		}
-
 		
 		buildInOrdeSupportListsForActivitiesReport(root->right, completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //right
 	}
@@ -678,18 +677,28 @@ void printActivitiesReport(ActivitiesContainer container) {
 	ActivitiesContainerSupportList yetToBeginList = newSupportList();
 	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
 
-	printf("\nCOMPLETATE:\n");
+	sortSupportList(completedList, compareAcivityByCompletionDate);
+	sortSupportList(yetToBeginList, compareAcivityByInsertDate);
+	sortSupportList(ongoingList, compareAcivityByPercentCompletion);
+	sortSupportList(expiredList, compareAcivityByExpiryDate);
+	
+	printf("\n\n=========================================================================");
+	printf("\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n\n");
 	doActionOnSupportListActivities(completedList, printActivityForList);
 	
-	printf("\nANCORA DA INIZIARE:\n");
+	printf("\n\n=========================================================================");
+	printf("\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n\n");
 	doActionOnSupportListActivities(yetToBeginList, printActivityForList);
 	
-	printf("\nIN CORSO:\n");
-	doActionOnSupportListActivities(ongoingList, printActivityForList);
+	printf("\n\n=========================================================================");
+	printf("\n=== Attività IN CORSO (ordinate per data di percentuale di completamento):\n\n");
+	doActionOnSupportListActivities(ongoingList, printActivityProgressForList);
 	
-	printf("\nIN RITARDO:\n");
-	doActionOnSupportListActivities(expiredList, printActivityForList);
+	printf("\n\n=========================================================================");
+	printf("\n=== Attività IN RITARDO (ordinate per data di scadenza):\n\n");
+	doActionOnSupportListActivities(expiredList, printActivityProgressForList);
 	
+	//delete support lists
 	deleteSupportList(&completedList);
 	deleteSupportList(&yetToBeginList);
 	deleteSupportList(&ongoingList);

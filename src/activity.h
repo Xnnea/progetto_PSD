@@ -6,10 +6,22 @@
 // Declare an opaque type for the activity type
 typedef struct activity* Activity;
 
-
 int compare(Activity a, Activity b);
-
 int compareWithId(Activity a, int activityId);
+
+// Compare 2 activities
+int compareAcivityById(Activity a, Activity b);
+int compareAcivityByName(Activity a, Activity b);
+int compareAcivityByDescr(Activity a, Activity b);
+int compareAcivityByCourse(Activity a, Activity b);
+int compareAcivityByInsertDate(Activity a, Activity b);
+int compareAcivityByExpiryDate(Activity a, Activity b);
+int compareAcivityByCompletionDate(Activity a, Activity b);
+int compareAcivityByTotalTime(Activity a, Activity b);
+int compareAcivityByUsedTime(Activity a, Activity b);
+int compareAcivityByPriority(Activity a, Activity b);
+int compareAcivityByPercentCompletion(Activity a, Activity b);
+int compareAcivityByTimeToCompletion(Activity a, Activity b);
 
 
 Activity newActivity( int id,
@@ -33,6 +45,8 @@ int isActivityCompleted(Activity a);
 int wasActivityCompletedAfterDate(Activity a, time_t thresholdDate);
 int wasActivityExpiredBeforeDate(Activity a, time_t thresholdDate);
 
+
+int activityCompletionPercentage(Activity activity);
 
 // getters
 int getActivityId(Activity a);
