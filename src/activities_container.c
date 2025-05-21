@@ -580,6 +580,15 @@ ActivitiesContainer buildActivities() {
 // Prints all activities
 void printActivities(ActivitiesContainer container) {
 	if (container != NULL) {
+		printf("\n=============================\n");
+		printf("====== Tutte le attività =====\n");
+		printf("==============================\n");
+		printf("[NOTA: titolo, descrizione e corso potrebbero essere abbreviati. Vai al dettaglio attività per vedere le info complete]\n");
+		printf("[Le attività sono ordinate per id]\n");
+		printf("\n====================================================================================================\n");
+		printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n");
+		printf("====================================================================================================\n\n");
+
 		inOrder(container->avlTree);
 	}
 }
@@ -600,9 +609,11 @@ void printActivitiesProgress(ActivitiesContainer container) {
 		printf("\n=============================\n");
 		printf("=== MONITORAGGIO PROGRESSO ===\n");
 		printf("==============================\n");
-		printf("\n=============================================================================================================================================\n");
-		printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo rimanente (min) | Tempo totale (min) | Data scadenza\n");
-		printf("=============================================================================================================================================\n\n");
+		printf("[NOTA: titolo, descrizione e corso potrebbero essere abbreviati. Vai al dettaglio attività per vedere le info complete]\n");
+		printf("[Le attività sono ordinate per id. Qui NON vengono mostrate le attività completate]\n");
+		printf("\n====================================================================================================================================================\n");
+		printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n");
+		printf("====================================================================================================================================================\n\n");
 		printInOrderProgress(container->avlTree);
 	}
 }
@@ -681,22 +692,38 @@ void printActivitiesReport(ActivitiesContainer container) {
 	sortSupportList(yetToBeginList, compareAcivityByInsertDate);
 	sortSupportList(ongoingList, compareAcivityByPercentCompletion);
 	sortSupportList(expiredList, compareAcivityByExpiryDate);
-	
+
+	printf("\n=============================\n");
+	printf("=== REPORT ULTIMO PERIODO ====\n");
+	printf("==============================\n");
+	printf("[NOTA: titolo, descrizione e corso potrebbero essere abbreviati. Vai al dettaglio attività per vedere le info complete]\n");
+	printf("[Qui le attività completate vengono mostrate solo se completate nel periodo di riferimento del report (e non prima)]\n");
+
 	printf("\n\n=========================================================================");
-	printf("\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n\n");
+	printf("\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");
+	printf("=======================================================================================\n");
+	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n\n");
 	doActionOnSupportListActivities(completedList, printActivityForList);
 	
 	printf("\n\n=========================================================================");
-	printf("\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n\n");
+	printf("\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
+	printf("=======================================================================================\n");
+	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n\n");
 	doActionOnSupportListActivities(yetToBeginList, printActivityForList);
 	
 	printf("\n\n=========================================================================");
-	printf("\n=== Attività IN CORSO (ordinate per data di percentuale di completamento):\n\n");
+	printf("\n=== Attività IN CORSO (ordinate per percentuale di completamento):\n");
+	printf("====================================================================================================================================================\n");
+	printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n\n");
 	doActionOnSupportListActivities(ongoingList, printActivityProgressForList);
 	
 	printf("\n\n=========================================================================");
-	printf("\n=== Attività IN RITARDO (ordinate per data di scadenza):\n\n");
+	printf("\n=== Attività IN RITARDO (ordinate per data di scadenza):\n");
+	printf("====================================================================================================================================================\n");
+	printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n\n");
 	doActionOnSupportListActivities(expiredList, printActivityProgressForList);
+	
+	printf("\n");
 	
 	//delete support lists
 	deleteSupportList(&completedList);
