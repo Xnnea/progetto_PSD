@@ -69,6 +69,17 @@ void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (
 	}
 }
 
+void doActionWithFileOnSupportListActivities(ActivitiesContainerSupportList list, FILE* file, void (*actionFunction)(Activity, FILE*) ) {
+	if ( isSupportListEmpty(list) == 1 ) return;
+	
+	NodeList* currentNode = list->head;
+	
+	while (currentNode != NULL) {
+		(*actionFunction)(currentNode->activity, file);
+		currentNode = currentNode->next;
+	}
+}
+
 //Used for debug
 int countSupportListItems(ActivitiesContainerSupportList list) {
 	if (list == NULL || list->head == NULL) return 0;

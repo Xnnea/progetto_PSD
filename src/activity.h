@@ -86,6 +86,11 @@ void printAcivityDetailWithMenu(Activity activity);
 void printActivityForList(Activity activity);
 void printActivityProgressForList(Activity activity);
 
+//print to file
+void printActivityToFile(Activity activity, FILE* file);
+void printActivityForListToFile(Activity activity, FILE* file);
+void printActivityProgressForListToFile(Activity activity, FILE* file);
+
 //file functions
 Activity readActivityFromFile(FILE* file);
 void saveActivityToFile(FILE* file, Activity activity);

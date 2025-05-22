@@ -311,13 +311,10 @@ Node* search(Node* root, int activityId) {
 	int compareResult = compareWithId(root->activity, activityId);
 	
 	if(compareResult == 0) {
-		printf("\n1-ROOT : %d (cerco: %d)", getActivityId(root->activity),  activityId);
 		return root;
 	} else if(compareResult < 0) { // root->activity is < of activityId
-		printf("\n2-RIGHT : %d (cerco: %d)", getActivityId(root->activity),  activityId);
 		search(root->right, activityId);
 	} else {
-		printf("\n3-LEFT : %d (cerco: %d)", getActivityId(root->activity),  activityId);
 		search(root->left, activityId);
 	}
 }
@@ -407,10 +404,11 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 		}
 		
 		newContainer = insertActivity(newContainer, currentActivity);
+		*count += 1;
 	}
 	  
 	fclose(file);
-	printf("Lette %d attività dal file %s.\n", count, filename);
+	printf("Lette %d attività dal file %s.\n", *count, filename);
 	return newContainer;
 }
 
@@ -593,6 +591,27 @@ void printActivities(ActivitiesContainer container) {
 	}
 }
 
+void printInOrderToFile(Node* root, FILE* file) {
+	if (root != NULL) {
+		printInOrderToFile(root->left, file);
+		printActivityForListToFile(root->activity, file);
+		printInOrderToFile(root->right, file);
+	}
+}
+
+// Prints all activities to file
+void printActivitiesToFile(ActivitiesContainer container, FILE* file) {
+	if (container != NULL && file != NULL) {
+		printInOrderToFile(container->avlTree, file);
+	}
+}
+
+
+
+
+
+
+
 
 
 void printInOrderProgress(Node* root) {
@@ -617,6 +636,22 @@ void printActivitiesProgress(ActivitiesContainer container) {
 		printInOrderProgress(container->avlTree);
 	}
 }
+
+void printInOrderProgressToFile(Node* root, FILE* file)  {
+	if (root != NULL) {
+		printInOrderProgressToFile(root->left, file);
+		printActivityProgressForListToFile(root->activity, file);
+		printInOrderProgressToFile(root->right, file);
+	}
+}
+
+void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file) {
+	if (container != NULL && file != NULL) {
+		fprintf(file, "=== MONITORAGGIO PROGRESSO ===\n");
+		printInOrderProgressToFile(container->avlTree, file);
+	}
+}
+
 
 int getNextId(ActivitiesContainer container) {
 	if (container == NULL) return -1;
@@ -730,4 +765,51 @@ void printActivitiesReport(ActivitiesContainer container) {
 	deleteSupportList(&yetToBeginList);
 	deleteSupportList(&ongoingList);
 	deleteSupportList(&expiredList);
+}
+
+void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file) {
+	if (container == NULL || container->avlTree == NULL || file == NULL || beginDate < 0) return;
+	
+	ActivitiesContainerSupportList completedList = newSupportList();
+	ActivitiesContainerSupportList ongoingList = newSupportList();
+	ActivitiesContainerSupportList expiredList = newSupportList();
+	ActivitiesContainerSupportList yetToBeginList = newSupportList();
+	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
+
+	sortSupportList(completedList, compareAcivityByCompletionDate);
+	sortSupportList(yetToBeginList, compareAcivityByInsertDate);
+	sortSupportList(ongoingList, compareAcivityByPercentCompletion);
+	sortSupportList(expiredList, compareAcivityByExpiryDate);
+
+	fprintf(file, "Data: %d\n", beginDate);
+	fprintf(file, "=== REPORT ULTIMO PERIODO ====\n\n");
+
+	fprintf(file, "\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");
+	doActionWithFileOnSupportListActivities(completedList, file, printActivityForListToFile);
+	
+	fprintf(file, "\n\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
+	doActionWithFileOnSupportListActivities(yetToBeginList, file, printActivityForListToFile);
+	
+	fprintf(file, "\n\n=== Attività IN CORSO (ordinate per percentuale di completamento):\n");
+	doActionWithFileOnSupportListActivities(ongoingList, file, printActivityProgressForListToFile);
+	
+	fprintf(file, "\n\n=== Attività IN RITARDO (ordinate per data di scadenza):\n");
+	doActionWithFileOnSupportListActivities(expiredList, file, printActivityProgressForListToFile);
+ 
+	//delete support lists
+	deleteSupportList(&completedList);
+	deleteSupportList(&yetToBeginList);
+	deleteSupportList(&ongoingList);
+	deleteSupportList(&expiredList);
+}
+
+Activity getActivityWithIdForTest(ActivitiesContainer container, int activityId) {
+	if(container == NULL || container->avlTree == NULL ) return NULL;
+
+	Node* activityNode = search(container->avlTree, activityId);
+	if (activityNode != NULL && activityNode->activity != NULL) {
+		return activityNode->activity;
+	}
+	
+	return NULL;
 }

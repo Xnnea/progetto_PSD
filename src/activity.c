@@ -745,8 +745,72 @@ void printAcivityDetailWithMenu(Activity activity) {
 
 
 
+void printActivityToFile(Activity activity, FILE* file) {
+	if (activity == NULL || file == NULL) return;
+	  
+	fprintf(file, "Id: %d \n", activity->id);
+	fprintf(file, "Nome: %s\n", activity->name ? activity->name : "NULL");
+	fprintf(file, "Descrizione: %s\n", activity->descr ? activity->descr : "NULL");
+	fprintf(file, "Corso: %s\n", activity->course ? activity->course : "NULL");
 
-void printActivityForList(Activity activity) {
+	char timeBuffer[100];
+	struct tm* tmInfo;
+	
+	if (activity->insertDate != 0) {
+		tmInfo = localtime(&activity->insertDate);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+		fprintf(file, "Data inserimento: %s\n", timeBuffer);
+	} else {
+		fprintf(file, "Data inserimento: Non impostata\n");
+	}
+
+	if (activity->expiryDate != 0) {
+		tmInfo = localtime(&activity->expiryDate);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+		fprintf(file, "Data scadenza: %s\n", timeBuffer);
+	} else {
+		fprintf(file, "Data scadenza: Non impostata\n");
+	}
+
+ 	if (activity->completionDate != 0) {
+		tmInfo = localtime(&activity->completionDate);
+		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
+		fprintf(file, "Data completamento: %s\n", timeBuffer);
+	} else {
+		fprintf(file, "Data completamento: ancora da completare\n");
+	}
+	
+	fprintf(file, "Tempo speso/usato (min): %u\n", activity->usedTime);
+	unsigned int hours = 0;
+	unsigned int minutes = 0;
+	minToHoursAnMinutes(activity->usedTime, &hours, &minutes);
+	fprintf(file, "Tempo speso/usato (ore e min): %u ore e %u minuti\n", hours, minutes);
+	
+	fprintf(file, "Durata totale attività (min): %u\n", activity->totalTime);
+	minToHoursAnMinutes(activity->totalTime, &hours, &minutes);
+	fprintf(file, "Durata totale attività (ore e min): %u ore e %u minuti\n", hours, minutes);
+	
+	if (activity->totalTime >= activity->usedTime) {
+		unsigned int diff = activity->totalTime - activity->usedTime;
+		fprintf(file, "Tempo stimato per il completamento (min): %u\n", diff);
+		minToHoursAnMinutes(diff, &hours, &minutes);
+		fprintf(file, "Tempo stimato per il completamento (ore e min): %u ore e %u minuti\n", hours, minutes);
+	}
+	
+	int completionPercentage = activityCompletionPercentage(activity);
+	fprintf(file, "Percentuale di completamento: %d%%\n", completionPercentage);
+	
+	fprintf(file, "Priorità: %s\n", textForActivityPriority(activity->priority) );
+}
+
+
+
+
+
+
+
+
+void printActivityForListToScreenOrFile(Activity activity, FILE* file) {
 	if (activity == NULL) return;
 	    
 	// Format dates in a human-readable way
@@ -771,16 +835,33 @@ void printActivityForList(Activity activity) {
 	
 	strcpy(priorityBuffer, textForActivityPriority(activity->priority));
 	
-	if (isCompleted == 0) {
-		printf("[%d] %.20s | %.20s | %.20s | %s | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, expiryDateBuffer);
+	if (file == NULL) {
+		if (isCompleted == 0) {
+			printf("[%d] %.20s | %.20s | %.20s | %s | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, expiryDateBuffer);
+		} else {
+			printf("[%d] %.20s | %.20s | %.20s | %s | COMPLETATA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionDateBuffer);
+		}
 	} else {
-		printf("[%d] %.20s | %.20s | %.20s | %s | COMPLETATA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionDateBuffer);
+		if (isCompleted == 0) {
+			fprintf(file, "[%d] %.20s | %.20s | %.20s | %s | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, expiryDateBuffer);
+		} else {
+			fprintf(file, "[%d] %.20s | %.20s | %.20s | %s | COMPLETATA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionDateBuffer);
+		}	
 	}
+}
+
+void printActivityForList(Activity activity) {
+	printActivityForListToScreenOrFile(activity, NULL);
+}
+
+void printActivityForListToFile(Activity activity, FILE* file) {
+	if (file == NULL) return;
+	printActivityForListToScreenOrFile(activity, file);
 }
 
 
 //Don't show completed activities
-void printActivityProgressForList(Activity activity) {
+void printActivityProgressForListToScreenOrFile(Activity activity, FILE* file) {
 	if (activity == NULL || activity->completionDate != 0) return;
 	    
 	// Format dates in a human-readable way
@@ -798,10 +879,23 @@ void printActivityProgressForList(Activity activity) {
 	strcpy(priorityBuffer, textForActivityPriority(activity->priority));
 	int completionPercentage = activityCompletionPercentage(activity);
 	
-	// [id] title | descr | course | priority | PROGRESS | usedTime | TIME REMAINING | totalTime | expiryDate
-	printf("[%d] %.20s | %.10s | %.10s | %s | %d%% | %d min | %d min | %d min | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionPercentage, activity->usedTime, activity->totalTime - activity->usedTime,  activity->totalTime, expiryDateBuffer);
+	if (file == NULL) {
+		// [id] title | descr | course | priority | PROGRESS | usedTime | TIME REMAINING | totalTime | expiryDate
+		printf("[%d] %.20s | %.10s | %.10s | %s | %d%% | %d min | %d min | %d min | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionPercentage, activity->usedTime, activity->totalTime - activity->usedTime,  activity->totalTime, expiryDateBuffer);
+	} else {
+		// [id] title | descr | course | priority | PROGRESS | usedTime | TIME REMAINING | totalTime | expiryDate
+		fprintf(file, "[%d] %.20s | %.10s | %.10s | %s | %d%% | %d min | %d min | %d min | SCADENZA: %s\n", activity->id, activity->name ? activity->name : "NULL", activity->descr ? activity->descr : "NULL", activity->course ? activity->course : "NULL", priorityBuffer, completionPercentage, activity->usedTime, activity->totalTime - activity->usedTime,  activity->totalTime, expiryDateBuffer);	
+	}
 }
 
+void printActivityProgressForList(Activity activity) {
+	printActivityProgressForListToScreenOrFile(activity, NULL);
+}
+
+void printActivityProgressForListToFile(Activity activity, FILE* file) {
+	if (file == NULL) return;
+	printActivityProgressForListToScreenOrFile(activity, file);
+}
 
 
 // Read an activity from file (file is supposed to be in read mode), line by line

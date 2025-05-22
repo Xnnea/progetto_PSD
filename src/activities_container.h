@@ -23,4 +23,12 @@ void printActivities(ActivitiesContainer);
 void printActivitiesProgress(ActivitiesContainer);
 void printActivitiesReport(ActivitiesContainer);
 
+//print to file
+void printActivitiesToFile(ActivitiesContainer container, FILE* file);
+void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
+void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+
+//used for test
+Activity getActivityWithIdForTest(ActivitiesContainer container, int activityId);
+
 #endif // ACTIVITIES_CONTAINER_H          // End of inclusion block

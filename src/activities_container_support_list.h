@@ -10,6 +10,7 @@ void addActivityToSupportList(ActivitiesContainerSupportList list, Activity acti
 void deleteSupportList(ActivitiesContainerSupportList* list);
 
 void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (*actionFunction)(Activity) );
+void doActionWithFileOnSupportListActivities(ActivitiesContainerSupportList list, FILE* file, void (*actionFunction)(Activity, FILE*) );
 void sortSupportList(ActivitiesContainerSupportList list, int (*compareFunction)(Activity, Activity) );
 
 //Used for debug
