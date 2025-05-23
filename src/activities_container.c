@@ -121,7 +121,7 @@ Node* insertNode(Node* node, Activity activity) {
 		return createNode(activity);
 	}
 	
-	int compareResult = compare(activity, node->activity);
+	int compareResult = compareAcivityById(activity, node->activity);
 	
 	// 1 - Perform standard BST insertion
 	if (compareResult < 0)
@@ -141,7 +141,7 @@ Node* insertNode(Node* node, Activity activity) {
 	// 4 - If the node becomes unbalanced, then there are 4 cases
 	
 	if (node->left && node->left->activity) {
-		int compareResultLeft = compare(activity, node->left->activity);
+		int compareResultLeft = compareAcivityById(activity, node->left->activity);
 		
 		// Case "LL" - Left Left
 		if (balance > 1 && compareResultLeft < 0)
@@ -156,7 +156,7 @@ Node* insertNode(Node* node, Activity activity) {
 	
 		
 	if (node->right && node->right->activity) {
-		int compareResultRight = compare(activity, node->right->activity);
+		int compareResultRight = compareAcivityById(activity, node->right->activity);
 		
 		// Case "RR" - Right Right
 		if (balance < -1 && compareResultRight > 0)
@@ -324,8 +324,8 @@ void printActivityWithId(ActivitiesContainer container, int activityId) {
 
 	Node* activityNode = search(container->avlTree, activityId);
 	if (activityNode != NULL && activityNode->activity != NULL) {
-		//print(activityNode->activity);
-		printAcivityDetailWithMenu(activityNode->activity);
+		//printActivity(activityNode->activity);
+		printActivityDetailWithMenu(activityNode->activity);
 	}
 }
 
@@ -335,7 +335,7 @@ void printActivityWithId(ActivitiesContainer container, int activityId) {
 void inOrder(Node* root) {
 	if (root != NULL) {
 		inOrder(root->left);
-		//print(root->activity);
+		//printActivity(root->activity);
 		printActivityForList(root->activity);
 		inOrder(root->right);
 	}
@@ -344,7 +344,7 @@ void inOrder(Node* root) {
 // Function to perform preorder traversal of AVL tree and print the contained activity
 void preOrder(Node* root) {
 	if (root != NULL) {
-		print(root->activity);
+		printActivity(root->activity);
 		preOrder(root->left);
 		preOrder(root->right);
 	}
@@ -355,7 +355,7 @@ void postOrder(Node* root) {
 	if (root != NULL) {
 		postOrder(root->left);
 		postOrder(root->right);
-		print(root->activity);
+		printActivity(root->activity);
 	}
 }
 
@@ -540,36 +540,6 @@ ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
 
 
 
-// Utility function to do some test
-ActivitiesContainer buildActivities() {
-	/*ActivitiesContainer newContainer = newActivityContainer();
-	if (newContainer == NULL) return newContainer;    // Se la lista è NULL, ritorna NULL (errore)
- 
-	Activity activity = newActivity( 1, "Nome attività", "Descr attività", "Corso 1", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-	Activity activity2 = newActivity( 5, "Nome attività", "Descr attività", "Corso 2", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-	Activity activity3 = newActivity( 3, "Nome attività", "Descr attività", "Corso 3", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-	Activity activity4 = newActivity( 7, "Nome attività", "Descr attività", "Corso 4", 1746613562, 1748600762, 1747736762, 7200, 600, 1);
-  	
-  	newContainer = insertActivity(newContainer, activity);
-  	newContainer = insertActivity(newContainer, activity2);
-  	newContainer = insertActivity(newContainer, activity3);
-  	newContainer = insertActivity(newContainer, activity4);*/
-  	
-  	int countActivities = 0;
-  	ActivitiesContainer newContainer = readActivitiesFromFile(DEFAULT_ACTIVITIES_FILE, &countActivities);
-  	
-  	printf("========================= dopo inserimento iniziale ========================\n");
-  	printActivities(newContainer);
-  	printf("============================================================================\n");
-  	printf("============== dopo delete ==============\n");
-  	
-	newContainer = removeActivity(newContainer, 1); 
-  	
-  	int saveResult = saveActivitiesToFile("activities_list_SAVED.txt", newContainer);
-  	
-  	return newContainer; 
-}
-
 
 
 
@@ -743,7 +713,7 @@ void printActivitiesReport(ActivitiesContainer container) {
 	printf("\n\n=========================================================================");
 	printf("\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
 	printf("=======================================================================================\n");
-	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n\n");
+	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza\n\n");
 	doActionOnSupportListActivities(yetToBeginList, printActivityForList);
 	
 	printf("\n\n=========================================================================");

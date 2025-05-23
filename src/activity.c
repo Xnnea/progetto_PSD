@@ -26,30 +26,12 @@ int compareWithId(Activity a, int activityId) {
 	return (a->id < activityId) ? -1 : 1;
 }
 
-//Based on "id". Like strcmp (<0 if a < b, 0 is a == b, >0 if a > b)
-int compare(Activity a, Activity b) {
-	if (!a && !b) return 0;
-	if (a && !b) return 1;
-	if (b && !a) return -1;
-	
-	return compareWithId(a, b->id);
-}
-
-
-
-
-
 // Used "int" consciously
 int activityCompletionPercentage(Activity activity) {
 	if (activity == NULL) return 0;
 	
 	int completionPercentage = (activity->usedTime * 100) / activity->totalTime;
 	return completionPercentage;
-}
-
-void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned int * minOut) {
-	*hoursOut = minIn / 60;
-	*minOut = minIn % 60;
 }
 
 
@@ -370,24 +352,6 @@ time_t getActivityCompletionDate(Activity a) {
 	return a->completionDate;
 }
 
-char* getActivityInsertDateFormatted(Activity a) {
-	if (a == NULL) return NULL;
-	
-	return dateToFormattedText( &(a->insertDate) );
-}
-
-char* getActivityExpiryDateFormatted(Activity a) {
-	if (a == NULL) return NULL;
-	
-	return dateToFormattedText( &(a->expiryDate) );
-}
-
-char* getActivityCompletionDateFormatted(Activity a) {
-	if (a == NULL) return NULL;
-	
-	return dateToFormattedText( &(a->completionDate) );
-}
-
 unsigned int getActivityTotalTime(Activity a) {
 	if (a == NULL) return 0;
 	
@@ -464,26 +428,8 @@ void setActivityCompletionDate(Activity a, time_t completionDate) {
 	a->completionDate = completionDate;
 }
 
-void setActivityInsertDateFormatted(Activity a, int year, int month, int day, int hour, int min) {
-	if (a == NULL) return;
-	
-	time_t date = dateToEpoch(year, month, day, hour, min);
-	a->insertDate = date;
-}
 
-void setActivityExpiryDateFormatted(Activity a, int year, int month, int day, int hour, int min) {
-	if (a == NULL) return;
-	
-	time_t date = dateToEpoch(year, month, day, hour, min);
-	a->expiryDate = date;
-}
 
-void setActivityCompletionDateFormatted(Activity a, int year, int month, int day, int hour, int min) {
-	if (a == NULL) return;
-	
-	time_t date = dateToEpoch(year, month, day, hour, min);
-	a->completionDate = date;
-}
 
 void setActivityTotalTime(Activity a, unsigned int totalTime) {
 	if (a == NULL) return;
@@ -501,20 +447,6 @@ void setActivityPriority(Activity a, short unsigned int priority) {
 	if (a == NULL) return;
 	
 	a->priority = priority;
-}
-
-void setActivityPriorityFormatted(Activity a, char* priority) {
-	if (a == NULL) return;
-	
-	if ( strcmp(priority, "ALTA") == 0 ) {
-		a->priority = 1;
-	} else if ( strcmp(priority, "MEDIA") == 0 ) {
-		a->priority = 2;
-	} else if ( strcmp(priority, "BASSA") == 0 ) {
-		a->priority = 3;
-	} else {
-		a->priority = 0;
-	}
 }
 
 
@@ -671,7 +603,7 @@ Activity handleAcivityDetailMenu(Activity activity) {
 	return returnActivity;
 }
 
-void print(Activity activity) {
+void printActivity(Activity activity) {
 	if (activity == NULL) return;
 	printf("\n===========================================\n");
 	printf("==== Dettaglio attività con id %d \n", activity->id);
@@ -734,10 +666,10 @@ void print(Activity activity) {
 	printf("========= Fine dettaglio attività =========\n\n");
 }
 
-void printAcivityDetailWithMenu(Activity activity) {
+void printActivityDetailWithMenu(Activity activity) {
 	Activity current = activity;
 	while(current != NULL) {
-		print(current); 
+		printActivity(current); 
 		current = handleAcivityDetailMenu(current);
 	}
 }

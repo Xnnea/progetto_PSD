@@ -166,10 +166,6 @@ int main() {
 		//ActivitiesContainer was deleted on exit choice...
 		activities = NULL;
 	}
-	
-	//ActivitiesContainer activities = buildActivities();
-	//printActivities(activities);
-	//deleteActivityContainer(activities);
 }
 
 

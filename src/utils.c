@@ -5,6 +5,11 @@ int max(int a, int b) {
 	return (a > b) ? a : b;
 }
 
+void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned int * minOut) {
+	*hoursOut = minIn / 60;
+	*minOut = minIn % 60;
+}
+
 // Function to read a line from the file and allocate memory for the string
 char* readLine(FILE* file) {
 	char buffer[1024];
@@ -73,25 +78,6 @@ unsigned int getChoiceWithLimits(unsigned int minLimit, unsigned int maxLimit) {
    return choice;
 }
 
-/*int getChoice(unsigned int limit) {
-	int choice = -1;
-	char buffer[10];
-    
-	while (choice < 0 || choice > limit) {
-        
-		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
-			if (sscanf(buffer, "%d", &choice) != 1) {
-				choice = -1;
-			}
-		}
-      
-      if (choice < 0 || choice > limit) {
-      	printf("Scelta non valida. Riprova.\n");
-      }
-   }
-   
-   return choice;
-}*/
 
 unsigned int getChoice(unsigned int limit) {
    return getChoiceWithLimits(0, limit);
@@ -115,21 +101,6 @@ char* getInfoFromUser(const char* prompt) {
 	return info;
 }
 
-char* dateToFormattedText(const time_t *timer) {
-	if (timer == NULL) return NULL;
-
-	// Format dates in a human-readable way
-	char timeBuffer[100];
-	struct tm* tm_info;
-    
-	if (*timer != 0) {
-		tm_info = localtime(timer);
-		strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tm_info);
-		return copyString(timeBuffer);
-	}
-	
-	return NULL;
-}
 
 time_t dateToEpoch(int year, int month, int day, int hour, int min) {
 	if (year < 1900 || year > 9999) return 0;
