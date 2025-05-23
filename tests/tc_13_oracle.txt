@@ -1,0 +1,8 @@
+=== MONITORAGGIO PROGRESSO ===
+[1] Prima activity | La mia pri | Programmaz | ALTA | 8% | 600 min | 6600 min | 7200 min | SCADENZA: 30/05/2025 12:26
+[3] Seconda activity | La mia sec | Analisi I | MEDIA | 30% | 600 min | 1400 min | 2000 min | SCADENZA: 20/06/2025 12:00
+[5] Terza activity | La mia ter | PSD  | ALTA | 15% | 600 min | 3400 min | 4000 min | SCADENZA: 10/06/2025 14:30
+[7] Quarta activity | La mia qua | MMI  | MEDIA | 12% | 600 min | 4400 min | 5000 min | SCADENZA: 15/05/2025 11:25
+[8] Prova 1 | Descr 1 | Corso 1 | MEDIA | 5% | 30 min | 570 min | 600 min | SCADENZA: 10/06/2025 13:00
+[9] ah ah | youhu | mmi | BASSA | 0% | 0 min | 780 min | 780 min | SCADENZA: Non impostata
+[10] aaa | bbb | ccc | BASSA | 16% | 5 min | 25 min | 30 min | SCADENZA: Non impostata

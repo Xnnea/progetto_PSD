@@ -1,0 +1,7 @@
+[1] Prima activity | La mia prima activit | Programmazione I | ALTA | SCADENZA: 30/05/2025 12:26
+[3] Seconda activity | La mia seconda activ | Analisi I | MEDIA | SCADENZA: 20/06/2025 12:00
+[5] Terza activity | La mia terza activit | PSD  | ALTA | SCADENZA: 10/06/2025 14:30
+[7] Quarta activity | La mia quarta activi | MMI  | MEDIA | SCADENZA: 15/05/2025 11:25
+[8] Prova 1 | Descr 1 | Corso 1 | MEDIA | SCADENZA: 10/06/2025 13:00
+[9] ah ah | youhu | mmi | BASSA | SCADENZA: Non impostata
+[10] aaa | bbb | ccc | BASSA | SCADENZA: Non impostata

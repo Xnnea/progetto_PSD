@@ -111,7 +111,7 @@ int tc_3_to_11(int numTest, char* fileIn, char* fileOut, char* fileOracle) {
 					break;
 		case 4:	setActivityDescr(activity, "DESCRIZIONE CAMBIATA");
 					break;
-		case 5:	setActivityDescr(activity, "CORSO CAMBIATO");
+		case 5:	setActivityCourse(activity, "CORSO CAMBIATO");
 					break;
 		case 6:	setActivityInsertDate(activity, 1742613000);
 					break;
@@ -138,6 +138,47 @@ int tc_3_to_11(int numTest, char* fileIn, char* fileOut, char* fileOracle) {
 	return (compareResult == 0) ? 0 : 1;
 }
 
+// TC_12: load activities from file and print a list of all activities. 
+// 0 = OK, 1 = KO
+int tc_12() {
+	int numActivities = 0;
+	ActivitiesContainer container = readActivitiesFromFile("tc_12.txt", &numActivities);
+	FILE* file = fopen("tc_12_output.txt", "w");
+	if (file == NULL) return 1; //KO
+	printActivitiesToFile(container, file);
+	fclose(file);
+	deleteActivityContainer(container);
+	int compareResult = compareFiles("tc_12_output.txt", "tc_12_oracle.txt");
+	return (compareResult == 0) ? 0 : 1;
+}
+
+// TC_13: load activities from file and print the progress list. 
+// 0 = OK, 1 = KO
+int tc_13() {
+	int numActivities = 0;
+	ActivitiesContainer container = readActivitiesFromFile("tc_13.txt", &numActivities);
+	FILE* file = fopen("tc_13_output.txt", "w");
+	if (file == NULL) return 1; //KO
+	printActivitiesProgressToFile(container, file);
+	fclose(file);
+	deleteActivityContainer(container);
+	int compareResult = compareFiles("tc_13_output.txt", "tc_13_oracle.txt");
+	return (compareResult == 0) ? 0 : 1;
+}
+
+// TC_14: load activities from file and print the weekly report list. 
+// 0 = OK, 1 = KO
+int tc_14() {
+	int numActivities = 0;
+	ActivitiesContainer container = readActivitiesFromFile("tc_14.txt", &numActivities);
+	FILE* file = fopen("tc_14_output.txt", "w");
+	if (file == NULL) return 1; //KO
+	printActivitiesReportToFile(container, 1746613562, file);
+	fclose(file);
+	deleteActivityContainer(container);
+	int compareResult = compareFiles("tc_14_output.txt", "tc_14_oracle.txt");
+	return (compareResult == 0) ? 0 : 1;
+}
 
 void execTest(int numTest, FILE* fileWithTestsResult) {
 	printf("Eseguo TC_%d...\n", numTest);
@@ -169,7 +210,13 @@ void execTest(int numTest, FILE* fileWithTestsResult) {
 					break;
 		case 11:	tc_result = tc_3_to_11(11, "tc_11.txt", "tc_11_output.txt","tc_11_oracle.txt");
 					break;
-		defaut:	printf("TC_%d non può essere eseguito.\n", numTest);
+		case 12:	tc_result = tc_12();
+					break;
+		case 13:	tc_result = tc_13();
+					break;
+		case 14:	tc_result = tc_14();
+					break;
+		default:	printf("TC_%d non può essere eseguito.\n", numTest);
 					return;
 	}
 	
@@ -189,7 +236,7 @@ int main() {
 	
 	printf("\n");
 	
-	for (int i=1; i<12; i++) {
+	for (int i=1; i<15; i++) {
 		execTest(i, fileWithTestsResult);
 		printf("\n");
 	}
