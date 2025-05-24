@@ -452,7 +452,7 @@ void deleteActivityContainerSubtree(Node* root) {
 		deleteActivityContainerSubtree(root->right);
 		
 		deleteActivity(root->activity);
-		free(root->activity);
+		//free(root->activity);
 		free(root);
 	}
 }
@@ -667,7 +667,7 @@ void printActivitiesReport(ActivitiesContainer container) {
 	tmInfo = localtime(&beginDate);
 	strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
 	
-	printf("\n\nIl report settimanale di default mostra i cambiamenti nell'ultima settimana.\n", timeBuffer);
+	printf("\n\nIl report settimanale di default mostra i cambiamenti nell'ultima settimana.\n");
 	printf("\nVuoi visualizzare il report a partire da %s (se scegli 'No' dovrai inserire una data)?\n", timeBuffer);
 	printf("1. Si\n");
 	printf("0. No\n");
@@ -751,7 +751,7 @@ void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate
 	sortSupportList(ongoingList, compareAcivityByPercentCompletion);
 	sortSupportList(expiredList, compareAcivityByExpiryDate);
 
-	fprintf(file, "Data: %d\n", beginDate);
+	fprintf(file, "Data: %ld\n", beginDate);
 	fprintf(file, "=== REPORT ULTIMO PERIODO ====\n\n");
 
 	fprintf(file, "\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");

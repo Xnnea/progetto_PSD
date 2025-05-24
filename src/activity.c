@@ -29,6 +29,7 @@ int compareWithId(Activity a, int activityId) {
 // Used "int" consciously
 int activityCompletionPercentage(Activity activity) {
 	if (activity == NULL) return 0;
+	if (activity->usedTime == 0 || activity->totalTime == 0 ) return 0;
 	
 	int completionPercentage = (activity->usedTime * 100) / activity->totalTime;
 	return completionPercentage;
@@ -220,6 +221,8 @@ Activity newEmptyActivity() {
 	activity->totalTime = 0;
 	activity->usedTime = 0;
 	activity->priority = 0;
+	
+	return activity;
 }
 
 
@@ -250,6 +253,8 @@ Activity newActivity( int id,
 	activity->totalTime = totalTime;
 	activity->usedTime = usedTime;
 	activity->priority = priority;
+	
+	return activity;
 }
 
 
@@ -259,6 +264,8 @@ void deleteActivity(Activity a) {
 	free(a->name);
 	free(a->descr);
 	free(a->course);
+	
+	free(a);
 }
 
 

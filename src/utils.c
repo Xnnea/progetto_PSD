@@ -19,14 +19,13 @@ char* readLine(FILE* file) {
 		return NULL;
 	}
     
-	// Rimuove il carattere newline se presente
+	// Removes newline character if present
 	size_t len = strlen(buffer);
 	if (len > 0 && buffer[len-1] == '\n') {
 		buffer[len-1] = '\0';
 		len--;
 	}
     
-	// Removes newline character if present
 	if (len == 0) {
 		char* emptyLine = (char*)malloc(1);
 		if (emptyLine == NULL) return NULL;
