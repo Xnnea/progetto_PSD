@@ -313,9 +313,9 @@ Node* search(Node* root, int activityId) {
 	if(compareResult == 0) {
 		return root;
 	} else if(compareResult < 0) { // root->activity is < of activityId
-		search(root->right, activityId);
+		return search(root->right, activityId);
 	} else {
-		search(root->left, activityId);
+		return search(root->left, activityId);
 	}
 }
 
