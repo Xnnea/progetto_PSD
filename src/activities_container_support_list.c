@@ -131,43 +131,43 @@ NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy) {
 		cmp = -1;
 	} else if (listA->activity != NULL && listB->activity != NULL) {		
 		switch (sortBy) {
-			case 0: cmp = compareAcivityById(listA->activity, listB->activity);
+			case 0: cmp = compareActivityById(listA->activity, listB->activity);
 					break;
 					
-			case 1: cmp = compareAcivityByName(listA->activity, listB->activity);
+			case 1: cmp = compareActivityByName(listA->activity, listB->activity);
 					break;
 					
-			case 2: cmp = compareAcivityByDescr(listA->activity, listB->activity);
+			case 2: cmp = compareActivityByDescr(listA->activity, listB->activity);
 					break;
 					
-			case 3: cmp = compareAcivityByCourse(listA->activity, listB->activity);
+			case 3: cmp = compareActivityByCourse(listA->activity, listB->activity);
 					break;
 					
-			case 4: cmp = compareAcivityByInsertDate(listA->activity, listB->activity);
+			case 4: cmp = compareActivityByInsertDate(listA->activity, listB->activity);
 					break;
 					
-			case 5: cmp = compareAcivityByExpiryDate(listA->activity, listB->activity);
+			case 5: cmp = compareActivityByExpiryDate(listA->activity, listB->activity);
 					break;
 					
-			case 6: cmp = compareAcivityByCompletionDate(listA->activity, listB->activity);
+			case 6: cmp = compareActivityByCompletionDate(listA->activity, listB->activity);
 					break;
 					
-			case 7: cmp = compareAcivityByTotalTime(listA->activity, listB->activity);
+			case 7: cmp = compareActivityByTotalTime(listA->activity, listB->activity);
 					break;
 					
-			case 8: cmp = compareAcivityByUsedTime(listA->activity, listB->activity);
+			case 8: cmp = compareActivityByUsedTime(listA->activity, listB->activity);
 					break;
 					
-			case 9: cmp = compareAcivityByPriority(listA->activity, listB->activity);
+			case 9: cmp = compareActivityByPriority(listA->activity, listB->activity);
 					break;
 					
-			case 10: cmp = compareAcivityByPercentCompletion(listA->activity, listB->activity);
+			case 10: cmp = compareActivityByPercentCompletion(listA->activity, listB->activity);
 					break;
 					
-			case 11: cmp = compareAcivityByTimeToCompletion(listA->activity, listB->activity);
+			case 11: cmp = compareActivityByTimeToCompletion(listA->activity, listB->activity);
 					break;
 					
-			default: cmp = compareAcivityById(listA->activity, listB->activity);
+			default: cmp = compareActivityById(listA->activity, listB->activity);
 					break;
 		}
 	}

@@ -9,18 +9,18 @@ typedef struct activity* Activity;
 int compareWithId(Activity a, int activityId);
 
 // Compare 2 activities
-int compareAcivityById(Activity a, Activity b);
-int compareAcivityByName(Activity a, Activity b); //At now, not used
-int compareAcivityByDescr(Activity a, Activity b); //At now, not used
-int compareAcivityByCourse(Activity a, Activity b); //At now, not used
-int compareAcivityByInsertDate(Activity a, Activity b);
-int compareAcivityByExpiryDate(Activity a, Activity b);
-int compareAcivityByCompletionDate(Activity a, Activity b);
-int compareAcivityByTotalTime(Activity a, Activity b); //At now, not used
-int compareAcivityByUsedTime(Activity a, Activity b); //At now, not used
-int compareAcivityByPriority(Activity a, Activity b); //At now, not used
-int compareAcivityByPercentCompletion(Activity a, Activity b);
-int compareAcivityByTimeToCompletion(Activity a, Activity b); //At now, not used
+int compareActivityById(Activity a, Activity b);
+int compareActivityByName(Activity a, Activity b); //At now, not used
+int compareActivityByDescr(Activity a, Activity b); //At now, not used
+int compareActivityByCourse(Activity a, Activity b); //At now, not used
+int compareActivityByInsertDate(Activity a, Activity b);
+int compareActivityByExpiryDate(Activity a, Activity b);
+int compareActivityByCompletionDate(Activity a, Activity b);
+int compareActivityByTotalTime(Activity a, Activity b); //At now, not used
+int compareActivityByUsedTime(Activity a, Activity b); //At now, not used
+int compareActivityByPriority(Activity a, Activity b); //At now, not used
+int compareActivityByPercentCompletion(Activity a, Activity b);
+int compareActivityByTimeToCompletion(Activity a, Activity b); //At now, not used
 
 
 Activity newActivity( int id,

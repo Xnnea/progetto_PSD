@@ -52,13 +52,13 @@ int compareNullString(const char* a, const char*  b) {
 	return 0;
 }
 
-int compareAcivityById(const Activity a, const Activity b) {
+int compareActivityById(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	return compareWithId(a, b->id);
 }
 
-int compareAcivityByName(const Activity a, const Activity b) {
+int compareActivityByName(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->name == NULL || b->name == NULL) {
@@ -68,7 +68,7 @@ int compareAcivityByName(const Activity a, const Activity b) {
 	return strcmp(a->name, b->name);
 }
 
-int compareAcivityByDescr(const Activity a, const Activity b) {
+int compareActivityByDescr(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->descr == NULL || b->descr == NULL) {
@@ -78,7 +78,7 @@ int compareAcivityByDescr(const Activity a, const Activity b) {
 	return strcmp(a->descr, b->descr);
 }
 
-int compareAcivityByCourse(const Activity a, const Activity b) {
+int compareActivityByCourse(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->course == NULL || b->course == NULL) {
@@ -88,7 +88,7 @@ int compareAcivityByCourse(const Activity a, const Activity b) {
 	return strcmp(a->course, b->course);
 }
 
-int compareAcivityByInsertDate(const Activity a, const Activity b) {
+int compareActivityByInsertDate(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->insertDate == b->insertDate) return 0;
@@ -96,7 +96,7 @@ int compareAcivityByInsertDate(const Activity a, const Activity b) {
 	return (a->insertDate < b->insertDate) ? -1 : 1;
 }
 
-int compareAcivityByExpiryDate(const Activity a, const Activity b) {
+int compareActivityByExpiryDate(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->expiryDate == b->expiryDate) return 0;
@@ -104,7 +104,7 @@ int compareAcivityByExpiryDate(const Activity a, const Activity b) {
 	return (a->expiryDate < b->expiryDate) ? -1 : 1;
 }
 
-int compareAcivityByCompletionDate(const Activity a, const Activity b) {
+int compareActivityByCompletionDate(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->completionDate == b->completionDate) return 0;
@@ -112,7 +112,7 @@ int compareAcivityByCompletionDate(const Activity a, const Activity b) {
 	return (a->completionDate < b->completionDate) ? -1 : 1;
 }
 
-int compareAcivityByTotalTime(const Activity a, const Activity b) {
+int compareActivityByTotalTime(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->totalTime == b->totalTime) return 0;
@@ -120,7 +120,7 @@ int compareAcivityByTotalTime(const Activity a, const Activity b) {
 	return (a->totalTime < b->totalTime) ? -1 : 1;
 }
 
-int compareAcivityByUsedTime(const Activity a, const Activity b) {
+int compareActivityByUsedTime(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->usedTime == b->usedTime) return 0;
@@ -128,7 +128,7 @@ int compareAcivityByUsedTime(const Activity a, const Activity b) {
 	return (a->usedTime < b->usedTime) ? -1 : 1;
 }
 
-int compareAcivityByPriority(const Activity a, const Activity b) {
+int compareActivityByPriority(const Activity a, const Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	if (a->priority == b->priority) return 0;
@@ -136,7 +136,7 @@ int compareAcivityByPriority(const Activity a, const Activity b) {
 	return (a->priority < b->priority) ? -1 : 1;
 }
 
-int compareAcivityByPercentCompletion(Activity a, Activity b) {
+int compareActivityByPercentCompletion(Activity a, Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	int aPercent = activityCompletionPercentage(a);
@@ -147,7 +147,7 @@ int compareAcivityByPercentCompletion(Activity a, Activity b) {
 	return (aPercent < bPercent) ? -1 : 1;
 }
 
-int compareAcivityByTimeToCompletion(Activity a, Activity b) {
+int compareActivityByTimeToCompletion(Activity a, Activity b) {
 	if (!a || !b) return compareNullActivity(a, b);
 	
 	unsigned int aTimeToCompletion = 0;
@@ -467,7 +467,7 @@ void setActivityPriority(Activity a, short unsigned int priority) {
 
 
 
-void displayAcivityDetailMenu() {
+void displayActivityDetailMenu() {
 	printf("===================================\n");
 	printf("====[ Menu dettaglio attività ]====\n");
 	printf("===================================\n");
@@ -483,8 +483,8 @@ void displayAcivityDetailMenu() {
 	printf("Scelta: ");
 }
 
-Activity handleAcivityDetailMenu(Activity activity) {
-	displayAcivityDetailMenu();
+Activity handleActivityDetailMenu(Activity activity) {
+	displayActivityDetailMenu();
 	int choice = getChoice(8);
 	
 	Activity returnActivity = activity;
@@ -677,7 +677,7 @@ void printActivityDetailWithMenu(Activity activity) {
 	Activity current = activity;
 	while(current != NULL) {
 		printActivity(current); 
-		current = handleAcivityDetailMenu(current);
+		current = handleActivityDetailMenu(current);
 	}
 }
 

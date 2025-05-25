@@ -121,7 +121,7 @@ Node* insertNode(Node* node, Activity activity) {
 		return createNode(activity);
 	}
 	
-	int compareResult = compareAcivityById(activity, node->activity);
+	int compareResult = compareActivityById(activity, node->activity);
 	
 	// 1 - Perform standard BST insertion
 	if (compareResult < 0)
@@ -141,7 +141,7 @@ Node* insertNode(Node* node, Activity activity) {
 	// 4 - If the node becomes unbalanced, then there are 4 cases
 	
 	if (node->left && node->left->activity) {
-		int compareResultLeft = compareAcivityById(activity, node->left->activity);
+		int compareResultLeft = compareActivityById(activity, node->left->activity);
 		
 		// Case "LL" - Left Left
 		if (balance > 1 && compareResultLeft < 0)
@@ -156,7 +156,7 @@ Node* insertNode(Node* node, Activity activity) {
 	
 		
 	if (node->right && node->right->activity) {
-		int compareResultRight = compareAcivityById(activity, node->right->activity);
+		int compareResultRight = compareActivityById(activity, node->right->activity);
 		
 		// Case "RR" - Right Right
 		if (balance < -1 && compareResultRight > 0)
@@ -693,10 +693,10 @@ void printActivitiesReport(ActivitiesContainer container) {
 	ActivitiesContainerSupportList yetToBeginList = newSupportList();
 	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
 
-	sortSupportList(completedList, 6); //compareAcivityByCompletionDate
-	sortSupportList(yetToBeginList, 4); //compareAcivityByInsertDate
-	sortSupportList(ongoingList, 10); //compareAcivityByPercentCompletion
-	sortSupportList(expiredList, 5); //compareAcivityByExpiryDate
+	sortSupportList(completedList, 6); //compareActivityByCompletionDate
+	sortSupportList(yetToBeginList, 4); //compareActivityByInsertDate
+	sortSupportList(ongoingList, 10); //compareActivityByPercentCompletion
+	sortSupportList(expiredList, 5); //compareActivityByExpiryDate
 
 	printf("\n=============================\n");
 	printf("=== REPORT ULTIMO PERIODO ====\n");
@@ -746,10 +746,10 @@ void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate
 	ActivitiesContainerSupportList yetToBeginList = newSupportList();
 	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
 
-	sortSupportList(completedList, 6); //compareAcivityByCompletionDate
-	sortSupportList(yetToBeginList, 4); //compareAcivityByInsertDate
-	sortSupportList(ongoingList, 10); //compareAcivityByPercentCompletion
-	sortSupportList(expiredList, 5); //compareAcivityByExpiryDate
+	sortSupportList(completedList, 6); //compareActivityByCompletionDate
+	sortSupportList(yetToBeginList, 4); //compareActivityByInsertDate
+	sortSupportList(ongoingList, 10); //compareActivityByPercentCompletion
+	sortSupportList(expiredList, 5); //compareActivityByExpiryDate
 
 	fprintf(file, "Data: %ld\n", beginDate);
 	fprintf(file, "=== REPORT ULTIMO PERIODO ====\n\n");
