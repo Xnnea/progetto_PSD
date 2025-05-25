@@ -11,7 +11,7 @@ void deleteSupportList(ActivitiesContainerSupportList* list);
 
 void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (*actionFunction)(Activity) );
 void doActionWithFileOnSupportListActivities(ActivitiesContainerSupportList list, FILE* file, void (*actionFunction)(Activity, FILE*) );
-void sortSupportList(ActivitiesContainerSupportList list, int (*compareFunction)(Activity, Activity) );
+void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
 
 //Used for debug
 int countSupportListItems(ActivitiesContainerSupportList list);

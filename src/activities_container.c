@@ -693,10 +693,10 @@ void printActivitiesReport(ActivitiesContainer container) {
 	ActivitiesContainerSupportList yetToBeginList = newSupportList();
 	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
 
-	sortSupportList(completedList, compareAcivityByCompletionDate);
-	sortSupportList(yetToBeginList, compareAcivityByInsertDate);
-	sortSupportList(ongoingList, compareAcivityByPercentCompletion);
-	sortSupportList(expiredList, compareAcivityByExpiryDate);
+	sortSupportList(completedList, 6); //compareAcivityByCompletionDate
+	sortSupportList(yetToBeginList, 4); //compareAcivityByInsertDate
+	sortSupportList(ongoingList, 10); //compareAcivityByPercentCompletion
+	sortSupportList(expiredList, 5); //compareAcivityByExpiryDate
 
 	printf("\n=============================\n");
 	printf("=== REPORT ULTIMO PERIODO ====\n");
@@ -746,10 +746,10 @@ void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate
 	ActivitiesContainerSupportList yetToBeginList = newSupportList();
 	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
 
-	sortSupportList(completedList, compareAcivityByCompletionDate);
-	sortSupportList(yetToBeginList, compareAcivityByInsertDate);
-	sortSupportList(ongoingList, compareAcivityByPercentCompletion);
-	sortSupportList(expiredList, compareAcivityByExpiryDate);
+	sortSupportList(completedList, 6); //compareAcivityByCompletionDate
+	sortSupportList(yetToBeginList, 4); //compareAcivityByInsertDate
+	sortSupportList(ongoingList, 10); //compareAcivityByPercentCompletion
+	sortSupportList(expiredList, 5); //compareAcivityByExpiryDate
 
 	fprintf(file, "Data: %ld\n", beginDate);
 	fprintf(file, "=== REPORT ULTIMO PERIODO ====\n\n");

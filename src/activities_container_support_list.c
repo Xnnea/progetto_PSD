@@ -118,7 +118,7 @@ NodeList* splitSupportList(NodeList* head) {
 }
 
 // Function to merge two sorted lists (support function for merge sort)
-NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int (*compareFunction)(Activity, Activity)) {
+NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy) {
 	if (listA == NULL && listB == NULL) return NULL;
 
 	// If either list is empty, return the other list
@@ -131,23 +131,62 @@ NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int (*compareFunct
 		cmp = 1;
 	} else if (listA->activity != NULL && listB->activity == NULL) {
 		cmp = -1;
-	} else if (listA->activity != NULL && listB->activity != NULL) {
-		cmp = (*compareFunction)(listA->activity, listB->activity);
+	} else if (listA->activity != NULL && listB->activity != NULL) {		
+		switch (sortBy) {
+			case 0: cmp = compareAcivityById(listA->activity, listB->activity);
+					break;
+					
+			case 1: cmp = compareAcivityByName(listA->activity, listB->activity);
+					break;
+					
+			case 2: cmp = compareAcivityByDescr(listA->activity, listB->activity);
+					break;
+					
+			case 3: cmp = compareAcivityByCourse(listA->activity, listB->activity);
+					break;
+					
+			case 4: cmp = compareAcivityByInsertDate(listA->activity, listB->activity);
+					break;
+					
+			case 5: cmp = compareAcivityByExpiryDate(listA->activity, listB->activity);
+					break;
+					
+			case 6: cmp = compareAcivityByCompletionDate(listA->activity, listB->activity);
+					break;
+					
+			case 7: cmp = compareAcivityByTotalTime(listA->activity, listB->activity);
+					break;
+					
+			case 8: cmp = compareAcivityByUsedTime(listA->activity, listB->activity);
+					break;
+					
+			case 9: cmp = compareAcivityByPriority(listA->activity, listB->activity);
+					break;
+					
+			case 10: cmp = compareAcivityByPercentCompletion(listA->activity, listB->activity);
+					break;
+					
+			case 11: cmp = compareAcivityByTimeToCompletion(listA->activity, listB->activity);
+					break;
+					
+			default: cmp = compareAcivityById(listA->activity, listB->activity);
+					break;
+		}
 	}
 	
 	if (cmp < 0) { //listA->data < listB->data
 		// Recursively merge the rest of the lists and link the result to the current node
-		listA->next = mergeSupportLists(listA->next, listB, compareFunction);
+		listA->next = mergeSupportLists(listA->next, listB, sortBy);
 		return listA;
 	} else {
 		// Recursively merge the rest of the lists and link the result to the current node
-		listB->next = mergeSupportLists(listA, listB->next, compareFunction);
+		listB->next = mergeSupportLists(listA, listB->next, sortBy);
 		return listB;
 	}
 }
 
 // Function to perform merge sort on a list. Return the pointer to the new head of the list.
-NodeList* mergeSortSupportList(NodeList* head, int (*compareFunction)(Activity, Activity) ) {
+NodeList* mergeSortSupportList(NodeList* head, int sortBy) {
 
 	// if the list is empty or has only one node, it's already sorted (base case)
 	if (head == NULL || head->next == NULL) return head;
@@ -156,16 +195,16 @@ NodeList* mergeSortSupportList(NodeList* head, int (*compareFunction)(Activity, 
 	NodeList* secondHalf = splitSupportList(head);
 
 	// Recursively sort each half
-	head = mergeSortSupportList(head, compareFunction);
-	secondHalf = mergeSortSupportList(secondHalf, compareFunction);
+	head = mergeSortSupportList(head, sortBy);
+	secondHalf = mergeSortSupportList(secondHalf, sortBy);
 
 	// Merge the two sorted halves
-	return mergeSupportLists(head, secondHalf, compareFunction);
+	return mergeSupportLists(head, secondHalf, sortBy);
 }
 
 // Function to sort a list. The original list will be modified.
-void sortSupportList(ActivitiesContainerSupportList list, int (*compareFunction)(Activity, Activity) ) {
+void sortSupportList(ActivitiesContainerSupportList list, int sortBy) {
 	if ( isSupportListEmpty(list) == 1 ) return;
 	
-	list->head = mergeSortSupportList(list->head, compareFunction); 
+	list->head = mergeSortSupportList(list->head, sortBy); 
 }
