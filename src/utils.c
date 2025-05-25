@@ -25,6 +25,12 @@ char* readLine(FILE* file) {
 		buffer[len-1] = '\0';
 		len--;
 	}
+	
+	// Removes \r character if present
+	if (len > 0 && buffer[len-1] == '\r') {
+		buffer[len-1] = '\0';
+		len--;
+	}
     
 	if (len == 0) {
 		char* emptyLine = (char*)malloc(1);
