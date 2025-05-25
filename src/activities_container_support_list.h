@@ -9,11 +9,7 @@ ActivitiesContainerSupportList newSupportList(void);
 void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity);
 void deleteSupportList(ActivitiesContainerSupportList* list);
 
-void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (*actionFunction)(Activity) );
-void doActionWithFileOnSupportListActivities(ActivitiesContainerSupportList list, FILE* file, void (*actionFunction)(Activity, FILE*) );
+void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file);
 void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
-
-//Used for debug
-int countSupportListItems(ActivitiesContainerSupportList list);
 
 #endif // ACTIVITIES_CONTAINER_SUPPORT_LIST_H          //  End of inclusion block

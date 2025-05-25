@@ -708,25 +708,25 @@ void printActivitiesReport(ActivitiesContainer container) {
 	printf("\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");
 	printf("=======================================================================================\n");
 	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n\n");
-	doActionOnSupportListActivities(completedList, printActivityForList);
+	printActivitiesInSupportList(completedList, 0, NULL); //printActivityForList
 	
 	printf("\n\n=========================================================================");
 	printf("\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
 	printf("=======================================================================================\n");
 	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza\n\n");
-	doActionOnSupportListActivities(yetToBeginList, printActivityForList);
+	printActivitiesInSupportList(yetToBeginList, 0, NULL); //printActivityForList
 	
 	printf("\n\n=========================================================================");
 	printf("\n=== Attività IN CORSO (ordinate per percentuale di completamento):\n");
 	printf("====================================================================================================================================================\n");
 	printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n\n");
-	doActionOnSupportListActivities(ongoingList, printActivityProgressForList);
+	printActivitiesInSupportList(ongoingList, 1, NULL); //printActivityProgressForList
 	
 	printf("\n\n=========================================================================");
 	printf("\n=== Attività IN RITARDO (ordinate per data di scadenza):\n");
 	printf("====================================================================================================================================================\n");
 	printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n\n");
-	doActionOnSupportListActivities(expiredList, printActivityProgressForList);
+	printActivitiesInSupportList(expiredList, 1, NULL); //printActivityProgressForList
 	
 	printf("\n");
 	
@@ -755,16 +755,16 @@ void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate
 	fprintf(file, "=== REPORT ULTIMO PERIODO ====\n\n");
 
 	fprintf(file, "\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");
-	doActionWithFileOnSupportListActivities(completedList, file, printActivityForListToFile);
+	printActivitiesInSupportList(completedList, 0, file); //printActivityForListToFile
 	
 	fprintf(file, "\n\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
-	doActionWithFileOnSupportListActivities(yetToBeginList, file, printActivityForListToFile);
+	printActivitiesInSupportList(yetToBeginList, 0, file); //printActivityForListToFile
 	
 	fprintf(file, "\n\n=== Attività IN CORSO (ordinate per percentuale di completamento):\n");
-	doActionWithFileOnSupportListActivities(ongoingList, file, printActivityProgressForListToFile);
+	printActivitiesInSupportList(ongoingList, 1, file); //printActivityProgressForListToFile
 	
 	fprintf(file, "\n\n=== Attività IN RITARDO (ordinate per data di scadenza):\n");
-	doActionWithFileOnSupportListActivities(expiredList, file, printActivityProgressForListToFile);
+	printActivitiesInSupportList(expiredList, 1, file); //printActivityProgressForListToFile
  
 	//delete support lists
 	deleteSupportList(&completedList);

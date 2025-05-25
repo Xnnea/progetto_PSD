@@ -57,41 +57,39 @@ void addActivityToSupportList(ActivitiesContainerSupportList list, Activity acti
 	list->head = newNode;
 }
 
-//Used mainly for print the activities
-void doActionOnSupportListActivities(ActivitiesContainerSupportList list, void (*actionFunction)(Activity) ) {
+//Used for print the activities
+void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file) {
 	if ( isSupportListEmpty(list) == 1 ) return;
 	
 	NodeList* currentNode = list->head;
 	
 	while (currentNode != NULL) {
-		(*actionFunction)(currentNode->activity);
+		if (file == NULL) {
+			switch (printType) {
+				case 0: printActivityForList(currentNode->activity);
+						break;
+						
+				case 1: printActivityProgressForList(currentNode->activity);
+						break;
+						
+				default: printActivityForList(currentNode->activity);
+						break;	
+			}
+		} else {
+			switch (printType) {
+				case 0: printActivityForListToFile(currentNode->activity, file);
+						break;
+						
+				case 1: printActivityProgressForListToFile(currentNode->activity, file);
+						break;
+						
+				default: printActivityForListToFile(currentNode->activity, file);
+						break;	
+			}
+		}
+
 		currentNode = currentNode->next;
 	}
-}
-
-void doActionWithFileOnSupportListActivities(ActivitiesContainerSupportList list, FILE* file, void (*actionFunction)(Activity, FILE*) ) {
-	if ( isSupportListEmpty(list) == 1 ) return;
-	
-	NodeList* currentNode = list->head;
-	
-	while (currentNode != NULL) {
-		(*actionFunction)(currentNode->activity, file);
-		currentNode = currentNode->next;
-	}
-}
-
-//Used for debug
-int countSupportListItems(ActivitiesContainerSupportList list) {
-	if (list == NULL || list->head == NULL) return 0;
-
-	int count = 0;
-	NodeList* currentNode = list->head;
-	while(currentNode != NULL) {
-		count += 1;
-		currentNode = currentNode->next;
-	}
-	
-	return count;
 }
 
 
