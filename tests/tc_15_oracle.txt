@@ -1,0 +1,70 @@
+1
+Prima activity
+La mia prima activity di studio
+Programmazione I
+1746613562
+1748600762
+0
+7200
+600
+1
+3
+Seconda activity
+La mia seconda activity di studio
+Analisi I
+1746612500
+1750413600
+0
+2000
+600
+2
+5
+Terza activity
+La mia terza activity di studio
+PSD 
+1746613562
+1749558600
+0
+4000
+600
+1
+7
+Quarta activity
+La mia quarta activity di studio
+MMI 
+1746614562
+1747301100
+0
+5000
+600
+2
+8
+Prova 1
+Descr 1
+Corso 1
+1747679621
+1749553200
+0
+600
+30
+2
+9
+ah ah
+youhu
+mmi
+1747680151
+0
+0
+780
+0
+3
+10
+aaa
+bbb
+ccc
+1747842954
+0
+0
+30
+5
+3

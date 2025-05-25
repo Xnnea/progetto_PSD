@@ -125,7 +125,7 @@ int tc_3_to_11(int numTest, char* fileIn, char* fileOut, char* fileOracle) {
 					break;
 		case 11:	setActivityPriority(activity, 2);
 					break;
-		defaut:	printf("TC_%d non può essere eseguito.\n", numTest);
+		default:	printf("TC_%d non può essere eseguito.\n", numTest);
 					return 1;
 	}
 	
@@ -180,6 +180,35 @@ int tc_14() {
 	return (compareResult == 0) ? 0 : 1;
 }
 
+// TC_15: same as TC_1 but with multiple activities.
+// 0 = OK, 1 = KO
+int tc_15() {
+	int numActivities = 0;
+	ActivitiesContainer container = readActivitiesFromFile("tc_15.txt", &numActivities);
+	int saveResult = saveActivitiesToFile("tc_15_output.txt", container);
+	deleteActivityContainer(container);
+	if (saveResult != 0) return 1;
+	int compareResult = compareFiles("tc_15_output.txt", "tc_15_oracle.txt");
+	return (compareResult == 0) ? 0 : 1;
+}
+
+// TC_16: same as 14 but with activity change after loading. 
+// 0 = OK, 1 = KO
+int tc_16() {
+	int numActivities = 0;
+	ActivitiesContainer container = readActivitiesFromFile("tc_16.txt", &numActivities);
+	Activity activity = getActivityWithIdForTest(container, 9);
+	if (activity == NULL) return 1; //KO
+	setActivityUsedTime(activity, 100);
+	FILE* file = fopen("tc_16_output.txt", "w");
+	if (file == NULL) return 1; //KO
+	printActivitiesReportToFile(container, 1746613562, file);
+	fclose(file);
+	deleteActivityContainer(container);
+	int compareResult = compareFiles("tc_16_output.txt", "tc_16_oracle.txt");
+	return (compareResult == 0) ? 0 : 1;
+}
+
 void execTest(int numTest, FILE* fileWithTestsResult) {
 	printf("Eseguo TC_%d...\n", numTest);
 	int tc_result = 1;
@@ -216,6 +245,10 @@ void execTest(int numTest, FILE* fileWithTestsResult) {
 					break;
 		case 14:	tc_result = tc_14();
 					break;
+		case 15:	tc_result = tc_15();
+					break;
+		case 16:	tc_result = tc_16();
+					break;
 		default:	printf("TC_%d non può essere eseguito.\n", numTest);
 					return;
 	}
@@ -236,7 +269,7 @@ int main() {
 	
 	printf("\n");
 	
-	for (int i=1; i<15; i++) {
+	for (int i=1; i<=16; i++) {
 		execTest(i, fileWithTestsResult);
 		printf("\n");
 	}
