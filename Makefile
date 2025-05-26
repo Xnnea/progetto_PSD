@@ -8,7 +8,6 @@ SOURCE = $(SRC_DIR)/activity.c $(SRC_DIR)/activity_helper.c $(SRC_DIR)/activitie
 SOURCE_TESTS = $(SRC_DIR)/activity.c $(SRC_DIR)/activity_helper.c $(SRC_DIR)/activities_container_helper.c $(SRC_DIR)/activities_container_support_list.c $(SRC_DIR)/activities_container.c $(SRC_DIR)/utils.c $(SRC_DIR)/test_main.c
 CC = gcc
 
-all: $(NAME)
 	
 $(NAME): dirstructure
 	$(CC) $(SOURCE) -o $(BIN_DIR)/$(NAME)
