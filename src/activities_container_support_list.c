@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "activity_helper.h"
 #include "activities_container_support_list.h"
 
 typedef struct nodelist {

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "activity_helper.h"
 #include "activities_container.h"
 
 #define TESTS_RESULTS_FILENAME "TESTS_RESULT.txt" 
