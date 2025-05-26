@@ -4,7 +4,7 @@
 #include <time.h>
 #include "activity_helper.h"
 #include "activities_container.h"
-#include "activities_container_support_list.h"
+
 
 // Defining the node structure for the AVL tree
 typedef struct node {
@@ -25,31 +25,36 @@ struct containerItem {
 
 
 
-// Return the node with minimum key (id) value found in that tree.
-Node * minValueNode(Node* node) {
+TreeNode getRootNode(ActivitiesContainer container) {
+	if(container == NULL) return NULL;
+	
+	return container->avlTree;
+}
+
+TreeNode getLeftNode(TreeNode node) {
 	if (!node) return NULL;
-	Node* current = node;
+	
+	return node->left;
+}
 
-	// Loop down to find the leftmost leaf
-	while (current->left != NULL)
-		current = current->left;
-
-	return current;
+TreeNode getRightNode(TreeNode node) {
+	if (!node) return NULL;
+	
+	return node->right;
 }
 
 
-// Return the node with maximum key (id) value found in that tree.
-Node * maxValueNode(Node* node) {
+Activity getActivityFromNode(TreeNode node) {
 	if (!node) return NULL;
-	Node* current = node;
-
-	// Loop down to find the rightmost leaf
-	while (current->right != NULL)
-		current = current->right;
-
-    return current;
+	
+	return node->activity;
 }
 
+int getNextId(ActivitiesContainer container) {
+	if (container == NULL) return -1;
+	
+	return container->nextId;
+}
 
 
 
@@ -210,6 +215,17 @@ ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activ
 
 
 
+// Return the node with minimum key (id) value found in that subtree. Used only by deleteNode.
+Node* minValueNode(Node* node) {
+	if (!node) return NULL;
+	Node* current = node;
+
+	// Loop down to find the leftmost leaf
+	while ( current->left != NULL)
+		current = current->left;
+
+	return current;
+}
 
 // Function (recursive) to delete a node with given activityId (key) from a subtree. 
 // It returns root of the modified subtree.
@@ -305,65 +321,6 @@ ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId
 
 
 
-// Search a node in the AVL tree
-Node* search(Node* root, int activityId) {
-	if (root == NULL) return NULL;
-	
-	int compareResult = compareWithId(root->activity, activityId);
-	
-	if(compareResult == 0) {
-		return root;
-	} else if(compareResult < 0) { // root->activity is < of activityId
-		return search(root->right, activityId);
-	} else {
-		return search(root->left, activityId);
-	}
-}
-
-void printActivityWithId(ActivitiesContainer container, int activityId) {
-	if(container == NULL || container->avlTree == NULL ) return;
-
-	Node* activityNode = search(container->avlTree, activityId);
-	if (activityNode != NULL && activityNode->activity != NULL) {
-		//printActivity(activityNode->activity);
-		printActivityDetailWithMenu(activityNode->activity);
-	}
-}
-
-
-
-// Function to perform inorder traversal of AVL tree and print the contained activity
-void inOrder(Node* root) {
-	if (root != NULL) {
-		inOrder(root->left);
-		//printActivity(root->activity);
-		printActivityForList(root->activity);
-		inOrder(root->right);
-	}
-}
-
-// Function to perform preorder traversal of AVL tree and print the contained activity
-void preOrder(Node* root) {
-	if (root != NULL) {
-		printActivity(root->activity);
-		preOrder(root->left);
-		preOrder(root->right);
-	}
-}
-
-// Function to perform postorder traversal of AVL tree and print the contained activity
-void postOrder(Node* root) {
-	if (root != NULL) {
-		postOrder(root->left);
-		postOrder(root->right);
-		printActivity(root->activity);
-	}
-}
-
-
-
-
-
 // Creates and returns a new empty activity container (tree)
 ActivitiesContainer newActivityContainer(void) {
 	ActivitiesContainer tree = (struct containerItem*)malloc(sizeof(struct containerItem)); 
@@ -377,70 +334,6 @@ ActivitiesContainer newActivityContainer(void) {
 
 
 
-
-
-
-
-
-
-// Function to read all activities from a file
-ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
-	ActivitiesContainer newContainer = newActivityContainer();
-	if(newContainer == NULL) return NULL;
-	
-	FILE* file = fopen(filename, "r");
-	if (file == NULL) {
-		printf("Il file %s non esiste. Verrà creato un contenitore vuoto per le attività.\n", filename);
-		*count = 0;
-		return newContainer;
-	}
-	
-	*count = 0;
-	
-	while (!feof(file)) {  
-		Activity currentActivity = readActivityFromFile(file);
-		if (currentActivity == NULL) {
-			fclose(file);
-			return newContainer;
-		}
-		
-		newContainer = insertActivity(newContainer, currentActivity);
-		*count += 1;
-	}
-	  
-	fclose(file);
-	printf("Lette %d attività dal file %s.\n", *count, filename);
-	return newContainer;
-}
-
-
-
-// Function to perform preorder traversal of AVL tree and save to file activity by activity
-void inOrderSaveActivitiesToFile(FILE* file, Node* root) {
-	if (root != NULL) {
-		inOrderSaveActivitiesToFile(file, root->left);
-		saveActivityToFile(file, root->activity);
-		inOrderSaveActivitiesToFile(file, root->right);
-	}
-}
-
-// Function to save activities (tree) to a file
-// 0 = OK, 1 = ERROR
-int saveActivitiesToFile(const char* filename, ActivitiesContainer container) {
-	if (container == NULL) return 1;
-	
-	FILE* file = fopen(filename, "w");
-	if (file == NULL) {
-		printf("Errore nell'apertura del file %s per la scrittura.\n", filename);
-		return 1;
-	}
-
-	inOrderSaveActivitiesToFile(file, container->avlTree);
-
-	fclose(file);
-	printf("Attività salvate con successo nel file %s\n", filename);
-	return 0;
-}
 
 
 
@@ -473,314 +366,3 @@ void deleteActivityContainer(ActivitiesContainer container) {
 
 
 
-
-
-
-ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
-	
-	if (container == NULL) return 0;
-	
-	
-	printf("\n====== Inserisci una nuova attività ======\n");
-	
-	char* activityName = NULL;
-	while (activityName == NULL) {
-		activityName = getInfoFromUser("Nome dell'attività (non vuoto): ");
-		if (activityName == NULL) {
-			printf("\nNome non valido. Per favore inserisci un nome valido.\n");
-		}
-	}
-
-	char* activityDesr = NULL;
-	while (activityDesr == NULL) {
-		activityDesr = getInfoFromUser("Descrizione dell'attività (non vuota): ");
-		if (activityDesr == NULL) {
-			printf("\nDescrizione non valida. Per favore inserisci una descrizione valida.\n");
-		}
-	}
-
-	char* activityCourse = NULL;
-	while (activityCourse == NULL) {
-		activityCourse = getInfoFromUser("Corso dell'attività (non vuoto): ");
-		if (activityCourse == NULL) {
-			printf("\nCorso non valido. Per favore inserisci un corso valido.\n");
-		}
-	}
-	
-	time_t insertDate = time(NULL);
-	
-	printf("\nVuoi inserire la data di scadenza per questa attività?\n");
-	printf("1. Si\n");
-	printf("0. No\n");
-	printf("Scelta: ");
-	int insertExpiryDate = getChoice(1);
-	
-	time_t expiryDate = 0; 
-	if (insertExpiryDate == 1) {
-		expiryDate = getDateFromUser();
-	}
-	
-	time_t completionDate = 0;
-	
-	printf("\nCi siamo quasi! Inserisci il tempo stimato per il completamento dell'attività (espresso in MINUTI, compreso 1 e un anno):");
-	unsigned int totalTime = getChoiceWithLimits(1, 525600);
-	unsigned int usedTime = 0;
-	
-	printf("\nUltimo passo. Inserisci la priorità.\n");
-	printf("1. ALTA\n");
-	printf("2. MEDIA\n");
-	printf("3. BASSA\n");
-	printf("Scelta: ");
-	short unsigned int priority = (short unsigned int) getChoiceWithLimits(1, 3);
-	
-	//With 0 id is automatically calculated
-	Activity activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
-	
-	return insertActivity(container, activity);
-}
-
-
-
-
-
-
-
-
-// Prints all activities
-void printActivities(ActivitiesContainer container) {
-	if (container != NULL) {
-		printf("\n=============================\n");
-		printf("====== Tutte le attività =====\n");
-		printf("==============================\n");
-		printf("[NOTA: titolo, descrizione e corso potrebbero essere abbreviati. Vai al dettaglio attività per vedere le info complete]\n");
-		printf("[Le attività sono ordinate per id]\n");
-		printf("\n====================================================================================================\n");
-		printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n");
-		printf("====================================================================================================\n\n");
-
-		inOrder(container->avlTree);
-	}
-}
-
-void printInOrderToFile(Node* root, FILE* file) {
-	if (root != NULL) {
-		printInOrderToFile(root->left, file);
-		printActivityForListToFile(root->activity, file);
-		printInOrderToFile(root->right, file);
-	}
-}
-
-// Prints all activities to file
-void printActivitiesToFile(ActivitiesContainer container, FILE* file) {
-	if (container != NULL && file != NULL) {
-		printInOrderToFile(container->avlTree, file);
-	}
-}
-
-
-
-
-
-
-
-
-
-void printInOrderProgress(Node* root) {
-	if (root != NULL) {
-		printInOrderProgress(root->left);
-		printActivityProgressForList(root->activity);
-		printInOrderProgress(root->right);
-	}
-}
-
-// Prints activities progress
-void printActivitiesProgress(ActivitiesContainer container) {
-	if (container != NULL) {
-		printf("\n=============================\n");
-		printf("=== MONITORAGGIO PROGRESSO ===\n");
-		printf("==============================\n");
-		printf("[NOTA: titolo, descrizione e corso potrebbero essere abbreviati. Vai al dettaglio attività per vedere le info complete]\n");
-		printf("[Le attività sono ordinate per id. Qui NON vengono mostrate le attività completate]\n");
-		printf("\n====================================================================================================================================================\n");
-		printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n");
-		printf("====================================================================================================================================================\n\n");
-		printInOrderProgress(container->avlTree);
-	}
-}
-
-void printInOrderProgressToFile(Node* root, FILE* file)  {
-	if (root != NULL) {
-		printInOrderProgressToFile(root->left, file);
-		printActivityProgressForListToFile(root->activity, file);
-		printInOrderProgressToFile(root->right, file);
-	}
-}
-
-void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file) {
-	if (container != NULL && file != NULL) {
-		fprintf(file, "=== MONITORAGGIO PROGRESSO ===\n");
-		printInOrderProgressToFile(container->avlTree, file);
-	}
-}
-
-
-int getNextId(ActivitiesContainer container) {
-	if (container == NULL) return -1;
-	
-	return container->nextId;
-}
-
-
-
-
-
-void buildInOrdeSupportListsForActivitiesReport(Node* root, ActivitiesContainerSupportList completedList, ActivitiesContainerSupportList ongoingList, ActivitiesContainerSupportList expiredList, ActivitiesContainerSupportList yetToBeginList, time_t beginDate, time_t nowDate) {
-	if (root != NULL) {
-		buildInOrdeSupportListsForActivitiesReport(root->left, completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //left
-		
-		int isCompleted = isActivityCompleted(root->activity);
-		if (isCompleted == 1) { //all complete activities
-			int wasCompletedInLastPeriod = wasActivityCompletedAfterDate(root->activity, beginDate);
-			if (wasCompletedInLastPeriod == 1) { //completed in the last period
-				addActivityToSupportList(completedList, root->activity);
-			}
-		} else if ( wasActivityExpiredBeforeDate(root->activity, nowDate) == 1 ) { //expired and not completed
-			addActivityToSupportList(expiredList, root->activity);
-		} else if ( isActivityYetToBegin(root->activity) == 1 ) { //yet to begin
-			addActivityToSupportList(yetToBeginList, root->activity);
-		} else { //ongoing
-			addActivityToSupportList(ongoingList, root->activity);
-		}
-		
-		buildInOrdeSupportListsForActivitiesReport(root->right, completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //right
-	}
-}
-
-void printActivitiesReport(ActivitiesContainer container) {
-	if (container == NULL || container->avlTree == NULL) return;
-	
-	time_t beginDate = time(NULL); //now
-	beginDate = beginDate - 60*60*24*7; //one week ago
-	
-	char timeBuffer[100];
-	struct tm* tmInfo;
-	
-	tmInfo = localtime(&beginDate);
-	strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
-	
-	printf("\n\nIl report settimanale di default mostra i cambiamenti nell'ultima settimana.\n");
-	printf("\nVuoi visualizzare il report a partire da %s (se scegli 'No' dovrai inserire una data)?\n", timeBuffer);
-	printf("1. Si\n");
-	printf("0. No\n");
-	printf("Scelta: ");
-	int insertReportDate = getChoice(1);
-	
-	if (insertReportDate == 0) {		
-		time_t userDate = getDateFromUser();
-		
-		if (userDate >= time(NULL)) {
-			printf("\nLa data inserita è nel futuro: verrà usata la data di default.");
-		} else {
-			tmInfo = localtime(&userDate);
-			strftime(timeBuffer, sizeof(timeBuffer), "%d/%m/%Y %H:%M", tmInfo);
-			printf("\nSarà usata la seguente data per il report: %s\n", timeBuffer);
-			beginDate = userDate;
-		}
-	}
-	
-	ActivitiesContainerSupportList completedList = newSupportList();
-	ActivitiesContainerSupportList ongoingList = newSupportList();
-	ActivitiesContainerSupportList expiredList = newSupportList();
-	ActivitiesContainerSupportList yetToBeginList = newSupportList();
-	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
-
-	sortSupportList(completedList, 6); //compareActivityByCompletionDate
-	sortSupportList(yetToBeginList, 4); //compareActivityByInsertDate
-	sortSupportList(ongoingList, 10); //compareActivityByPercentCompletion
-	sortSupportList(expiredList, 5); //compareActivityByExpiryDate
-
-	printf("\n=============================\n");
-	printf("=== REPORT ULTIMO PERIODO ====\n");
-	printf("==============================\n");
-	printf("[NOTA: titolo, descrizione e corso potrebbero essere abbreviati. Vai al dettaglio attività per vedere le info complete]\n");
-	printf("[Qui le attività completate vengono mostrate solo se completate nel periodo di riferimento del report (e non prima)]\n");
-
-	printf("\n\n=========================================================================");
-	printf("\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");
-	printf("=======================================================================================\n");
-	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza o data completamento\n\n");
-	printActivitiesInSupportList(completedList, 0, NULL); //printActivityForList
-	
-	printf("\n\n=========================================================================");
-	printf("\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
-	printf("=======================================================================================\n");
-	printf("[id] Titolo | Descrizione | Corso | Priorità | Data scadenza\n\n");
-	printActivitiesInSupportList(yetToBeginList, 0, NULL); //printActivityForList
-	
-	printf("\n\n=========================================================================");
-	printf("\n=== Attività IN CORSO (ordinate per percentuale di completamento):\n");
-	printf("====================================================================================================================================================\n");
-	printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n\n");
-	printActivitiesInSupportList(ongoingList, 1, NULL); //printActivityProgressForList
-	
-	printf("\n\n=========================================================================");
-	printf("\n=== Attività IN RITARDO (ordinate per data di scadenza):\n");
-	printf("====================================================================================================================================================\n");
-	printf("[id] Titolo | Descrizione | Corso | Priorità | Progresso (%%) | Tempo usato (min) | Tempo al completamento (min) | Tempo totale (min) | Data scadenza\n\n");
-	printActivitiesInSupportList(expiredList, 1, NULL); //printActivityProgressForList
-	
-	printf("\n");
-	
-	//delete support lists
-	deleteSupportList(&completedList);
-	deleteSupportList(&yetToBeginList);
-	deleteSupportList(&ongoingList);
-	deleteSupportList(&expiredList);
-}
-
-void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file) {
-	if (container == NULL || container->avlTree == NULL || file == NULL || beginDate < 0) return;
-	
-	ActivitiesContainerSupportList completedList = newSupportList();
-	ActivitiesContainerSupportList ongoingList = newSupportList();
-	ActivitiesContainerSupportList expiredList = newSupportList();
-	ActivitiesContainerSupportList yetToBeginList = newSupportList();
-	buildInOrdeSupportListsForActivitiesReport(container->avlTree, completedList, ongoingList, expiredList, yetToBeginList, beginDate, time(NULL) );
-
-	sortSupportList(completedList, 6); //compareActivityByCompletionDate
-	sortSupportList(yetToBeginList, 4); //compareActivityByInsertDate
-	sortSupportList(ongoingList, 10); //compareActivityByPercentCompletion
-	sortSupportList(expiredList, 5); //compareActivityByExpiryDate
-
-	fprintf(file, "Data: %ld\n", beginDate);
-	fprintf(file, "=== REPORT ULTIMO PERIODO ====\n\n");
-
-	fprintf(file, "\n=== Attività COMPLETATE nel periodo (ordinate per data di completamento):\n");
-	printActivitiesInSupportList(completedList, 0, file); //printActivityForListToFile
-	
-	fprintf(file, "\n\n=== Attività ANCORA DA INIZIARE (ordinate per data di inserimento):\n");
-	printActivitiesInSupportList(yetToBeginList, 0, file); //printActivityForListToFile
-	
-	fprintf(file, "\n\n=== Attività IN CORSO (ordinate per percentuale di completamento):\n");
-	printActivitiesInSupportList(ongoingList, 1, file); //printActivityProgressForListToFile
-	
-	fprintf(file, "\n\n=== Attività IN RITARDO (ordinate per data di scadenza):\n");
-	printActivitiesInSupportList(expiredList, 1, file); //printActivityProgressForListToFile
- 
-	//delete support lists
-	deleteSupportList(&completedList);
-	deleteSupportList(&yetToBeginList);
-	deleteSupportList(&ongoingList);
-	deleteSupportList(&expiredList);
-}
-
-Activity getActivityWithIdForTest(ActivitiesContainer container, int activityId) {
-	if(container == NULL || container->avlTree == NULL ) return NULL;
-
-	Node* activityNode = search(container->avlTree, activityId);
-	if (activityNode != NULL && activityNode->activity != NULL) {
-		return activityNode->activity;
-	}
-	
-	return NULL;
-}

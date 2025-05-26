@@ -3,31 +3,25 @@
 
 #include "activity.h"
 
-#define DEFAULT_ACTIVITIES_FILE "activities_list.txt"
-
 // Declare an opaque type for the activities container
 typedef struct containerItem* ActivitiesContainer;
 
-ActivitiesContainer newActivityContainer(void);
-ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
-ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId);
-ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
-int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
-void deleteActivityContainer(ActivitiesContainer container);
+// Declare an opaque type for the tree node
+typedef struct node* TreeNode;
 
+TreeNode getRootNode(ActivitiesContainer container);
+TreeNode getLeftNode(TreeNode node);
+TreeNode getRightNode(TreeNode node);
+Activity getActivityFromNode(TreeNode node);
 int getNextId(ActivitiesContainer container);
-void printActivityWithId(ActivitiesContainer container, int activityId);
 
-void printActivities(ActivitiesContainer);
-void printActivitiesProgress(ActivitiesContainer);
-void printActivitiesReport(ActivitiesContainer);
+ActivitiesContainer newActivityContainer(void);
 
-//print to file
-void printActivitiesToFile(ActivitiesContainer container, FILE* file);
-void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
-void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+// Function to insert a new Activity into AVL tree.
+// The activity key (activity->id) is automatically generated if id is initially valorized with 0. 
+ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activity);
 
-//used for test
-Activity getActivityWithIdForTest(ActivitiesContainer container, int activityId);
+ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId);
+void deleteActivityContainer(ActivitiesContainer container);
 
 #endif // ACTIVITIES_CONTAINER_H          // End of inclusion block

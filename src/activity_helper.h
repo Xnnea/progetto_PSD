@@ -15,17 +15,17 @@ int compareWithId(Activity a, int activityId);
 
 // Compare 2 activities
 int compareActivityById(Activity a, Activity b);
-int compareActivityByName(Activity a, Activity b); //At now, not used
-int compareActivityByDescr(Activity a, Activity b); //At now, not used
-int compareActivityByCourse(Activity a, Activity b); //At now, not used
+int compareActivityByName(Activity a, Activity b);
+int compareActivityByDescr(Activity a, Activity b);
+int compareActivityByCourse(Activity a, Activity b);
 int compareActivityByInsertDate(Activity a, Activity b);
 int compareActivityByExpiryDate(Activity a, Activity b);
 int compareActivityByCompletionDate(Activity a, Activity b);
-int compareActivityByTotalTime(Activity a, Activity b); //At now, not used
-int compareActivityByUsedTime(Activity a, Activity b); //At now, not used
-int compareActivityByPriority(Activity a, Activity b); //At now, not used
+int compareActivityByTotalTime(Activity a, Activity b);
+int compareActivityByUsedTime(Activity a, Activity b);
+int compareActivityByPriority(Activity a, Activity b);
 int compareActivityByPercentCompletion(Activity a, Activity b);
-int compareActivityByTimeToCompletion(Activity a, Activity b); //At now, not used
+int compareActivityByTimeToCompletion(Activity a, Activity b);
 
 //print
 void printActivity(Activity activity);

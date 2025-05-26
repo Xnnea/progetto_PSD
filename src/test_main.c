@@ -4,6 +4,7 @@
 
 #include "activity_helper.h"
 #include "activities_container.h"
+#include "activities_container_helper.h"
 
 #define TESTS_RESULTS_FILENAME "TESTS_RESULT.txt" 
 
