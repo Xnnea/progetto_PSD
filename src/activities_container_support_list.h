@@ -9,7 +9,8 @@ ActivitiesContainerSupportList newSupportList(void);
 void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity);
 void deleteSupportList(ActivitiesContainerSupportList* list);
 
-void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file);
 void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
+
+void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file);
 
 #endif // ACTIVITIES_CONTAINER_SUPPORT_LIST_H          //  End of inclusion block

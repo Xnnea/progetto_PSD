@@ -231,6 +231,52 @@ int compareActivityByTimeToCompletion(Activity a, Activity b) {
 }
 
 
+int compareActivityBy(Activity a, Activity b, int compareBy) {
+	int cmp = 0;
+	switch (compareBy) {
+		case 0: cmp = compareActivityById(a, b);
+				break;
+				
+		case 1: cmp = compareActivityByName(a, b);
+				break;
+				
+		case 2: cmp = compareActivityByDescr(a, b);
+				break;
+				
+		case 3: cmp = compareActivityByCourse(a, b);
+				break;
+				
+		case 4: cmp = compareActivityByInsertDate(a, b);
+				break;
+				
+		case 5: cmp = compareActivityByExpiryDate(a, b);
+				break;
+				
+		case 6: cmp = compareActivityByCompletionDate(a, b);
+				break;
+				
+		case 7: cmp = compareActivityByTotalTime(a, b);
+				break;
+				
+		case 8: cmp = compareActivityByUsedTime(a, b);
+				break;
+				
+		case 9: cmp = compareActivityByPriority(a, b);
+				break;
+				
+		case 10: cmp = compareActivityByPercentCompletion(a, b);
+				break;
+				
+		case 11: cmp = compareActivityByTimeToCompletion(a, b);
+				break;
+				
+		default: cmp = compareActivityById(a, b);
+				break;
+	}
+	
+	return cmp;
+}
+
 
 
 char * priorityToText(int priority) {

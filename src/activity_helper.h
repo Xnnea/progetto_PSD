@@ -26,6 +26,7 @@ int compareActivityByUsedTime(Activity a, Activity b);
 int compareActivityByPriority(Activity a, Activity b);
 int compareActivityByPercentCompletion(Activity a, Activity b);
 int compareActivityByTimeToCompletion(Activity a, Activity b);
+int compareActivityBy(Activity a, Activity b, int compareBy);
 
 //print
 void printActivity(Activity activity);
@@ -37,6 +38,10 @@ void printActivityProgressForList(Activity activity);
 void printActivityToFile(Activity activity, FILE* file);
 void printActivityForListToFile(Activity activity, FILE* file);
 void printActivityProgressForListToFile(Activity activity, FILE* file);
+
+//print to screen if file is NULL
+void printActivityForListToScreenOrFile(Activity activity, FILE* file);
+void printActivityProgressForListToScreenOrFile(Activity activity, FILE* file);
 
 //file functions
 Activity readActivityFromFile(FILE* file);

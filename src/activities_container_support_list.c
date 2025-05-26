@@ -58,40 +58,8 @@ void addActivityToSupportList(ActivitiesContainerSupportList list, Activity acti
 	list->head = newNode;
 }
 
-//Used for print the activities
-void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file) {
-	if ( isSupportListEmpty(list) == 1 ) return;
-	
-	NodeList* currentNode = list->head;
-	
-	while (currentNode != NULL) {
-		if (file == NULL) {
-			switch (printType) {
-				case 0: printActivityForList(currentNode->activity);
-						break;
-						
-				case 1: printActivityProgressForList(currentNode->activity);
-						break;
-						
-				default: printActivityForList(currentNode->activity);
-						break;	
-			}
-		} else {
-			switch (printType) {
-				case 0: printActivityForListToFile(currentNode->activity, file);
-						break;
-						
-				case 1: printActivityProgressForListToFile(currentNode->activity, file);
-						break;
-						
-				default: printActivityForListToFile(currentNode->activity, file);
-						break;	
-			}
-		}
 
-		currentNode = currentNode->next;
-	}
-}
+
 
 
 
@@ -131,46 +99,7 @@ NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy) {
 	} else if (listA->activity != NULL && listB->activity == NULL) {
 		cmp = -1;
 	} else if (listA->activity != NULL && listB->activity != NULL) {		
-		switch (sortBy) {
-			case 0: cmp = compareActivityById(listA->activity, listB->activity);
-					break;
-					
-			case 1: cmp = compareActivityByName(listA->activity, listB->activity);
-					break;
-					
-			case 2: cmp = compareActivityByDescr(listA->activity, listB->activity);
-					break;
-					
-			case 3: cmp = compareActivityByCourse(listA->activity, listB->activity);
-					break;
-					
-			case 4: cmp = compareActivityByInsertDate(listA->activity, listB->activity);
-					break;
-					
-			case 5: cmp = compareActivityByExpiryDate(listA->activity, listB->activity);
-					break;
-					
-			case 6: cmp = compareActivityByCompletionDate(listA->activity, listB->activity);
-					break;
-					
-			case 7: cmp = compareActivityByTotalTime(listA->activity, listB->activity);
-					break;
-					
-			case 8: cmp = compareActivityByUsedTime(listA->activity, listB->activity);
-					break;
-					
-			case 9: cmp = compareActivityByPriority(listA->activity, listB->activity);
-					break;
-					
-			case 10: cmp = compareActivityByPercentCompletion(listA->activity, listB->activity);
-					break;
-					
-			case 11: cmp = compareActivityByTimeToCompletion(listA->activity, listB->activity);
-					break;
-					
-			default: cmp = compareActivityById(listA->activity, listB->activity);
-					break;
-		}
+		cmp = compareActivityBy(listA->activity, listB->activity, sortBy);
 	}
 	
 	if (cmp < 0) { //listA->data < listB->data
@@ -207,3 +136,22 @@ void sortSupportList(ActivitiesContainerSupportList list, int sortBy) {
 	
 	list->head = mergeSortSupportList(list->head, sortBy); 
 }
+
+
+
+
+//Used for print the activities
+void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file) {
+	if ( isSupportListEmpty(list) == 1 ) return;
+	
+	NodeList* currentNode = list->head;
+	Activity activity = NULL;
+	int pType = (printType == 0 || printType == 1) ? printType : 0;
+
+	while (currentNode != NULL) {
+		activity = currentNode->activity;
+		(pType == 0) ? printActivityForListToScreenOrFile(activity, file) : printActivityProgressForListToScreenOrFile(activity, file);
+		currentNode = currentNode->next;
+	}
+}
+
