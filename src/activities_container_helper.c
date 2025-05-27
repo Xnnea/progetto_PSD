@@ -4,42 +4,6 @@
 
 
 
-// Search a node in the AVL tree
-TreeNode search(TreeNode root, int activityId) {
-	if (root == NULL) return NULL;
-	
-	int compareResult = compareWithId( getActivityFromNode(root), activityId );
-	
-	if(compareResult == 0) {
-		return root;
-	} else if(compareResult < 0) { // root->activity is < of activityId
-		return search( getRightNode(root), activityId );
-	} else {
-		return search( getLeftNode(root), activityId );
-	}
-}
-
-Activity getActivityWithIdForTest(ActivitiesContainer container, int activityId) {
-	TreeNode root = getRootNode(container);
-	if(root == NULL) return NULL;
-
-	TreeNode activityNode = search(root, activityId);
-	if (activityNode != NULL) {
-		return getActivityFromNode(activityNode);
-	}
-	
-	return NULL;
-}
-
-
-
-
-
-
-
-
-
-
 
 // Function to perform preorder traversal of AVL tree and save to file activity by activity
 void inOrderSaveActivitiesToFile(FILE* file, TreeNode root) {

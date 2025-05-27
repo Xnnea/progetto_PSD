@@ -57,7 +57,7 @@ ActivitiesContainer handleStartMenu() {
 		}
 
 		case 2: {
-			container = newActivityContainer();;
+			container = newActivityContainer();
 			break;
       }
 
@@ -91,7 +91,8 @@ int handleMainMenu(ActivitiesContainer * container) {
 
 		case 2: { // 2. Aggiungi nuova attività
 			//This action can modify the tree...
-			*container = addNewActivityToContainer(*container);
+			//*container = addNewActivityToContainer(*container);
+			addNewActivityToContainer(*container);
 			break;
       }
 
@@ -102,7 +103,8 @@ int handleMainMenu(ActivitiesContainer * container) {
 				int id = getChoice(maxId);
 				int isConfirmed = getConfirmMenuChoice("Sei sicuro di voler eliminare questa attività?");
 				if (isConfirmed == 1) {
-					*container = removeActivity(*container, id);
+					//*container = removeActivity(*container, id);
+					removeActivity(*container, id);
 					printf("\nAttività eliminata.\n");
 				}
 			} else {

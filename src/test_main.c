@@ -80,7 +80,7 @@ int tc_1() {
 int tc_2() {
 	int numActivities = 0;
 	ActivitiesContainer container = readActivitiesFromFile("tc_2.txt", &numActivities);
-	Activity activity = getActivityWithIdForTest(container, 1);
+	Activity activity = getActivityWithId(container, 1);
 	if (activity == NULL) return 1; //KO
 	FILE* file = fopen("tc_2_output.txt", "w");
 	if (file == NULL) return 1; //KO
@@ -104,7 +104,7 @@ int tc_2() {
 int tc_3_to_11(int numTest, char* fileIn, char* fileOut, char* fileOracle) {
 	int numActivities = 0;
 	ActivitiesContainer container = readActivitiesFromFile(fileIn, &numActivities);
-	Activity activity = getActivityWithIdForTest(container, 1);
+	Activity activity = getActivityWithId(container, 1);
 	if (activity == NULL) return 1; //KO
 
 	switch (numTest) {
@@ -199,7 +199,7 @@ int tc_15() {
 int tc_16() {
 	int numActivities = 0;
 	ActivitiesContainer container = readActivitiesFromFile("tc_16.txt", &numActivities);
-	Activity activity = getActivityWithIdForTest(container, 9);
+	Activity activity = getActivityWithId(container, 9);
 	if (activity == NULL) return 1; //KO
 	setActivityUsedTime(activity, 100);
 	FILE* file = fopen("tc_16_output.txt", "w");

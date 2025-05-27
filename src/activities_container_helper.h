@@ -7,9 +7,6 @@
 #include "activity_helper.h"
 
 
-TreeNode search(TreeNode root, int activityId);
-Activity getActivityWithIdForTest(ActivitiesContainer container, int activityId);
-
 int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
 
