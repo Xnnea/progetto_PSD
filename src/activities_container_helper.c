@@ -61,7 +61,7 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 			return newContainer;
 		}
 		
-		newContainer = insertActivity(newContainer, currentActivity);
+		insertActivity(newContainer, currentActivity);
 		*count += 1;
 	}
 	  
@@ -78,9 +78,9 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 
 
 
-ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
+void addNewActivityToContainer(ActivitiesContainer container) {
 	
-	if (container == NULL) return 0;
+	if (container == NULL) return;
 	
 	
 	printf("\n====== Inserisci una nuova attività ======\n");
@@ -138,7 +138,7 @@ ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container) {
 	//With 0 id is automatically calculated
 	Activity activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
 	
-	return insertActivity(container, activity);
+	insertActivity(container, activity);
 }
 
 

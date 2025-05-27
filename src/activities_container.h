@@ -111,7 +111,7 @@ Activity getActivityWithId(ActivitiesContainer container, int activityId);
  * insertActivity
  * 
  * Syntactic Specification:
- * ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activity);
+ * void insertActivity(ActivitiesContainer container, Activity activity);
  * 
  * Semantic Specification:
  * Inserts an activity into the container (the AVL tree), automatically generating an activity ID if necessary (id = 0).
@@ -131,16 +131,15 @@ Activity getActivityWithId(ActivitiesContainer container, int activityId);
  * - Modifies the AVL tree structure
  * 
  * Side Effects:
- * - Possible memory allocation failure
  * - Modification of the passed activity (if ID was 0)
  */
-ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activity);
+void insertActivity(ActivitiesContainer container, Activity activity);
 
 /*
  * removeActivity
  * 
  * Syntactic Specification:
- * ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId);
+ * void removeActivity(ActivitiesContainer container, int activityId);
  * 
  * Semantic Specification:
  * Removes an activity from the container (the tree) given its ID.
@@ -160,7 +159,7 @@ ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activ
  * Side Effects:
  * - Effects from calls to 'deleteNode()'
  */
-ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId);
+void removeActivity(ActivitiesContainer container, int activityId);
 
 /*
  * deleteActivityContainer

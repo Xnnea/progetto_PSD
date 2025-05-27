@@ -114,7 +114,7 @@ Activity getActivityWithId(ActivitiesContainer container, int activityId) {
  * insertActivity
  * 
  * Syntactic Specification:
- * ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activity);
+ * void insertActivity(ActivitiesContainer container, Activity activity);
  * 
  * Semantic Specification:
  * Inserts an activity into the container (the AVL tree), automatically generating an activity ID if necessary (id = 0).
@@ -134,11 +134,10 @@ Activity getActivityWithId(ActivitiesContainer container, int activityId) {
  * - Modifies the AVL tree structure
  * 
  * Side Effects:
- * - Possible memory allocation failure
  * - Modification of the passed activity (if ID was 0)
  */
-ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activity) {
-	if (!activity || !container) return container; // No action
+void insertActivity(ActivitiesContainer container, Activity activity) {
+	if (!activity || !container) return; // No action
 	
 	int currentActivityId = getActivityId(activity);
 	
@@ -152,8 +151,6 @@ ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activ
 	
 	container->avlTree = insertNode(container->avlTree, activity);
 	container->nextId = getActivityId(activity) + 1;
-	
-	return container;
 }
 
 
@@ -164,7 +161,7 @@ ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activ
  * removeActivity
  * 
  * Syntactic Specification:
- * ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId);
+ * void removeActivity(ActivitiesContainer container, int activityId);
  * 
  * Semantic Specification:
  * Removes an activity from the container (the tree) given its ID.
@@ -184,11 +181,10 @@ ActivitiesContainer insertActivity(ActivitiesContainer container, Activity activ
  * Side Effects:
  * - Effects from calls to 'deleteNode()'
  */
-ActivitiesContainer removeActivity(ActivitiesContainer container, int activityId) {
-	if (!container || !container->avlTree) return container; //No action
+void removeActivity(ActivitiesContainer container, int activityId) {
+	if (!container || !container->avlTree) return; //No action
 	
 	container->avlTree = deleteNode(container->avlTree, activityId);
-	return container;
 }
 
 

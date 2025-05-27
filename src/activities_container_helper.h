@@ -10,7 +10,7 @@
 int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
 
-ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
+void addNewActivityToContainer(ActivitiesContainer container);
 
 void printActivityWithId(ActivitiesContainer container, int activityId);
 void printActivities(ActivitiesContainer container);

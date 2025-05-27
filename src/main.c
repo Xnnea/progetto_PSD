@@ -69,7 +69,7 @@ ActivitiesContainer handleStartMenu() {
 	return container;
 }
 
-int handleMainMenu(ActivitiesContainer * container) {
+int handleMainMenu(ActivitiesContainer container) {
 	displayMainMenu();
 	int choice = getChoice(7);
 	
@@ -78,33 +78,31 @@ int handleMainMenu(ActivitiesContainer * container) {
 			int isConfirmed = getConfirmMenuChoice("i dati non salvati verranno persi.\nVuoi uscire dal programma?");
 			if (isConfirmed == 1) {
 				printf("Uscita in corso...\n");
-				deleteActivityContainer(*container);
+				deleteActivityContainer(container);
 				return -1;
 			}
 			break;
 		}
 
 		case 1: { // 1. Visualizza tutte le attività
-			printActivities(*container);
+			printActivities(container);
 			break;
 		}
 
 		case 2: { // 2. Aggiungi nuova attività
 			//This action can modify the tree...
-			//*container = addNewActivityToContainer(*container);
-			addNewActivityToContainer(*container);
+			addNewActivityToContainer(container);
 			break;
       }
 
 		case 3: {// 3. Elimina attività
-			int maxId = getNextId(*container);
+			int maxId = getNextId(container);
 			if (maxId > 0) {
 				printf("\nInserisci l'id dell'attività da ELIMINARE (numero < %d): ", maxId);
 				int id = getChoice(maxId);
 				int isConfirmed = getConfirmMenuChoice("Sei sicuro di voler eliminare questa attività?");
 				if (isConfirmed == 1) {
-					//*container = removeActivity(*container, id);
-					removeActivity(*container, id);
+					removeActivity(container, id);
 					printf("\nAttività eliminata.\n");
 				}
 			} else {
@@ -114,21 +112,21 @@ int handleMainMenu(ActivitiesContainer * container) {
 		}
 
 		case 4: { // 4. Visualizza avanzamento attività
-			printActivitiesProgress(*container);
+			printActivitiesProgress(container);
 			break;
 		}
 
 		case 5: { //5. Visualizza report settimanale
-			printActivitiesReport(*container);
+			printActivitiesReport(container);
 			break;
 		}
 
 		case 6: { //6. Visualizza dettaglio attività
-			int maxId = getNextId(*container);
+			int maxId = getNextId(container);
 			if (maxId > 0) {
 				printf("\nInserisci l'id dell'attività (numero < %d): ", maxId);
 				int id = getChoice(maxId);
-				printActivityWithId(*container, id);
+				printActivityWithId(container, id);
 			} else {
 				printf("\nAl momento non puoi cercare attività.");
 			}
@@ -139,9 +137,9 @@ int handleMainMenu(ActivitiesContainer * container) {
 			char* userFile = getInfoFromUser("Nome file per salvataggio (se esiste sarà sovrascritto - lascia vuoto per default): ");
 			int saveResult = 0;
 			if (userFile == NULL) {
-				saveResult = saveActivitiesToFile(DEFAULT_ACTIVITIES_FILE, *container);
+				saveResult = saveActivitiesToFile(DEFAULT_ACTIVITIES_FILE, container);
 			} else {
-				saveResult = saveActivitiesToFile(userFile, *container);
+				saveResult = saveActivitiesToFile(userFile, container);
 				free(userFile);
 			}
 			
@@ -162,7 +160,7 @@ int main() {
 	if (activities != NULL) {
 		int userChoice = 0;
 		while( userChoice >= 0) {
-			userChoice = handleMainMenu(&activities);
+			userChoice = handleMainMenu(activities);
 		}
 		
 		//ActivitiesContainer was deleted on exit choice...
