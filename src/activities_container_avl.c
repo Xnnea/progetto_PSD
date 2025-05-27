@@ -1,9 +1,35 @@
 #include "activity_helper.h"
 #include "activities_container_avl.h"
 
-// Defining the node structure for the AVL tree
+/*
+ * "struct node" Documentation
+ * 
+ * Syntactic Specification:
+ * typedef struct node {
+ *     Activity activity;
+ *     struct node* left;
+ *     struct node* right;
+ *     int height;
+ * } Node;
+ * 
+ * Semantic Specification:
+ * Defines the node structure for the AVL tree. Each node contains an activity data structure (pointer),
+ * pointers to left and right child nodes, and stores its height for efficient AVL balancing operations.
+ * 
+ * Fields:
+ * - activity: The Activity data structure (pointer) stored in this node
+ * - left: Pointer to the left child node (contains activities with smaller IDs)
+ * - right: Pointer to the right child node (contains activities with larger IDs)
+ * - height: The height of this node in the tree (length of longest path to a leaf)
+ * 
+ * Notes:
+ * - For any node, all activities in the left subtree have IDs smaller than the node's activity ID
+ * - For any node, all activities in the right subtree have IDs larger than the node's activity ID
+ * - The height field accurately reflects the node's height in the tree
+ * - The AVL balance property is maintained: |height(left) - height(right)| <= 1
+ */
 typedef struct node {
-	Activity activity;   // Data structure pointer: activity stored in the node
+	Activity activity;   // Data structure pointer (activity stored in the node)
 	struct node* left;
 	struct node* right; 
 	int height;
@@ -11,27 +37,114 @@ typedef struct node {
 
 
 
+
+/*
+ * getLeftNode
+ * 
+ * Syntactic Specification:
+ * TreeNode getLeftNode(TreeNode node);
+ * 
+ * Semantic Specification:
+ * Returns the left child of the specified node.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'node == NULL', returns 'NULL'
+ * - Otherwise, returns 'node->left'
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 TreeNode getLeftNode(TreeNode node) {
 	if (!node) return NULL;
 	
 	return node->left;
 }
 
+/*
+ * getRightNode
+ * 
+ * Syntactic Specification:
+ * TreeNode getRightNode(TreeNode node);
+ * 
+ * Semantic Specification:
+ * Returns the right child of the specified node.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'node == NULL', returns 'NULL'
+ * - Otherwise, returns 'node->right'
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 TreeNode getRightNode(TreeNode node) {
 	if (!node) return NULL;
 	
 	return node->right;
 }
 
-
+/*
+ * getActivityFromNode
+ * 
+ * Syntactic Specification:
+ * Activity getActivityFromNode(TreeNode node);
+ * 
+ * Semantic Specification:
+ * Returns the activity stored in the specified node.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'node == NULL', returns 'NULL'
+ * - Otherwise, returns 'node->activity'
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 Activity getActivityFromNode(TreeNode node) {
 	if (!node) return NULL;
 	
 	return node->activity;
 }
 
-
-// Search a node in the AVL tree
+/*
+ * search
+ * 
+ * Syntactic Specification:
+ * TreeNode search(Node* root, int activityId);
+ * 
+ * Semantic Specification:
+ * Searches for an activity with the specified ID (key of the AVL tree) in the tree rooted at 'root'.
+ * 
+ * Preconditions:
+ * - 'activityId' must be a valid ID
+ * 
+ * Postconditions:
+ * - If 'root == NULL', returns 'NULL'
+ * - If it finds the activity with the specified ID, returns the corresponding node
+ * - Otherwise, returns 'NULL'
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 TreeNode search(TreeNode root, int activityId) {
 	if (root == NULL) return NULL;
 	
@@ -46,17 +159,62 @@ TreeNode search(TreeNode root, int activityId) {
 	}
 }
 
-
-// Function to get height of a node
+/*
+ * getHeight
+ * 
+ * Syntactic Specification:
+ * int getHeight(Node* n);
+ * 
+ * Semantic Specification:
+ * Returns the height of node 'n'. Remember that the height of a node is the length of the longest path from the node to a leaf. 
+ * In AVL trees it's important to store it because it makes the calculation of the balance factor efficient and the verification 
+ * of the need for rebalancing.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'n == NULL', returns 0
+ * - Otherwise, returns 'n->height'
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 int getHeight(Node* n) {
 	if (n == NULL) return 0;
 	return n->height;
 }
 
-// Function to create a new node
+/*
+ * createNode
+ * 
+ * Syntactic Specification:
+ * Node* createNode(Activity activity);
+ * 
+ * Semantic Specification:
+ * Creates a new node containing the specified activity.
+ * 
+ * Preconditions:
+ * - 'activity != NULL'
+ * 
+ * Postconditions:
+ * - If 'activity == NULL', returns 'NULL'
+ * - Otherwise, allocates a new node with the specified activity
+ * - The new node has 'NULL' children and height 1
+ * 
+ * Effects:
+ * - Allocates memory for a new node
+ * 
+ * Side Effects:
+ * - None
+ */
 Node* createNode(Activity activity) {
 	if (!activity) return NULL;
 	Node* node = (Node*) malloc(sizeof(Node));
+	if (node == NULL) return NULL;
 	node->activity = activity;
 	node->left = NULL;
 	node->right = NULL;
@@ -65,13 +223,58 @@ Node* createNode(Activity activity) {
 }
 
 
-// Function to get balance factor of a node
+/*
+ * getBalanceFactor
+ * 
+ * Syntactic Specification:
+ * int getBalanceFactor(Node* n);
+ * 
+ * Semantic Specification:
+ * Calculates the balance factor of the node (left subtree height - right subtree height).
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'n == NULL', returns 0
+ * - Otherwise, returns the difference between left and right child heights
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 int getBalanceFactor(Node* n) {
 	if (n == NULL) return 0;
 	return getHeight(n->left) - getHeight(n->right);
 }
 
-// Right rotation function
+/*
+ * rightRotate
+ * 
+ * Syntactic Specification:
+ * Node* rightRotate(Node* y);
+ * 
+ * Semantic Specification:
+ * Performs a right rotation on node 'y' to maintain AVL tree properties.
+ * 
+ * Preconditions:
+ * - 'y != NULL'
+ * - 'y->left != NULL'
+ * 
+ * Postconditions:
+ * - Returns the new root after rotation
+ * - Heights of involved nodes are updated
+ * - AVL properties are maintained
+ * 
+ * Effects:
+ * - Modifies tree structure
+ * - Updates node heights
+ * 
+ * Side Effects:
+ * - None
+ */
 Node* rightRotate(Node* y) {
 	Node* x = y->left;
 	Node* T2 = x->right;
@@ -87,7 +290,31 @@ Node* rightRotate(Node* y) {
 	return x;
 }
 
-// Left rotation function
+/*
+ * leftRotate
+ * 
+ * Syntactic Specification:
+ * Node* leftRotate(Node* x);
+ * 
+ * Semantic Specification:
+ * Performs a left rotation on node 'x' to maintain AVL tree properties.
+ * 
+ * Preconditions:
+ * - 'x != NULL'
+ * - 'x->right != NULL'
+ * 
+ * Postconditions:
+ * - Returns the new root after rotation
+ * - Heights of involved nodes are updated
+ * - AVL properties are maintained
+ * 
+ * Effects:
+ * - Modifies tree structure
+ * - Updates node heights
+ * 
+ * Side Effects:
+ * - None
+ */
 Node* leftRotate(Node* x) {
 	Node* y = x->right;
 	Node* T2 = y->left;
@@ -105,8 +332,32 @@ Node* leftRotate(Node* x) {
 
 
 
-
-// Function to insert a new node (and an activity) into a subtree
+/*
+ * insertNode
+ * 
+ * Syntactic Specification:
+ * TreeNode insertNode(TreeNode node, Activity activity);
+ * 
+ * Semantic Specification:
+ * Inserts a new activity into the subtree rooted at 'node' while maintaining AVL properties.
+ * 
+ * Preconditions:
+ * - 'activity != NULL'
+ * 
+ * Postconditions:
+ * - If 'node == NULL', creates and returns a new node
+ * - If the activity already exists (same ID), returns the unmodified tree
+ * - Otherwise, inserts the activity and rebalances the tree if necessary
+ * - The resulting tree maintains AVL properties
+ * 
+ * Effects:
+ * - May allocate memory for new nodes
+ * - Modifies tree structure
+ * - Updates node heights
+ * 
+ * Side Effects:
+ * - None
+ */
 TreeNode insertNode(TreeNode node, Activity activity) {
 	
 	// 0 - If node is null
@@ -168,7 +419,29 @@ TreeNode insertNode(TreeNode node, Activity activity) {
 
 
 
-// Return the node with minimum key (id) value found in that subtree. Used only by deleteNode.
+/*
+ * minValueNode
+ * 
+ * Syntactic Specification:
+ * Node* minValueNode(Node* node);
+ * 
+ * Semantic Specification:
+ * Returns the node with the minimum key value (id) in the tree rooted at 'node'. Leftmost leaf.
+ * 
+ * Preconditions:
+ * - None (the function handles the case 'node == NULL')
+ * 
+ * Postconditions:
+ * - If 'node == NULL', returns 'NULL'
+ * - Otherwise, returns the leftmost node in the tree
+ * - The returned node has no left child (if not 'NULL')
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - None
+ */
 Node* minValueNode(Node* node) {
 	if (!node) return NULL;
 	Node* current = node;
@@ -180,8 +453,33 @@ Node* minValueNode(Node* node) {
 	return current;
 }
 
-// Function (recursive) to delete a node with given activityId (key) from a subtree. 
-// It returns root of the modified subtree.
+/*
+ * deleteNode
+ * 
+ * Syntactic Specification:
+ * TreeNode deleteNode(TreeNode root, int activityId);
+ * 
+ * Semantic Specification:
+ * Deletes the node with the specified ID from the subtree rooted at 'root' while maintaining AVL properties.
+ * 
+ * Preconditions:
+ * - 'activityId' must be a valid ID
+ * 
+ * Postconditions:
+ * - If 'root == NULL', returns 'NULL'
+ * - If the node with 'activityId' doesn't exist, returns the unmodified tree
+ * - Otherwise, deletes the node and rebalances the tree
+ * - The activity contained in the deleted node is deallocated
+ * 
+ * Effects:
+ * - Deallocates memory of the deleted node
+ * - Deallocates the contained activity
+ * - Modifies tree structure
+ * - Updates node heights
+ * 
+ * Side Effects:
+ * - Calls to 'deleteActivity()' and 'free()'
+ */
 TreeNode deleteNode(TreeNode root, int activityId) {
 	if (root == NULL) return root;
 	
@@ -266,15 +564,34 @@ TreeNode deleteNode(TreeNode root, int activityId) {
 	return root;
 }
 
-
-// Function to perform postorder delete of a subtree
+/*
+ * deleteSubtree
+ * 
+ * Syntactic Specification:
+ * void deleteSubtree(Node* root);
+ * 
+ * Semantic Specification:
+ * Recursively (perform postorder visit) deletes all nodes of a subtree and their related activities.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - All subtree nodes are deallocated
+ * - All contained activities are deallocated
+ * 
+ * Effects:
+ * - Deallocates all tree memory
+ * 
+ * Side Effects:
+ * - Calls to 'deleteActivity()' and 'free()'
+ */
 void deleteSubtree(TreeNode root) {
 	if (root != NULL) {
 		deleteSubtree(root->left);
 		deleteSubtree(root->right);
 		
 		deleteActivity(root->activity);
-		//free(root->activity);
 		free(root);
 	}
 }
