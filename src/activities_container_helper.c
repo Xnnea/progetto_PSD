@@ -4,8 +4,27 @@
 
 
 
-
-// Function to perform preorder traversal of AVL tree and save to file activity by activity
+/*
+ * inOrderSaveActivitiesToFile
+ * 
+ * Syntactic Specification:
+ * void inOrderSaveActivitiesToFile(FILE* file, TreeNode root);
+ * 
+ * Semantic Specification:
+ * Recursively saves all tree activities to file in in-order.
+ * 
+ * Preconditions:
+ * - 'file' must be a file opened for writing
+ * 
+ * Postconditions:
+ * - All activities are saved to file in ascending order of ID
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file via 'saveActivityToFile()'
+ */
 void inOrderSaveActivitiesToFile(FILE* file, TreeNode root) {
 	if (root != NULL) {
 		inOrderSaveActivitiesToFile(file, getLeftNode(root) );
@@ -14,10 +33,32 @@ void inOrderSaveActivitiesToFile(FILE* file, TreeNode root) {
 	}
 }
 
-// Function to save activities (tree) to a file
-// 0 = OK, 1 = ERROR
+/*
+ * saveActivitiesToFile
+ * 
+ * Syntactic Specification:
+ * int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Saves all activities from the container to a file.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container == NULL' or 'filename != NULL', returns 1 (error)
+ * - If unable to open the file, returns 1 (error)
+ * - Otherwise, saves all activities and returns 0 (success)
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - File opening and writing
+ * - Output to stdout (informational messages)
+ */
 int saveActivitiesToFile(const char* filename, ActivitiesContainer container) {
-	if (container == NULL) return 1;
+	if (container == NULL || filename == NULL) return 1;
 	
 	FILE* file = fopen(filename, "w");
 	if (file == NULL) {
@@ -40,10 +81,41 @@ int saveActivitiesToFile(const char* filename, ActivitiesContainer container) {
 
 
 
-// Function to read all activities from a file
+/*
+ * readActivitiesFromFile
+ * 
+ * Syntactic Specification:
+ * ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
+ * 
+ * Semantic Specification:
+ * Reads activities from a file and inserts them into a new container.
+ * 
+ * Preconditions:
+ * - 'count != NULL'
+ * 
+ * Postconditions:
+ * - Creates a new container
+ * - If the file doesn't exist, returns an empty container and '*count = 0'
+ * - Otherwise, reads all activities from the file and updates '*count' (number of activities read)
+ * 
+ * Effects:
+ * - Allocates memory for the container and activities
+ * - Modifies '*count' (number of activities read)
+ * 
+ * Side Effects:
+ * - File opening and reading
+ * - Output to stdout (informational messages)
+ * - Calls to 'readActivityFromFile()'
+ */
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 	ActivitiesContainer newContainer = newActivityContainer();
 	if(newContainer == NULL) return NULL;
+	
+	if (filename == NULL) {
+		printf("Il nome di file fornito è NULL. Verrà creato un contenitore vuoto per le attività.\n", filename);
+		*count = 0;
+		return newContainer;
+	} 
 	
 	FILE* file = fopen(filename, "r");
 	if (file == NULL) {
@@ -77,7 +149,31 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 
 
 
-
+/*
+ * addNewActivityToContainer
+ * 
+ * Syntactic Specification:
+ * ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Interacts with the user to create and add a new activity to the container.
+ * 
+ * Preconditions:
+ * - 'container != NULL'
+ * 
+ * Postconditions:
+ * - If 'container == NULL', returns 0
+ * - Otherwise, asks user for data and adds the new activity
+ * 
+ * Effects:
+ * - Modifies the container by adding a new activity
+ * - Allocates memory for the new activity
+ * 
+ * Side Effects:
+ * - User interaction (input/output)
+ * - Calls to user input functions
+ * - Calls to 'time()' for timestamp
+ */
 void addNewActivityToContainer(ActivitiesContainer container) {
 	
 	if (container == NULL) return;
@@ -109,7 +205,7 @@ void addNewActivityToContainer(ActivitiesContainer container) {
 		}
 	}
 	
-	time_t insertDate = time(NULL);
+	time_t insertDate = time(NULL); //now
 	
 	printf("\nVuoi inserire la data di scadenza per questa attività?\n");
 	printf("1. Si\n");
@@ -135,7 +231,7 @@ void addNewActivityToContainer(ActivitiesContainer container) {
 	printf("Scelta: ");
 	short unsigned int priority = (short unsigned int) getChoiceWithLimits(1, 3);
 	
-	//With 0 id is automatically calculated
+	//If id=0 then is automatically calculated on container insertion
 	Activity activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
 	
 	insertActivity(container, activity);
@@ -151,7 +247,29 @@ void addNewActivityToContainer(ActivitiesContainer container) {
 
 
 
-
+/*
+ * printActivityWithId
+ * 
+ * Syntactic Specification:
+ * void printActivityWithId(ActivitiesContainer container, int activityId);
+ * 
+ * Semantic Specification:
+ * Prints the details of the activity with the specified ID.
+ * 
+ * Preconditions:
+ * - 'container' can be 'NULL'
+ * - 'activityId' must be a valid ID
+ * 
+ * Postconditions:
+ * - If the activity is found, its details are printed
+ * - Otherwise, no action
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout via 'printActivityDetailWithMenu()'
+ */
 void printActivityWithId(ActivitiesContainer container, int activityId) {
 	TreeNode root = getRootNode(container);
 	if(root == NULL) return;
@@ -165,8 +283,27 @@ void printActivityWithId(ActivitiesContainer container, int activityId) {
 
 
 
-
-// Function to perform inorder traversal of AVL tree and print the contained activity
+/*
+ * printInOrder
+ * 
+ * Syntactic Specification:
+ * void printInOrder(TreeNode root);
+ * 
+ * Semantic Specification:
+ * Performs an in-order traversal of the tree printing the activities (print activity on a single line).
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - All activities in the tree are printed in ascending order of ID
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout via 'printActivityForList()'
+ */
 void printInOrder(TreeNode root) {
 	if (root != NULL) {
 		printInOrder( getLeftNode(root) );
@@ -177,7 +314,27 @@ void printInOrder(TreeNode root) {
 }
 
 
-// Prints all activities
+/*
+ * printActivities
+ * 
+ * Syntactic Specification:
+ * void printActivities(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Prints all activities (list format, one per line) from the container in ascending order of ID.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container != NULL', prints all activities with headers
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout
+ */
 void printActivities(ActivitiesContainer container) {
 	if (container != NULL) {
 		printf("\n=============================\n");
@@ -197,7 +354,27 @@ void printActivities(ActivitiesContainer container) {
 
 
 
-
+/*
+ * printInOrderToFile
+ * 
+ * Syntactic Specification:
+ * void printInOrderToFile(TreeNode root, FILE* file);
+ * 
+ * Semantic Specification:
+ * Recursively prints tree activities to file (list format, one per line) in in-order.
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * 
+ * Postconditions:
+ * - All activities are printed to file in ascending order of ID
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
 void printInOrderToFile(TreeNode root, FILE* file) {
 	if (root != NULL) {
 		printInOrderToFile( getLeftNode(root), file );
@@ -206,7 +383,27 @@ void printInOrderToFile(TreeNode root, FILE* file) {
 	}
 }
 
-// Prints all activities to file
+/*
+ * printActivitiesToFile
+ * 
+ * Syntactic Specification:
+ * void printActivitiesToFile(ActivitiesContainer container, FILE* file);
+ * 
+ * Semantic Specification:
+ * Prints all container activities to file (list format, one per line).
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * 
+ * Postconditions:
+ * - If both parameters are valid, prints all activities to file
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
 void printActivitiesToFile(ActivitiesContainer container, FILE* file) {
 	if (container != NULL && file != NULL) {
 		TreeNode root = getRootNode(container);
@@ -217,7 +414,27 @@ void printActivitiesToFile(ActivitiesContainer container, FILE* file) {
 
 
 
-
+/*
+ * printInOrderProgress
+ * 
+ * Syntactic Specification:
+ * void printInOrderProgress(TreeNode root);
+ * 
+ * Semantic Specification:
+ * Recursively prints activity progress from the tree (progress list format with progress, one per line) in in-order.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - Progress of all activities is printed in ascending order of ID
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout via 'printActivityProgressForList()'
+ */
 void printInOrderProgress(TreeNode root) {
 	if (root != NULL) {
 		printInOrderProgress( getLeftNode(root) );
@@ -226,7 +443,27 @@ void printInOrderProgress(TreeNode root) {
 	}
 }
 
-// Prints activities progress
+/*
+ * printActivitiesProgress
+ * 
+ * Syntactic Specification:
+ * void printActivitiesProgress(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Prints the progress of all container activities (progress list format, one per line) with headers.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container != NULL', prints progress of all activities
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout
+ */
 void printActivitiesProgress(ActivitiesContainer container) {
 	if (container != NULL) {
 		printf("\n=============================\n");
@@ -244,7 +481,27 @@ void printActivitiesProgress(ActivitiesContainer container) {
 }
 
 
-
+/*
+ * printInOrderProgressToFile
+ * 
+ * Syntactic Specification:
+ * void printInOrderProgressToFile(TreeNode root, FILE* file);
+ * 
+ * Semantic Specification:
+ * Recursively prints activity progress to file (progress list format, one per line) in in-order.
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * 
+ * Postconditions:
+ * - Progress of all activities is printed to file
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
 void printInOrderProgressToFile(TreeNode root, FILE* file)  {
 	if (root != NULL) {
 		printInOrderProgressToFile( getLeftNode(root), file );
@@ -253,6 +510,27 @@ void printInOrderProgressToFile(TreeNode root, FILE* file)  {
 	}
 }
 
+/*
+ * printActivitiesProgressToFile
+ * 
+ * Syntactic Specification:
+ * void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
+ * 
+ * Semantic Specification:
+ * Prints the progress of all container activities to file (progress list format, one per line).
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * 
+ * Postconditions:
+ * - If both parameters are valid, prints progress with header
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
 void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file) {
 	if (container != NULL && file != NULL) {
 		fprintf(file, "=== MONITORAGGIO PROGRESSO ===\n");
@@ -273,7 +551,37 @@ void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file) {
 
 
 
-
+/*
+ * buildInOrderSupportListsForActivitiesReport
+ * 
+ * Syntactic Specification:
+ * void buildInOrderSupportListsForActivitiesReport(Node* root, 
+ *     ActivitiesContainerSupportList completedList,
+ *     ActivitiesContainerSupportList ongoingList, 
+ *     ActivitiesContainerSupportList expiredList,
+ *     ActivitiesContainerSupportList yetToBeginList, 
+ *     time_t beginDate, time_t nowDate);
+ * 
+ * Semantic Specification:
+ * Builds support lists by categorizing activities by status in a given period.
+ * 
+ * Preconditions:
+ * - All support lists must be initialized
+ * - 'beginDate <= nowDate'
+ * 
+ * Postconditions:
+ * - Activities are categorized based on their status:
+ *   - 'completedList': activities completed in the specified period
+ *   - 'ongoingList': ongoing activities
+ *   - 'expiredList': expired activities (no completed activities here)
+ *   - 'yetToBeginList': activities not yet started
+ * 
+ * Effects:
+ * - Modifies support lists by adding references to activities
+ * 
+ * Side Effects:
+ * - Calls to activity status checking functions
+ */
 void buildInOrderSupportListsForActivitiesReport(TreeNode root, ActivitiesContainerSupportList completedList, ActivitiesContainerSupportList ongoingList, ActivitiesContainerSupportList expiredList, ActivitiesContainerSupportList yetToBeginList, time_t beginDate, time_t nowDate) {
 	if (root != NULL) {
 		buildInOrderSupportListsForActivitiesReport( getLeftNode(root), completedList, ongoingList, expiredList, yetToBeginList, beginDate, nowDate); //left
@@ -298,7 +606,30 @@ void buildInOrderSupportListsForActivitiesReport(TreeNode root, ActivitiesContai
 }
 
 
-
+/*
+ * printActivitiesReport
+ * 
+ * Syntactic Specification:
+ * void printActivitiesReport(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Generates and prints a detailed report of activities categorized by status and period.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container' is valid, prints a complete report with categorized activities
+ * - Interacts with user to define the report period
+ * 
+ * Effects:
+ * - Allocates and deallocates temporary support lists
+ * 
+ * Side Effects:
+ * - User interaction (input/output)
+ * - Output to stdout
+ * - Calls to time management functions
+ */
 void printActivitiesReport(ActivitiesContainer container) {
 	TreeNode root = getRootNode(container);
 	if (root == NULL) return;
@@ -382,6 +713,28 @@ void printActivitiesReport(ActivitiesContainer container) {
 	deleteSupportList(&expiredList);
 }
 
+/*
+ * printActivitiesReportToFile
+ * 
+ * Syntactic Specification:
+ * void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+ * 
+ * Semantic Specification:
+ * Prints an activity report to file for a specified period.
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * - 'beginDate >= 0'
+ * 
+ * Postconditions:
+ * - If all parameters are valid, prints the report to file
+ * 
+ * Effects:
+ * - Allocates and deallocates temporary support lists
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
 void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file) {
 	TreeNode root = getRootNode(container);
 	if (root == NULL || file == NULL || beginDate < 0) return;
