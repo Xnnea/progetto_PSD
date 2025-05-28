@@ -364,4 +364,62 @@ void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate
 
 
 
+/*
+ * readActivitiesFromFile
+ * 
+ * Syntactic Specification:
+ * ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
+ * 
+ * Semantic Specification:
+ * Reads activities from a file and inserts them into a new container.
+ * 
+ * Preconditions:
+ * - 'count != NULL'
+ * 
+ * Postconditions:
+ * - Creates a new container
+ * - If the file doesn't exist, returns an empty container and '*count = 0'
+ * - Otherwise, reads all activities from the file and updates '*count' (number of activities read)
+ * 
+ * Effects:
+ * - Allocates memory for the container and activities
+ * - Modifies '*count' (number of activities read)
+ * 
+ * Side Effects:
+ * - File opening and reading
+ * - Output to stdout (informational messages)
+ * - Calls to 'readActivityFromFile()'
+ */
+ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
+
+
+/*
+ * addNewActivityToContainer
+ * 
+ * Syntactic Specification:
+ * ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Interacts with the user to create and add a new activity to the container.
+ * 
+ * Preconditions:
+ * - 'container != NULL'
+ * 
+ * Postconditions:
+ * - If 'container == NULL', returns
+ * - Otherwise, asks user for data and adds the new activity
+ * 
+ * Effects:
+ * - Modifies the container by adding a new activity
+ * - Allocates memory for the new activity
+ * 
+ * Side Effects:
+ * - User interaction (input/output)
+ * - Calls to user input functions
+ * - Calls to 'time()' for timestamp
+ */
+void addNewActivityToContainer(ActivitiesContainer container);
+
+
+
 #endif // ACTIVITIES_CONTAINER_H          // End of inclusion block

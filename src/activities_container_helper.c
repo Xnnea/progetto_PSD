@@ -75,97 +75,23 @@ int saveActivitiesFromTreeToFile(const char* filename, TreeNode root) {
 
 
 
-
-
-
-
-
 /*
- * readActivitiesFromFile
+ * createNewActivityFromUserInput
  * 
  * Syntactic Specification:
- * ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
+ * Activity createNewActivityFromUserInput();
  * 
  * Semantic Specification:
- * Reads activities from a file and inserts them into a new container.
+ * Interacts with the user to create a new activity.
  * 
  * Preconditions:
- * - 'count != NULL'
+ * - None
  * 
  * Postconditions:
- * - Creates a new container
- * - If the file doesn't exist, returns an empty container and '*count = 0'
- * - Otherwise, reads all activities from the file and updates '*count' (number of activities read)
+ * - Asks user for data and create and return the new activity
  * 
  * Effects:
- * - Allocates memory for the container and activities
- * - Modifies '*count' (number of activities read)
- * 
- * Side Effects:
- * - File opening and reading
- * - Output to stdout (informational messages)
- * - Calls to 'readActivityFromFile()'
- */
-ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
-	ActivitiesContainer newContainer = newActivityContainer();
-	if(newContainer == NULL) return NULL;
-	
-	if (filename == NULL) {
-		printf("Il nome di file fornito è NULL. Verrà creato un contenitore vuoto per le attività.\n", filename);
-		*count = 0;
-		return newContainer;
-	} 
-	
-	FILE* file = fopen(filename, "r");
-	if (file == NULL) {
-		printf("Il file %s non esiste. Verrà creato un contenitore vuoto per le attività.\n", filename);
-		*count = 0;
-		return newContainer;
-	}
-	
-	*count = 0;
-	
-	while (!feof(file)) {  
-		Activity currentActivity = readActivityFromFile(file);
-		if (currentActivity == NULL) {
-			fclose(file);
-			return newContainer;
-		}
-		
-		insertActivity(newContainer, currentActivity);
-		*count += 1;
-	}
-	  
-	fclose(file);
-	printf("Lette %d attività dal file %s.\n", *count, filename);
-	return newContainer;
-}
-
-
-
-
-
-
-
-
-/*
- * addNewActivityToContainer
- * 
- * Syntactic Specification:
- * ActivitiesContainer addNewActivityToContainer(ActivitiesContainer container);
- * 
- * Semantic Specification:
- * Interacts with the user to create and add a new activity to the container.
- * 
- * Preconditions:
- * - 'container != NULL'
- * 
- * Postconditions:
- * - If 'container == NULL', returns 0
- * - Otherwise, asks user for data and adds the new activity
- * 
- * Effects:
- * - Modifies the container by adding a new activity
+ * - Return a new activity
  * - Allocates memory for the new activity
  * 
  * Side Effects:
@@ -173,11 +99,7 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
  * - Calls to user input functions
  * - Calls to 'time()' for timestamp
  */
-void addNewActivityToContainer(ActivitiesContainer container) {
-	
-	if (container == NULL) return;
-	
-	
+Activity createNewActivityFromUserInput() {
 	printf("\n====== Inserisci una nuova attività ======\n");
 	
 	char* activityName = NULL;
@@ -231,9 +153,7 @@ void addNewActivityToContainer(ActivitiesContainer container) {
 	short unsigned int priority = (short unsigned int) getChoiceWithLimits(1, 3);
 	
 	//If id=0 then is automatically calculated on container insertion
-	Activity activity = newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
-	
-	insertActivity(container, activity);
+	return newActivity( 0, activityName, activityDesr, activityCourse, insertDate, expiryDate, completionDate, totalTime, usedTime, priority);
 }
 
 
