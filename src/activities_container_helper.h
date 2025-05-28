@@ -1,8 +1,7 @@
 #ifndef ACTIVITIES_CONTAINER_HELPER_H             // Start of inclusion block
 #define ACTIVITIES_CONTAINER_HELPER_H             // Macro definition to avoid multiple inclusions
 
-#include "activities_container.h"
-#include "activity_helper.h"
+#include "activities_container_avl.h"
 
 
 /*

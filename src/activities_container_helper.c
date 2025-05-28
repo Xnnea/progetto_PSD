@@ -1,3 +1,4 @@
+#include "activity_helper.h"
 #include "activities_container_helper.h"
 #include "activities_container_support_list.h"
 
