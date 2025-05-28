@@ -7,12 +7,48 @@
 #include "activities_container_helper.h"
 
 
-
-// Definition of the containerItem structure that points to the initial node of the tree (root).
-// It also contains the next id to use when inserting a node.
+/*
+* "struct containerItem" Documentation
+* 
+* Syntactic Specification:
+* struct containerItem {
+*     TreeNode avlTree;
+*     int nextId;
+* };
+* 
+* Semantic Specification:
+* Defines the activities container structure that provides an abstraction layer between the application
+* and the underlying AVL tree data structure. This container encapsulates the complexity of tree
+* operations and ID management, offering a simplified interface for activity management.
+* 
+* Fields:
+* - avlTree: Pointer to the root node of the AVL tree containing all activities
+* - nextId: The next unique ID to assign to a new activity when inserted
+* 
+* Abstraction Benefits:
+* - Data Structure Independence: The application code doesn't need to know about AVL tree
+*   implementation details, rotations, or balancing operations
+* - Simplified Interface: Client code uses high-level operations (insert, remove, search)
+*   without managing tree pointers or node structures directly
+* - Automatic ID Management: The container handles unique ID generation automatically,
+*   preventing ID conflicts and ensuring data integrity
+* - Implementation Flexibility: The underlying data structure could be changed (e.g., to
+*   hash table, B-tree) without affecting client code
+* - Error Handling: Container functions provide consistent error handling and validation
+*   without exposing tree-specific error conditions
+* - Memory Management: Centralized allocation and deallocation of tree resources through
+*   container-level functions
+* 
+* Notes:
+* - When the container is empty, avlTree is NULL and nextId is typically 1
+* - The nextId is automatically incremented when activities are inserted
+* - Activities are stored in the AVL tree ordered by their unique ID values
+* - The container ensures efficient O(log n) operations while hiding complexity from users
+* - This abstraction follows the principle of information hiding and modular design
+*/
 struct containerItem {
-	TreeNode avlTree;
-	int nextId;
+	TreeNode avlTree; // Pointer to the root node of the AVL tree
+	int nextId; // Next available unique ID for new activities
 };
 
 

@@ -1,10 +1,48 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include "activity.h"
 
-// Activity data structure definition
+
+
+/*
+ * "struct activity" Documentation
+ * 
+ * Syntactic Specification:
+ * struct activity {
+ *     int id;
+ *     char* name;
+ *     char* descr;
+ *     char* course;
+ *     time_t insertDate;
+ *     time_t expiryDate;
+ *     time_t completionDate;
+ *     unsigned int totalTime;
+ *     unsigned int usedTime;
+ *     short unsigned int priority;
+ * };
+ * 
+ * Semantic Specification:
+ * Defines the data structure for managing academic or professional activities.
+ * Each activity represents a task or assignment with temporal constraints, 
+ * time tracking capabilities, and priority management.
+ * 
+ * Fields:
+ * - id: Unique identifier of the activity (integer)
+ * - name: Descriptive name of the activity (dynamically allocated string)
+ * - descr: Detailed description of the activity (dynamically allocated string)
+ * - course: Associated course or context (dynamically allocated string)
+ * - insertDate: Timestamp when the activity was created/inserted (time_t)
+ * - expiryDate: Deadline or expiration timestamp for the activity (time_t)
+ * - completionDate: Timestamp when the activity was completed (time_t)
+ * - totalTime: Total allocated time for the activity in minutes (unsigned int)
+ * - usedTime: Time already spent on the activity in minutes (unsigned int)
+ * - priority: Priority level of the activity (short unsigned int)
+ * 
+ * Notes:
+ * - All string fields (name, descr, course) are dynamically allocated and may be NULL
+ * - Time fields use time_t for standard timestamp representation
+ * - Time tracking is measured in minutes for granular control
+ * - Priority uses short unsigned int for memory efficiency
+ * - The structure supports complete lifecycle tracking from creation to completion
+ */
 struct activity {
 	int id;	// Unique identifier of the activity
 	char* name;
