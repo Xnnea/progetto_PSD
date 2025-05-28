@@ -11,29 +11,6 @@ typedef struct containerItem* ActivitiesContainer;
 
 
 
-/*
- * getRootNode
- * 
- * Syntactic Specification:
- * TreeNode getRootNode(ActivitiesContainer container);
- * 
- * Semantic Specification:
- * Returns the root node of the AVL tree contained within the given activities container.
- * 
- * Preconditions:
- * - None
- * 
- * Postconditions:
- * - If 'container == NULL', returns 'NULL'
- * - Otherwise, returns 'container->avlTree'
- * 
- * Effects:
- * - No modifications to data structures
- * 
- * Side Effects:
- * - None
- */
-TreeNode getRootNode(ActivitiesContainer container);
 
 /*
  * getNextId
@@ -184,5 +161,207 @@ void removeActivity(ActivitiesContainer container, int activityId);
  * - Calls to deallocation functions
  */
 void deleteActivityContainer(ActivitiesContainer container);
+
+/*
+ * saveActivitiesToFile
+ * 
+ * Syntactic Specification:
+ * int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Saves all activities from the container to a file.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container == NULL' or 'filename != NULL', returns 1 (error)
+ * - If unable to open the file, returns 1 (error)
+ * - Otherwise, saves all activities and returns 0 (success)
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - File opening and writing
+ * - Output to stdout (informational messages)
+ */
+int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
+
+
+/*
+ * printActivityWithId
+ * 
+ * Syntactic Specification:
+ * void printActivityWithId(ActivitiesContainer container, int activityId);
+ * 
+ * Semantic Specification:
+ * Prints the details of the activity with the specified ID.
+ * 
+ * Preconditions:
+ * - 'container' can be 'NULL'
+ * - 'activityId' must be a valid ID
+ * 
+ * Postconditions:
+ * - If the activity is found, its details are printed
+ * - Otherwise, no action
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout via 'printActivityDetailWithMenu()'
+ */
+void printActivityWithId(ActivitiesContainer container, int activityId);
+
+
+/*
+ * printActivities
+ * 
+ * Syntactic Specification:
+ * void printActivities(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Prints all activities (list format, one per line) from the container in ascending order of ID.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container != NULL', prints all activities with headers (see 'printAllActivities')
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout
+ */
+void printActivities(ActivitiesContainer container);
+
+
+/*
+ * printActivitiesToFile
+ * 
+ * Syntactic Specification:
+ * void printActivitiesToFile(ActivitiesContainer container, FILE* file);
+ * 
+ * Semantic Specification:
+ * Prints all container activities to file (list format, one per line).
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * 
+ * Postconditions:
+ * - If both parameters are valid, prints all activities to file
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
+void printActivitiesToFile(ActivitiesContainer container, FILE* file);
+
+
+/*
+ * printActivitiesProgress
+ * 
+ * Syntactic Specification:
+ * void printActivitiesProgress(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Prints the progress of all container activities (progress list format, one per line) with headers.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container != NULL', prints progress of all activities
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Output to stdout
+ */
+void printActivitiesProgress(ActivitiesContainer container);
+
+
+/*
+ * printActivitiesProgressToFile
+ * 
+ * Syntactic Specification:
+ * void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
+ * 
+ * Semantic Specification:
+ * Prints the progress of all container activities to file (progress list format, one per line).
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * 
+ * Postconditions:
+ * - If both parameters are valid, prints progress with header
+ * 
+ * Effects:
+ * - No modifications to data structures
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
+void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
+
+
+/*
+ * printActivitiesReport
+ * 
+ * Syntactic Specification:
+ * void printActivitiesReport(ActivitiesContainer container);
+ * 
+ * Semantic Specification:
+ * Generates and prints a detailed report of activities categorized by status and period.
+ * 
+ * Preconditions:
+ * - None
+ * 
+ * Postconditions:
+ * - If 'container' is valid, prints a complete report with categorized activities
+ * - Interacts with user to define the report period
+ * 
+ * Effects:
+ * - Allocates and deallocates temporary support lists
+ * 
+ * Side Effects:
+ * - User interaction (input/output)
+ * - Output to stdout
+ * - Calls to time management functions
+ */
+void printActivitiesReport(ActivitiesContainer container);
+
+
+/*
+ * printActivitiesReportToFile
+ * 
+ * Syntactic Specification:
+ * void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+ * 
+ * Semantic Specification:
+ * Prints an activity report to file for a specified period.
+ * 
+ * Preconditions:
+ * - 'file' must be opened for writing
+ * - 'beginDate >= 0'
+ * 
+ * Postconditions:
+ * - If all parameters are valid, prints the report to file
+ * 
+ * Effects:
+ * - Allocates and deallocates temporary support lists
+ * 
+ * Side Effects:
+ * - Writing to file
+ */
+void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+
+
 
 #endif // ACTIVITIES_CONTAINER_H          // End of inclusion block

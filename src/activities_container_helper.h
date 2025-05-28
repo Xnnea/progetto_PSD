@@ -8,19 +8,19 @@
 
 
 /*
- * saveActivitiesToFile
+ * saveActivitiesFromTreeToFile
  * 
  * Syntactic Specification:
- * int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
+ * int saveActivitiesFromTreeToFile(const char* filename, TreeNode root);
  * 
  * Semantic Specification:
- * Saves all activities from the container to a file.
+ * Saves all activities from the tree to a file.
  * 
  * Preconditions:
  * - None
  * 
  * Postconditions:
- * - If 'container == NULL' or 'filename != NULL', returns 1 (error)
+ * - If 'root == NULL' or 'filename != NULL', returns 1 (error)
  * - If unable to open the file, returns 1 (error)
  * - Otherwise, saves all activities and returns 0 (success)
  * 
@@ -31,7 +31,7 @@
  * - File opening and writing
  * - Output to stdout (informational messages)
  */
-int saveActivitiesToFile(const char* filename, ActivitiesContainer container);
+int saveActivitiesFromTreeToFile(const char* filename, TreeNode root);
 
 /*
  * readActivitiesFromFile
@@ -88,47 +88,20 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count);
  */
 void addNewActivityToContainer(ActivitiesContainer container);
 
-
-
 /*
- * printActivityWithId
+ * printAllActivities
  * 
  * Syntactic Specification:
- * void printActivityWithId(ActivitiesContainer container, int activityId);
+ * void printAllActivities(TreeNode root);
  * 
  * Semantic Specification:
- * Prints the details of the activity with the specified ID.
- * 
- * Preconditions:
- * - 'container' can be 'NULL'
- * - 'activityId' must be a valid ID
- * 
- * Postconditions:
- * - If the activity is found, its details are printed
- * - Otherwise, no action
- * 
- * Effects:
- * - No modifications to data structures
- * 
- * Side Effects:
- * - Output to stdout via 'printActivityDetailWithMenu()'
- */
-void printActivityWithId(ActivitiesContainer container, int activityId);
-
-/*
- * printActivities
- * 
- * Syntactic Specification:
- * void printActivities(ActivitiesContainer container);
- * 
- * Semantic Specification:
- * Prints all activities (list format, one per line) from the container in ascending order of ID.
+ * Prints all activities (list format, one per line) from the tree in ascending order of ID.
  * 
  * Preconditions:
  * - None
  * 
  * Postconditions:
- * - If 'container != NULL', prints all activities with headers
+ * - If 'root != NULL', prints all activities with headers
  * 
  * Effects:
  * - No modifications to data structures
@@ -136,13 +109,13 @@ void printActivityWithId(ActivitiesContainer container, int activityId);
  * Side Effects:
  * - Output to stdout
  */
-void printActivities(ActivitiesContainer container);
+void printAllActivities(TreeNode root);
 
 /*
- * printActivitiesProgress
+ * printTreeActivitiesProgress
  * 
  * Syntactic Specification:
- * void printActivitiesProgress(ActivitiesContainer container);
+ * void printTreeActivitiesProgress(TreeNode root);
  * 
  * Semantic Specification:
  * Prints the progress of all container activities (progress list format, one per line) with headers.
@@ -151,7 +124,7 @@ void printActivities(ActivitiesContainer container);
  * - None
  * 
  * Postconditions:
- * - If 'container != NULL', prints progress of all activities
+ * - If 'root != NULL', prints progress of all activities in tree
  * 
  * Effects:
  * - No modifications to data structures
@@ -159,13 +132,13 @@ void printActivities(ActivitiesContainer container);
  * Side Effects:
  * - Output to stdout
  */
-void printActivitiesProgress(ActivitiesContainer container);
+void printTreeActivitiesProgress(TreeNode root);
 
 /*
- * printActivitiesReport
+ * printTreeActivitiesReport
  * 
  * Syntactic Specification:
- * void printActivitiesReport(ActivitiesContainer container);
+ * void printTreeActivitiesReport(TreeNode root);
  * 
  * Semantic Specification:
  * Generates and prints a detailed report of activities categorized by status and period.
@@ -174,7 +147,7 @@ void printActivitiesProgress(ActivitiesContainer container);
  * - None
  * 
  * Postconditions:
- * - If 'container' is valid, prints a complete report with categorized activities
+ * - If 'root' is valid, prints a complete report with categorized activities
  * - Interacts with user to define the report period
  * 
  * Effects:
@@ -185,16 +158,16 @@ void printActivitiesProgress(ActivitiesContainer container);
  * - Output to stdout
  * - Calls to time management functions
  */
-void printActivitiesReport(ActivitiesContainer container);
+void printTreeActivitiesReport(TreeNode root);
 
 
 
 
 /*
- * printActivitiesToFile
+ * printAllActivitiesToFile
  * 
  * Syntactic Specification:
- * void printActivitiesToFile(ActivitiesContainer container, FILE* file);
+ * void printAllActivitiesToFile(TreeNode root, FILE* file);
  * 
  * Semantic Specification:
  * Prints all container activities to file (list format, one per line).
@@ -211,13 +184,13 @@ void printActivitiesReport(ActivitiesContainer container);
  * Side Effects:
  * - Writing to file
  */
-void printActivitiesToFile(ActivitiesContainer container, FILE* file);
+void printAllActivitiesToFile(TreeNode root, FILE* file);
 
 /*
- * printActivitiesProgressToFile
+ * printTreeActivitiesProgressToFile
  * 
  * Syntactic Specification:
- * void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
+ * void printTreeActivitiesProgressToFile(TreeNode root, FILE* file);
  * 
  * Semantic Specification:
  * Prints the progress of all container activities to file (progress list format, one per line).
@@ -234,13 +207,13 @@ void printActivitiesToFile(ActivitiesContainer container, FILE* file);
  * Side Effects:
  * - Writing to file
  */
-void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
+void printTreeActivitiesProgressToFile(TreeNode root, FILE* file);
 
 /*
- * printActivitiesReportToFile
+ * printTreeActivitiesReportToFile
  * 
  * Syntactic Specification:
- * void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+ * void printTreeActivitiesReportToFile(TreeNode root, time_t beginDate, FILE* file);
  * 
  * Semantic Specification:
  * Prints an activity report to file for a specified period.
@@ -258,7 +231,7 @@ void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file);
  * Side Effects:
  * - Writing to file
  */
-void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file);
+void printTreeActivitiesReportToFile(TreeNode root, time_t beginDate, FILE* file);
 
 
 #endif // ACTIVITIES_CONTAINER_HELPER_H          // End of inclusion block
