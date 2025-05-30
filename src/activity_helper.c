@@ -17,9 +17,6 @@
  * - Returns 1 if used time == 0
  * - Returns 0 otherwise or if a is NULL (activity is completed or ongoing)
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -46,9 +43,6 @@ int isActivityYetToBegin(Activity a) {
  * Postconditions:
  * - Returns 1 if completion date != 0
  * - Returns 0 otherwise or if a is NULL
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -77,9 +71,6 @@ int isActivityCompleted(Activity a) {
  * - Returns 1 if completion date > thresholdDate
  * - Returns 0 otherwise or if a is NULL
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -106,9 +97,6 @@ int wasActivityCompletedAfterDate(Activity a, time_t thresholdDate) {
  * Postconditions:
  * - Returns 1 if expiry date > 0 && expiry date < thresholdDate
  * - Returns 0 otherwise or if a is NULL
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -140,9 +128,6 @@ int wasActivityExpiredBeforeDate(Activity a, time_t thresholdDate) {
  * - Returns 1 if a_id > activityId
  * - Returns -2 if a is NULL
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -171,9 +156,6 @@ int compareWithId(Activity a, int activityId) {
  * Postconditions:
  * - Returns an integer representing the percentage (0-100+)
  * - Returns 0 if activity is NULL or if activity total time is 0
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -208,9 +190,6 @@ int activityCompletionPercentage(Activity activity) {
  * - Returns -1 if only b is not NULL
  * - Returns 0 if both are not NULL
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -240,9 +219,6 @@ int compareNullActivity(const Activity a, const Activity b) {
  * - Returns -1 if only b is not NULL
  * - Returns 0 if both are not NULL
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -271,9 +247,6 @@ int compareNullString(const char* a, const char*  b) {
  * - Returns the result of the ID comparison if both are not NULL
  * - Handles NULL cases using compareNullActivity
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -300,9 +273,6 @@ int compareActivityById(const Activity a, const Activity b) {
  * Postconditions:
  * - Returns the result of strcmp if both names are not NULL
  * - Handles NULL cases using compareNullString
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -336,9 +306,6 @@ int compareActivityByName(const Activity a, const Activity b) {
  * - Returns the result of strcmp if both descriptions are not NULL
  * - Handles NULL cases using compareNullString
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -370,9 +337,6 @@ int compareActivityByDescr(const Activity a, const Activity b) {
  * Postconditions:
  * - Returns the result of strcmp if both courses are not NULL
  * - Handles NULL cases using compareNullString
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -408,9 +372,6 @@ int compareActivityByCourse(const Activity a, const Activity b) {
  * - Returns 1 if a->insertDate > b->insertDate
  * - Handles NULL cases using compareNullActivity
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -442,9 +403,6 @@ int compareActivityByInsertDate(const Activity a, const Activity b) {
  * - Returns -1 if a->expiryDate < b->expiryDate
  * - Returns 1 if a->expiryDate > b->expiryDate
  * - Handles NULL cases using compareNullActivity
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -478,9 +436,6 @@ int compareActivityByExpiryDate(const Activity a, const Activity b) {
  * - Returns 1 if a->completionDate > b->completionDate
  * - Handles NULL cases using compareNullActivity
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -512,9 +467,6 @@ int compareActivityByCompletionDate(const Activity a, const Activity b) {
  * - Returns -1 if a->totalTime < b->totalTime
  * - Returns 1 if a->totalTime > b->totalTime
  * - Handles NULL cases using compareNullActivity
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -548,9 +500,6 @@ int compareActivityByTotalTime(const Activity a, const Activity b) {
  * - Returns 1 if a->usedTime > b->usedTime
  * - Handles NULL cases using compareNullActivity
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -582,9 +531,6 @@ int compareActivityByUsedTime(const Activity a, const Activity b) {
  * - Returns -1 if a->priority < b->priority
  * - Returns 1 if a->priority > b->priority
  * - Handles NULL cases using compareNullActivity
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -618,9 +564,6 @@ int compareActivityByPriority(const Activity a, const Activity b) {
  * - Returns 1 if a's percentage > b's percentage
  * - Handles NULL cases using compareNullActivity
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -652,9 +595,6 @@ int compareActivityByPercentCompletion(Activity a, Activity b) {
  * - Returns -1 if a's remaining time < b's remaining time
  * - Returns 1 if a's remaining time > b's remaining time
  * - Handles NULL cases using compareNullActivity
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -722,9 +662,6 @@ int compareActivityByTimeToCompletion(Activity a, Activity b) {
  * - Returns 1 if activity a is greater than activity b according to the specified criterion
  * - Uses ID comparison as default for invalid compareBy values
  * - Handles NULL cases appropriately based on the selected comparison method
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -794,9 +731,6 @@ int compareActivityBy(Activity a, Activity b, int compareBy) {
  * - Returns "LOW" if priority == 3
  * - Returns "?" for other values
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -827,9 +761,6 @@ char * priorityToText(int priority) {
  * - Return NULL if a is NULL
  * - Returns a textual representation of the priority using 'priorityToText' function
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -855,9 +786,6 @@ char*  getActivityPriorityText(Activity a) {
  * 
  * Postconditions:
  * - The menu is printed to stdout
- * 
- * Effects:
- * Prints text to the console.
  * 
  * Side Effects:
  * Output to stdout.
@@ -894,9 +822,6 @@ void displayActivityDetailMenu() {
  * - Returns activity if the user continues editing
  * - Returns NULL if the user exits the menu
  * - The activity may be modified based on user choices (name, description, etc.)
- * 
- * Effects:
- * Potentially modifies the activity based on user input.
  * 
  * Side Effects:
  * - Console input/output
@@ -1046,9 +971,6 @@ Activity handleActivityDetailMenu(Activity activity) {
  * - Activity details are printed to stdout if activity is not NULL
  * - No output if activity is NULL
  * 
- * Effects:
- * Prints text to the console.
- * 
  * Side Effects:
  * Output to stdout.
  */
@@ -1142,9 +1064,6 @@ void printActivity(Activity activity) {
  * Postconditions:
  * - The activity is displayed and the user can interact through the menu
  * 
- * Effects:
- * Loop for displaying and editing the activity.
- * 
  * Side Effects:
  * - Console input/output
  * - Potential modification of the Activity object state
@@ -1173,9 +1092,6 @@ void printActivityDetailWithMenu(Activity activity) {
  * 
  * Postconditions:
  * - The activity details are written to the file if both parameters are not NULL
- * 
- * Effects:
- * Writes data to the file.
  * 
  * Side Effects:
  * File output.
@@ -1272,9 +1188,6 @@ void printActivityToFile(Activity activity, FILE* file) {
  * - Prints to file if file is not NULL
  * - No output if activity is NULL
  * 
- * Effects:
- * Prints text to the console or writes to a file.
- * 
  * Side Effects:
  * Output to stdout or file write.
  */
@@ -1341,9 +1254,6 @@ void printActivityForListToScreenOrFile(Activity activity, FILE* file) {
  * Postconditions:
  * - The activity is printed to stdout in list format
  * 
- * Effects:
- * Prints text to the console.
- * 
  * Side Effects:
  * Output to stdout.
  */
@@ -1365,9 +1275,6 @@ void printActivityForList(Activity activity) {
  * 
  * Postconditions:
  * - The activity is written to the file in list format if file is not NULL
- * 
- * Effects:
- * Writes data to the file.
  * 
  * Side Effects:
  * File write.
@@ -1396,9 +1303,6 @@ void printActivityForListToFile(Activity activity, FILE* file) {
  * - Prints to stdout if file is NULL
  * - Prints to file if file is not NULL
  * - No output if activity is NULL or completed
- * 
- * Effects:
- * Prints text to the console or writes to a file.
  * 
  * Side Effects:
  * Output to stdout or file write.
@@ -1455,9 +1359,6 @@ void printActivityProgressForListToScreenOrFile(Activity activity, FILE* file) {
  * Postconditions:
  * - The activity is printed to stdout with progress information
  * 
- * Effects:
- * Prints text to the console.
- * 
  * Side Effects:
  * Output to stdout.
  */
@@ -1479,9 +1380,6 @@ void printActivityProgressForList(Activity activity) {
  * 
  * Postconditions:
  * - The activity is written to the file with progress information if file is not NULL
- * 
- * Effects:
- * Writes data to the file.
  * 
  * Side Effects:
  * File write.
@@ -1511,10 +1409,6 @@ void printActivityProgressForListToFile(Activity activity, FILE* file) {
  * Postconditions:
  * - Returns a pointer to the Activity read from the file
  * - Returns NULL if it fails to read 10 lines or if allocation fails
- * 
- * Effects:
- * - Reads from the file
- * - Allocates memory for the new activity
  * 
  * Side Effects:
  * - File read
@@ -1640,9 +1534,6 @@ Activity readActivityFromFile(FILE* file) {
  * - The activity is written to the file in 10 lines if activity is not NULL
  * - No output if activity is NULL
  * 
- * Effects:
- * Writes data to the file.
- * 
  * Side Effects:
  * File write.
  */
@@ -1671,6 +1562,3 @@ void saveActivityToFile(FILE* file, Activity activity) {
 	fprintf(file, "%u\n", usedTime);
 	fprintf(file, "%hu\n", priority);
 }
-
-
-

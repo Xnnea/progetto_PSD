@@ -8,7 +8,7 @@ typedef struct listItem* ActivitiesContainerSupportList;
 
 
 /*
- * Function: newSupportList
+ * newSupportList
  * 
  * Syntactic Specification:
  *   ActivitiesContainerSupportList newSupportList(void);
@@ -26,17 +26,14 @@ typedef struct listItem* ActivitiesContainerSupportList;
  *     to an empty list with head = NULL
  *   - If allocation fails: returns NULL
  * 
- * Effects:
+ * Side Effects:
  *   - Allocates dynamic memory for a listItem structure
  *   - Initializes the list's head field to NULL
- * 
- * Side Effects:
- *   - None
  */
 ActivitiesContainerSupportList newSupportList(void);
 
 /*
- * Function: addActivityToSupportList
+ * addActivityToSupportList
  * 
  * Syntactic Specification:
  *   void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity);
@@ -56,18 +53,16 @@ ActivitiesContainerSupportList newSupportList(void);
  *   - If allocation fails: the list remains unchanged
  *   - The new node becomes the new head of the list
  * 
- * Effects:
+ * Side Effects:
+ *   - Modifies the list structure
  *   - Allocates memory for a new NodeList node
  *   - Copies the activity to the new node
  *   - Updates pointers to insert the node at the head
- * 
- * Side Effects:
- *   - Modifies the list structure
  */
 void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity);
 
 /*
- * Function: deleteSupportList
+ * deleteSupportList
  * 
  * Syntactic Specification:
  *   void deleteSupportList(ActivitiesContainerSupportList* list);
@@ -86,18 +81,15 @@ void addActivityToSupportList(ActivitiesContainerSupportList list, Activity acti
  *   - *list is set to NULL
  *   - If list or *list were NULL, the function has no effect
  * 
- * Effects:
+ * Side Effects:
  *   - Frees memory of all list nodes
  *   - Frees memory of the main structure
- *   - Sets *list to NULL
- * 
- * Side Effects:
  *   - Modifies the value of the pointer passed by reference
  */
 void deleteSupportList(ActivitiesContainerSupportList* list);
 
 /*
- * Function: sortSupportList
+ * sortSupportList
  * 
  * Syntactic Specification:
  *   void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
@@ -116,18 +108,15 @@ void deleteSupportList(ActivitiesContainerSupportList* list);
  *   - If the list is not empty: it is sorted according to the sortBy criterion
  *   - The list's head field points to the new first sorted element
  * 
- * Effects:
- *   - Reorders all elements in the list
- *   - Updates the head pointer of the main structure
- * 
  * Side Effects:
  *   - Permanently modifies the order of elements in the list
- *   - Uses the stack for merge sort recursion
+ *   - Reorders all elements in the list
+ *   - Updates the head pointer of the main structure
  */
 void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
 
 /*
- * Function: printActivitiesInSupportList
+ * printActivitiesInSupportList
  * 
  * Syntactic Specification:
  *   void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file);
@@ -148,11 +137,8 @@ void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
  *   - Print destination depends on file value: to file if file 
  *     is not NULL, to stdout otherwise
  * 
- * Effects:
- *   - Traverses all nodes in the list
- *   - Calls appropriate print functions for each activity
- * 
  * Side Effects:
+ *   - Traverses all nodes in the list
  *   - Output to stdout or specified file
  *   - No modification to the data structure
  */

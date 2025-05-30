@@ -24,9 +24,6 @@ typedef struct node* TreeNode;
  * - If 'node == NULL', returns 'NULL'
  * - Otherwise, returns 'node->left'
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -47,9 +44,6 @@ TreeNode getLeftNode(TreeNode node);
  * Postconditions:
  * - If 'node == NULL', returns 'NULL'
  * - Otherwise, returns 'node->right'
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - None
@@ -72,9 +66,6 @@ TreeNode getRightNode(TreeNode node);
  * - If 'node == NULL', returns 'NULL'
  * - Otherwise, returns 'node->activity'
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -96,9 +87,6 @@ Activity getActivityFromNode(TreeNode node);
  * - If 'root == NULL', returns 'NULL'
  * - If it finds the activity with the specified ID, returns the corresponding node
  * - Otherwise, returns 'NULL'
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - None
@@ -123,13 +111,10 @@ TreeNode search(TreeNode root, int activityId);
  * - Otherwise, inserts the activity and rebalances the tree if necessary
  * - The resulting tree maintains AVL properties
  * 
- * Effects:
+ * Side Effects:
  * - May allocate memory for new nodes
  * - Modifies tree structure
  * - Updates node heights
- * 
- * Side Effects:
- * - None
  */
 TreeNode insertNode(TreeNode node, Activity activity);
 
@@ -151,14 +136,11 @@ TreeNode insertNode(TreeNode node, Activity activity);
  * - Otherwise, deletes the node and rebalances the tree
  * - The activity contained in the deleted node is deallocated
  * 
- * Effects:
+ * Side Effects:
  * - Deallocates memory of the deleted node
  * - Deallocates the contained activity
  * - Modifies tree structure
  * - Updates node heights
- * 
- * Side Effects:
- * - Calls to 'deleteActivity()' and 'free()'
  */
 TreeNode deleteNode(TreeNode root, int activityId);
 
@@ -178,11 +160,8 @@ TreeNode deleteNode(TreeNode root, int activityId);
  * - All subtree nodes are deallocated
  * - All contained activities are deallocated
  * 
- * Effects:
- * - Deallocates all tree memory
- * 
  * Side Effects:
- * - Calls to 'deleteActivity()' and 'free()'
+ * - Deallocates all tree memory
  */
 void deleteSubtree(TreeNode root);
 

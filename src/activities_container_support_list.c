@@ -88,7 +88,7 @@ struct listItem {
 
 
 /*
- * Function: newSupportList
+ * newSupportList
  * 
  * Syntactic Specification:
  *   ActivitiesContainerSupportList newSupportList(void);
@@ -106,12 +106,9 @@ struct listItem {
  *     to an empty list with head = NULL
  *   - If allocation fails: returns NULL
  * 
- * Effects:
+ * Side Effects:
  *   - Allocates dynamic memory for a listItem structure
  *   - Initializes the list's head field to NULL
- * 
- * Side Effects:
- *   - None
  */
 ActivitiesContainerSupportList newSupportList(void) {
 	ActivitiesContainerSupportList list = (struct listItem*)malloc(sizeof(struct listItem));
@@ -122,7 +119,7 @@ ActivitiesContainerSupportList newSupportList(void) {
 }
 
 /*
- * Function: deleteSupportList
+ * deleteSupportList
  * 
  * Syntactic Specification:
  *   void deleteSupportList(ActivitiesContainerSupportList* list);
@@ -141,12 +138,9 @@ ActivitiesContainerSupportList newSupportList(void) {
  *   - *list is set to NULL
  *   - If list or *list were NULL, the function has no effect
  * 
- * Effects:
+ * Side Effects:
  *   - Frees memory of all list nodes
  *   - Frees memory of the main structure
- *   - Sets *list to NULL
- * 
- * Side Effects:
  *   - Modifies the value of the pointer passed by reference
  */
 void deleteSupportList(ActivitiesContainerSupportList* list) {
@@ -167,7 +161,7 @@ void deleteSupportList(ActivitiesContainerSupportList* list) {
 
 
 /*
- * Function: isSupportListEmpty
+ * isSupportListEmpty
  * 
  * Syntactic Specification:
  *   int isSupportListEmpty(ActivitiesContainerSupportList list);
@@ -183,9 +177,6 @@ void deleteSupportList(ActivitiesContainerSupportList* list) {
  *   - Returns 1 if the list is empty or NULL
  *   - Returns 0 if the list contains at least one element
  * 
- * Effects:
- *   - No effect on the data structure (read-only function)
- * 
  * Side Effects:
  *   - No side effects
  */
@@ -195,7 +186,7 @@ int isSupportListEmpty(ActivitiesContainerSupportList list) {
 
 
 /*
- * Function: addActivityToSupportList
+ * addActivityToSupportList
  * 
  * Syntactic Specification:
  *   void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity);
@@ -215,13 +206,11 @@ int isSupportListEmpty(ActivitiesContainerSupportList list) {
  *   - If allocation fails: the list remains unchanged
  *   - The new node becomes the new head of the list
  * 
- * Effects:
+ * Side Effects:
+ *   - Modifies the list structure
  *   - Allocates memory for a new NodeList node
  *   - Copies the activity to the new node
  *   - Updates pointers to insert the node at the head
- * 
- * Side Effects:
- *   - Modifies the list structure
  */
 void addActivityToSupportList(ActivitiesContainerSupportList list, Activity activity) {
 	if (list == NULL) return;
@@ -239,7 +228,7 @@ void addActivityToSupportList(ActivitiesContainerSupportList list, Activity acti
 
 
 /*
- * Function: splitSupportList
+ * splitSupportList
  * 
  * Syntactic Specification:
  *   NodeList* splitSupportList(NodeList* head);
@@ -258,12 +247,10 @@ void addActivityToSupportList(ActivitiesContainerSupportList list, Activity acti
  *   - The first half remains linked to head
  *   - The connection between the two halves is broken
  * 
- * Effects:
- *   - Modifies next pointers to divide the list
- *   - Does not allocate or deallocate memory
- * 
  * Side Effects:
  *   - Modifies the original list structure by breaking connections
+ *   - Modifies next pointers to divide the list
+ *   - Does not allocate or deallocate memory
  */
 NodeList* splitSupportList(NodeList* head) {
 	if (head == NULL) return NULL;
@@ -286,7 +273,7 @@ NodeList* splitSupportList(NodeList* head) {
 }
 
 /*
- * Function: mergeSupportLists
+ * mergeSupportLists
  * 
  * Syntactic Specification:
  *   NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy);
@@ -306,13 +293,10 @@ NodeList* splitSupportList(NodeList* head) {
  *   - If one list is NULL: returns the other list
  *   - Sorting follows the criterion specified by sortBy
  * 
- * Effects:
- *   - Reorganizes pointers to merge the lists
- *   - Uses activity comparison functions
- *   - Does not allocate new memory for nodes
- * 
  * Side Effects:
  *   - Modifies the structure of the original lists by reconnecting nodes
+ *   - Reorganizes pointers to merge the lists
+ *   - Does not allocate new memory for nodes
  */
 NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy) {
 	if (listA == NULL && listB == NULL) return NULL;
@@ -343,7 +327,7 @@ NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy) {
 }
 
 /*
- * Function: mergeSortSupportList
+ * mergeSortSupportList
  * 
  * Syntactic Specification:
  *   NodeList* mergeSortSupportList(NodeList* head, int sortBy);
@@ -361,14 +345,12 @@ NodeList* mergeSupportLists(NodeList* listA, NodeList* listB, int sortBy) {
  *   - If the list is empty or has one element: returns head unchanged
  *   - The resulting list is sorted according to the sortBy criterion
  * 
- * Effects:
- *   - Recursively divides the list into sublists
- *   - Sorts and merges the sublists
- *   - Reorganizes all list pointers
- * 
  * Side Effects:
  *   - Completely modifies the original list structure
  *   - Uses the stack for recursion
+ *   - Recursively divides the list into sublists
+ *   - Sorts and merges the sublists
+ *   - Reorganizes all list pointers
  */
 NodeList* mergeSortSupportList(NodeList* head, int sortBy) {
 
@@ -387,7 +369,7 @@ NodeList* mergeSortSupportList(NodeList* head, int sortBy) {
 }
 
 /*
- * Function: sortSupportList
+ * sortSupportList
  * 
  * Syntactic Specification:
  *   void sortSupportList(ActivitiesContainerSupportList list, int sortBy);
@@ -406,13 +388,10 @@ NodeList* mergeSortSupportList(NodeList* head, int sortBy) {
  *   - If the list is not empty: it is sorted according to the sortBy criterion
  *   - The list's head field points to the new first sorted element
  * 
- * Effects:
- *   - Reorders all elements in the list
- *   - Updates the head pointer of the main structure
- * 
  * Side Effects:
  *   - Permanently modifies the order of elements in the list
- *   - Uses the stack for merge sort recursion
+ *   - Reorders all elements in the list
+ *   - Updates the head pointer of the main structure
  */
 void sortSupportList(ActivitiesContainerSupportList list, int sortBy) {
 	if ( isSupportListEmpty(list) == 1 ) return;
@@ -423,7 +402,7 @@ void sortSupportList(ActivitiesContainerSupportList list, int sortBy) {
 
 
 /*
- * Function: printActivitiesInSupportList
+ * printActivitiesInSupportList
  * 
  * Syntactic Specification:
  *   void printActivitiesInSupportList(ActivitiesContainerSupportList list, int printType, FILE* file);
@@ -444,11 +423,8 @@ void sortSupportList(ActivitiesContainerSupportList list, int sortBy) {
  *   - Print destination depends on file value: to file if file 
  *     is not NULL, to stdout otherwise
  * 
- * Effects:
- *   - Traverses all nodes in the list
- *   - Calls appropriate print functions for each activity
- * 
  * Side Effects:
+ *   - Traverses all nodes in the list
  *   - Output to stdout or specified file
  *   - No modification to the data structure
  */

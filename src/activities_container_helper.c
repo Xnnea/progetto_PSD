@@ -20,9 +20,6 @@
  * Postconditions:
  * - All activities are saved to file in ascending order of ID
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Writing to file via 'saveActivityToFile()'
  */
@@ -50,9 +47,6 @@ void inOrderSaveActivitiesToFile(FILE* file, TreeNode root) {
  * - If 'root == NULL' or 'filename != NULL', returns 1 (error)
  * - If unable to open the file, returns 1 (error)
  * - Otherwise, saves all activities and returns 0 (success)
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - File opening and writing
@@ -91,14 +85,11 @@ int saveActivitiesFromTreeToFile(const char* filename, TreeNode root) {
  * Postconditions:
  * - Asks user for data and create and return the new activity
  * 
- * Effects:
- * - Return a new activity
- * - Allocates memory for the new activity
- * 
  * Side Effects:
  * - User interaction (input/output)
  * - Calls to user input functions
  * - Calls to 'time()' for timestamp
+ * - Allocates memory for the new activity
  */
 Activity createNewActivityFromUserInput() {
 	printf("\n====== Inserisci una nuova attività ======\n");
@@ -178,9 +169,6 @@ Activity createNewActivityFromUserInput() {
  * Postconditions:
  * - All activities in the tree are printed in ascending order of ID
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Output to stdout via 'printActivityForList()'
  */
@@ -208,9 +196,6 @@ void printInOrder(TreeNode root) {
  * 
  * Postconditions:
  * - If 'root != NULL', prints all activities with headers
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Output to stdout
@@ -248,9 +233,6 @@ void printAllActivities(TreeNode root) {
  * Postconditions:
  * - All activities are printed to file in ascending order of ID
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Writing to file
  */
@@ -276,9 +258,6 @@ void printInOrderToFile(TreeNode root, FILE* file) {
  * 
  * Postconditions:
  * - If both parameters are valid, prints all activities to file
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Writing to file
@@ -307,9 +286,6 @@ void printAllActivitiesToFile(TreeNode root, FILE* file) {
  * Postconditions:
  * - Progress of all activities is printed in ascending order of ID
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Output to stdout via 'printActivityProgressForList()'
  */
@@ -335,9 +311,6 @@ void printInOrderProgress(TreeNode root) {
  * 
  * Postconditions:
  * - If 'root != NULL', prints progress of all activities in tree
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Output to stdout
@@ -373,9 +346,6 @@ void printTreeActivitiesProgress(TreeNode root) {
  * Postconditions:
  * - Progress of all activities is printed to file
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Writing to file
  */
@@ -401,9 +371,6 @@ void printInOrderProgressToFile(TreeNode root, FILE* file)  {
  * 
  * Postconditions:
  * - If both parameters are valid, prints progress with header
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Writing to file
@@ -451,11 +418,8 @@ void printTreeActivitiesProgressToFile(TreeNode root, FILE* file) {
  *   - 'expiredList': expired activities (no completed activities here)
  *   - 'yetToBeginList': activities not yet started
  * 
- * Effects:
- * - Modifies support lists by adding references to activities
- * 
  * Side Effects:
- * - Calls to activity status checking functions
+ * - None
  */
 void buildInOrderSupportListsForActivitiesReport(TreeNode root, ActivitiesContainerSupportList completedList, ActivitiesContainerSupportList ongoingList, ActivitiesContainerSupportList expiredList, ActivitiesContainerSupportList yetToBeginList, time_t beginDate, time_t nowDate) {
 	if (root != NULL) {
@@ -497,13 +461,11 @@ void buildInOrderSupportListsForActivitiesReport(TreeNode root, ActivitiesContai
  * - If 'root' is valid, prints a complete report with categorized activities
  * - Interacts with user to define the report period
  * 
- * Effects:
- * - Allocates and deallocates temporary support lists
- * 
  * Side Effects:
  * - User interaction (input/output)
  * - Output to stdout
  * - Calls to time management functions
+ * - Allocates and deallocates temporary support lists
  */
 void printTreeActivitiesReport(TreeNode root) {
 	if (root == NULL) return;
@@ -603,11 +565,9 @@ void printTreeActivitiesReport(TreeNode root) {
  * Postconditions:
  * - If all parameters are valid, prints the report to file
  * 
- * Effects:
- * - Allocates and deallocates temporary support lists
- * 
  * Side Effects:
  * - Writing to file
+ * - Allocates and deallocates temporary support lists
  */
 void printTreeActivitiesReportToFile(TreeNode root, time_t beginDate, FILE* file) {
 	if (root == NULL || file == NULL || beginDate < 0) return;

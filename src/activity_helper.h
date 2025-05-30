@@ -20,9 +20,6 @@
  * - Returns 1 if used time == 0
  * - Returns 0 otherwise or if a is NULL (activity is completed or ongoing)
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -43,9 +40,6 @@ int isActivityYetToBegin(Activity a);
  * Postconditions:
  * - Returns 1 if completion date != 0
  * - Returns 0 otherwise or if a is NULL
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -68,9 +62,6 @@ int isActivityCompleted(Activity a);
  * - Returns 1 if completion date > thresholdDate
  * - Returns 0 otherwise or if a is NULL
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -91,9 +82,6 @@ int wasActivityCompletedAfterDate(Activity a, time_t thresholdDate);
  * Postconditions:
  * - Returns 1 if expiry date > 0 && expiry date < thresholdDate
  * - Returns 0 otherwise or if a is NULL
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -116,9 +104,6 @@ int wasActivityExpiredBeforeDate(Activity a, time_t thresholdDate);
  * - Returns an integer representing the percentage (0-100+)
  * - Returns 0 if activity is NULL or if activity total time is 0
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -139,9 +124,6 @@ int activityCompletionPercentage(Activity activity);
  * Postconditions:
  * - Return NULL if a is NULL
  * - Returns a textual representation of the priority using 'priorityToText' function
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -169,9 +151,6 @@ char * getActivityPriorityText(Activity activity) ;
  * - Returns 1 if a_id > activityId
  * - Returns -2 if a is NULL
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -192,9 +171,6 @@ int compareWithId(Activity a, int activityId);
  * Postconditions:
  * - Returns the result of the ID comparison if both are not NULL
  * - Handles NULL cases using compareNullActivity
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -242,9 +218,6 @@ int compareActivityById(Activity a, Activity b);
  * - Uses ID comparison as default for invalid compareBy values
  * - Handles NULL cases appropriately based on the selected comparison method
  * 
- * Effects:
- * No effect on the program state.
- * 
  * Side Effects:
  * None.
  */
@@ -269,9 +242,6 @@ int compareActivityBy(Activity a, Activity b, int compareBy);
  * - Activity details are printed to stdout if activity is not NULL
  * - No output if activity is NULL
  * 
- * Effects:
- * Prints text to the console.
- * 
  * Side Effects:
  * Output to stdout.
  */
@@ -291,9 +261,6 @@ void printActivity(Activity activity);
  * 
  * Postconditions:
  * - The activity is displayed and the user can interact through the menu
- * 
- * Effects:
- * Loop for displaying and editing the activity.
  * 
  * Side Effects:
  * - Console input/output
@@ -316,9 +283,6 @@ void printActivityDetailWithMenu(Activity activity);
  * Postconditions:
  * - The activity is printed to stdout in list format
  * 
- * Effects:
- * Prints text to the console.
- * 
  * Side Effects:
  * Output to stdout.
  */
@@ -338,9 +302,6 @@ void printActivityForList(Activity activity);
  * 
  * Postconditions:
  * - The activity is printed to stdout with progress information
- * 
- * Effects:
- * Prints text to the console.
  * 
  * Side Effects:
  * Output to stdout.
@@ -365,9 +326,6 @@ void printActivityProgressForList(Activity activity);
  * Postconditions:
  * - The activity details are written to the file if both parameters are not NULL
  * 
- * Effects:
- * Writes data to the file.
- * 
  * Side Effects:
  * File output.
  */
@@ -388,9 +346,6 @@ void printActivityToFile(Activity activity, FILE* file);
  * Postconditions:
  * - The activity is written to the file in list format if file is not NULL
  * 
- * Effects:
- * Writes data to the file.
- * 
  * Side Effects:
  * File write.
  */
@@ -410,9 +365,6 @@ void printActivityForListToFile(Activity activity, FILE* file);
  * 
  * Postconditions:
  * - The activity is written to the file with progress information if file is not NULL
- * 
- * Effects:
- * Writes data to the file.
  * 
  * Side Effects:
  * File write.
@@ -439,9 +391,6 @@ void printActivityProgressForListToFile(Activity activity, FILE* file);
  * - Prints to file if file is not NULL
  * - No output if activity is NULL
  * 
- * Effects:
- * Prints text to the console or writes to a file.
- * 
  * Side Effects:
  * Output to stdout or file write.
  */
@@ -464,9 +413,6 @@ void printActivityForListToScreenOrFile(Activity activity, FILE* file);
  * - Prints to stdout if file is NULL
  * - Prints to file if file is not NULL
  * - No output if activity is NULL or completed
- * 
- * Effects:
- * Prints text to the console or writes to a file.
  * 
  * Side Effects:
  * Output to stdout or file write.
@@ -493,10 +439,6 @@ void printActivityProgressForListToScreenOrFile(Activity activity, FILE* file);
  * - Returns a pointer to the Activity read from the file
  * - Returns NULL if it fails to read 10 lines or if allocation fails
  * 
- * Effects:
- * - Reads from the file
- * - Allocates memory for the new activity
- * 
  * Side Effects:
  * - File read
  * - Heap memory allocation
@@ -519,9 +461,6 @@ Activity readActivityFromFile(FILE* file);
  * Postconditions:
  * - The activity is written to the file in 10 lines if activity is not NULL
  * - No output if activity is NULL
- * 
- * Effects:
- * Writes data to the file.
  * 
  * Side Effects:
  * File write.

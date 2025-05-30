@@ -21,9 +21,6 @@
  * - If unable to open the file, returns 1 (error)
  * - Otherwise, saves all activities and returns 0 (success)
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - File opening and writing
  * - Output to stdout (informational messages)
@@ -46,14 +43,11 @@ int saveActivitiesFromTreeToFile(const char* filename, TreeNode root);
  * Postconditions:
  * - Asks user for data and create and return the new activity
  * 
- * Effects:
- * - Return a new activity
- * - Allocates memory for the new activity
- * 
  * Side Effects:
  * - User interaction (input/output)
  * - Calls to user input functions
  * - Calls to 'time()' for timestamp
+ * - Allocates memory for the new activity
  */
 Activity createNewActivityFromUserInput();
 
@@ -71,9 +65,6 @@ Activity createNewActivityFromUserInput();
  * 
  * Postconditions:
  * - If 'root != NULL', prints all activities with headers
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Output to stdout
@@ -94,9 +85,6 @@ void printAllActivities(TreeNode root);
  * 
  * Postconditions:
  * - If 'root != NULL', prints progress of all activities in tree
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Output to stdout
@@ -119,13 +107,11 @@ void printTreeActivitiesProgress(TreeNode root);
  * - If 'root' is valid, prints a complete report with categorized activities
  * - Interacts with user to define the report period
  * 
- * Effects:
- * - Allocates and deallocates temporary support lists
- * 
  * Side Effects:
  * - User interaction (input/output)
  * - Output to stdout
  * - Calls to time management functions
+ * - Allocates and deallocates temporary support lists
  */
 void printTreeActivitiesReport(TreeNode root);
 
@@ -147,9 +133,6 @@ void printTreeActivitiesReport(TreeNode root);
  * Postconditions:
  * - If both parameters are valid, prints all activities to file
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Writing to file
  */
@@ -169,9 +152,6 @@ void printAllActivitiesToFile(TreeNode root, FILE* file);
  * 
  * Postconditions:
  * - If both parameters are valid, prints progress with header
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Writing to file
@@ -194,11 +174,9 @@ void printTreeActivitiesProgressToFile(TreeNode root, FILE* file);
  * Postconditions:
  * - If all parameters are valid, prints the report to file
  * 
- * Effects:
- * - Allocates and deallocates temporary support lists
- * 
  * Side Effects:
  * - Writing to file
+ * - Allocates and deallocates temporary support lists
  */
 void printTreeActivitiesReportToFile(TreeNode root, time_t beginDate, FILE* file);
 

@@ -8,7 +8,7 @@
 
 
 /*
-* "struct containerItem" Documentation
+* "struct containerItem" 
 * 
 * Syntactic Specification:
 * struct containerItem {
@@ -69,9 +69,6 @@ struct containerItem {
  * - If 'container == NULL', returns 'NULL'
  * - Otherwise, returns 'container->avlTree'
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -96,9 +93,6 @@ TreeNode getRootNode(ActivitiesContainer container) {
  * Postconditions:
  * - If 'container == NULL', returns -1
  * - Otherwise, returns 'container->nextId'
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - None
@@ -125,9 +119,6 @@ int getNextId(ActivitiesContainer container) {
  * Postconditions:
  * - If the activity is found, returns it
  * - Otherwise, returns 'NULL'
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - None
@@ -164,13 +155,10 @@ Activity getActivityWithId(ActivitiesContainer container, int activityId) {
  * - Inserts the activity into the container
  * - Updates the container's 'nextId'
  * 
- * Effects:
+ * Side Effects:
  * - May allocate memory for the container
  * - Modifies the activity ID if it was 0
  * - Modifies the AVL tree structure
- * 
- * Side Effects:
- * - Modification of the passed activity (if ID was 0)
  */
 void insertActivity(ActivitiesContainer container, Activity activity) {
 	if (!activity || !container) return; // No action
@@ -210,12 +198,10 @@ void insertActivity(ActivitiesContainer container, Activity activity) {
  * - If 'container == NULL' or 'container->avlTree == NULL', no action
  * - Otherwise, removes the activity with the specified ID
  * 
- * Effects:
+ * Side Effects:
  * - Modifies the container's AVL tree structure
  * - Updates the container's pointer 'avlTree' to point to the new root of the AVL tree structure
- * 
- * Side Effects:
- * - Effects from calls to 'deleteNode()'
+ * - Effects from calls to 'deleteNode()': deallocate memory.
  */
 void removeActivity(ActivitiesContainer container, int activityId) {
 	if (!container || !container->avlTree) return; //No action
@@ -242,11 +228,8 @@ void removeActivity(ActivitiesContainer container, int activityId) {
  * - Returns a new container with 'NULL' tree and 'nextId = 1'
  * - If allocation fails, returns 'NULL'
  * 
- * Effects:
- * - Allocates memory for the container structure
- * 
  * Side Effects:
- * - None
+ * - Allocates memory for the container structure
  */
 ActivitiesContainer newActivityContainer(void) {
 	ActivitiesContainer tree = (struct containerItem*)malloc(sizeof(struct containerItem)); 
@@ -279,11 +262,8 @@ ActivitiesContainer newActivityContainer(void) {
  * - If 'container == NULL', no action
  * - Otherwise, deallocates the entire container and its activities
  * 
- * Effects:
- * - Deallocates all container memory
- * 
  * Side Effects:
- * - Calls to deallocation functions
+ * - Deallocates all container memory
  */
 void deleteActivityContainer(ActivitiesContainer container) {
 	if (container == NULL) return;
@@ -316,9 +296,6 @@ void deleteActivityContainer(ActivitiesContainer container) {
  * - If unable to open the file, returns 1 (error)
  * - Otherwise, saves all activities and returns 0 (success)
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - File opening and writing
  * - Output to stdout (informational messages)
@@ -347,9 +324,6 @@ int saveActivitiesToFile(const char* filename, ActivitiesContainer container) {
  * Postconditions:
  * - If the activity is found, its details are printed
  * - Otherwise, no action
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Output to stdout via 'printActivityDetailWithMenu()'
@@ -380,9 +354,6 @@ void printActivityWithId(ActivitiesContainer container, int activityId) {
  * Postconditions:
  * - If 'container != NULL', prints all activities with headers (see 'printAllActivities')
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Output to stdout
  */
@@ -408,9 +379,6 @@ void printActivities(ActivitiesContainer container) {
  * 
  * Postconditions:
  * - If both parameters are valid, prints all activities to file
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Writing to file
@@ -438,9 +406,6 @@ void printActivitiesToFile(ActivitiesContainer container, FILE* file) {
  * Postconditions:
  * - If 'container != NULL', prints progress of all activities
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - Output to stdout
  */
@@ -466,9 +431,6 @@ void printActivitiesProgress(ActivitiesContainer container) {
  * 
  * Postconditions:
  * - If both parameters are valid, prints progress with header
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - Writing to file
@@ -497,10 +459,8 @@ void printActivitiesProgressToFile(ActivitiesContainer container, FILE* file) {
  * - If 'container' is valid, prints a complete report with categorized activities
  * - Interacts with user to define the report period
  * 
- * Effects:
- * - Allocates and deallocates temporary support lists
- * 
  * Side Effects:
+ * - Allocates and deallocates temporary support lists
  * - User interaction (input/output)
  * - Output to stdout
  * - Calls to time management functions
@@ -529,10 +489,8 @@ void printActivitiesReport(ActivitiesContainer container) {
  * Postconditions:
  * - If all parameters are valid, prints the report to file
  * 
- * Effects:
- * - Allocates and deallocates temporary support lists
- * 
  * Side Effects:
+ * - Allocates and deallocates temporary support lists
  * - Writing to file
  */
 void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate, FILE* file) {
@@ -562,14 +520,11 @@ void printActivitiesReportToFile(ActivitiesContainer container, time_t beginDate
  * - If the file doesn't exist, returns an empty container and '*count = 0'
  * - Otherwise, reads all activities from the file and updates '*count' (number of activities read)
  * 
- * Effects:
+ * Side Effects:
  * - Allocates memory for the container and activities
  * - Modifies '*count' (number of activities read)
- * 
- * Side Effects:
  * - File opening and reading
  * - Output to stdout (informational messages)
- * - Calls to 'readActivityFromFile()'
  */
 ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 	ActivitiesContainer newContainer = newActivityContainer();
@@ -624,14 +579,10 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
  * - If 'container == NULL', returns
  * - Otherwise, asks user for data and adds the new activity
  * 
- * Effects:
+ * Side Effects:
  * - Modifies the container by adding a new activity
  * - Allocates memory for the new activity
- * 
- * Side Effects:
  * - User interaction (input/output)
- * - Calls to user input functions
- * - Calls to 'time()' for timestamp
  */
 void addNewActivityToContainer(ActivitiesContainer container) {
 	if (container == NULL) return;

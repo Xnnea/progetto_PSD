@@ -54,9 +54,6 @@ typedef struct node {
  * - If 'node == NULL', returns 'NULL'
  * - Otherwise, returns 'node->left'
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -81,9 +78,6 @@ TreeNode getLeftNode(TreeNode node) {
  * Postconditions:
  * - If 'node == NULL', returns 'NULL'
  * - Otherwise, returns 'node->right'
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - None
@@ -110,9 +104,6 @@ TreeNode getRightNode(TreeNode node) {
  * - If 'node == NULL', returns 'NULL'
  * - Otherwise, returns 'node->activity'
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -138,9 +129,6 @@ Activity getActivityFromNode(TreeNode node) {
  * - If 'root == NULL', returns 'NULL'
  * - If it finds the activity with the specified ID, returns the corresponding node
  * - Otherwise, returns 'NULL'
- * 
- * Effects:
- * - No modifications to data structures
  * 
  * Side Effects:
  * - None
@@ -177,9 +165,6 @@ TreeNode search(TreeNode root, int activityId) {
  * - If 'n == NULL', returns 0
  * - Otherwise, returns 'n->height'
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -205,11 +190,8 @@ int getHeight(Node* n) {
  * - Otherwise, allocates a new node with the specified activity
  * - The new node has 'NULL' children and height 1
  * 
- * Effects:
- * - Allocates memory for a new node
- * 
  * Side Effects:
- * - None
+ * - Allocates memory for a new node
  */
 Node* createNode(Activity activity) {
 	if (!activity) return NULL;
@@ -239,9 +221,6 @@ Node* createNode(Activity activity) {
  * - If 'n == NULL', returns 0
  * - Otherwise, returns the difference between left and right child heights
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -268,12 +247,9 @@ int getBalanceFactor(Node* n) {
  * - Heights of involved nodes are updated
  * - AVL properties are maintained
  * 
- * Effects:
+ * Side Effects:
  * - Modifies tree structure
  * - Updates node heights
- * 
- * Side Effects:
- * - None
  */
 Node* rightRotate(Node* y) {
 	Node* x = y->left;
@@ -308,12 +284,9 @@ Node* rightRotate(Node* y) {
  * - Heights of involved nodes are updated
  * - AVL properties are maintained
  * 
- * Effects:
+ * Side Effects:
  * - Modifies tree structure
  * - Updates node heights
- * 
- * Side Effects:
- * - None
  */
 Node* leftRotate(Node* x) {
 	Node* y = x->right;
@@ -350,13 +323,10 @@ Node* leftRotate(Node* x) {
  * - Otherwise, inserts the activity and rebalances the tree if necessary
  * - The resulting tree maintains AVL properties
  * 
- * Effects:
+ * Side Effects:
  * - May allocate memory for new nodes
  * - Modifies tree structure
  * - Updates node heights
- * 
- * Side Effects:
- * - None
  */
 TreeNode insertNode(TreeNode node, Activity activity) {
 	
@@ -436,9 +406,6 @@ TreeNode insertNode(TreeNode node, Activity activity) {
  * - Otherwise, returns the leftmost node in the tree
  * - The returned node has no left child (if not 'NULL')
  * 
- * Effects:
- * - No modifications to data structures
- * 
  * Side Effects:
  * - None
  */
@@ -471,14 +438,11 @@ Node* minValueNode(Node* node) {
  * - Otherwise, deletes the node and rebalances the tree
  * - The activity contained in the deleted node is deallocated
  * 
- * Effects:
+ * Side Effects:
  * - Deallocates memory of the deleted node
  * - Deallocates the contained activity
  * - Modifies tree structure
  * - Updates node heights
- * 
- * Side Effects:
- * - Calls to 'deleteActivity()' and 'free()'
  */
 TreeNode deleteNode(TreeNode root, int activityId) {
 	if (root == NULL) return root;
@@ -580,11 +544,8 @@ TreeNode deleteNode(TreeNode root, int activityId) {
  * - All subtree nodes are deallocated
  * - All contained activities are deallocated
  * 
- * Effects:
- * - Deallocates all tree memory
- * 
  * Side Effects:
- * - Calls to 'deleteActivity()' and 'free()'
+ * - Deallocates all tree memory
  */
 void deleteSubtree(TreeNode root) {
 	if (root != NULL) {

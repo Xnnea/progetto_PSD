@@ -30,11 +30,8 @@ typedef struct activity* Activity;
  * - Returns NULL if allocation fails
  * - Strings are copied, not just referenced
  * 
- * Effects:
- * Allocates dynamic memory for a new Activity structure and its strings.
- * 
  * Side Effects:
- * - None
+ * Allocates dynamic memory for a new Activity structure and its strings.
  */
 Activity newActivity( int id, char* name, char* descr, char* course, 
 							time_t insertDate, time_t expiryDate, time_t completionDate, 
@@ -56,11 +53,8 @@ Activity newActivity( int id, char* name, char* descr, char* course,
  * Postconditions:
  * - All dynamic memory associated with the activity is freed
  * 
- * Effects:
- * Deallocates dynamic memory.
- * 
  * Side Effects:
- * - None
+ * Deallocates dynamic memory.
  */
 void deleteActivity(Activity a);
 
@@ -80,11 +74,8 @@ void deleteActivity(Activity a);
  * - Returns a pointer to a new Activity that is a copy of old
  * - Returns NULL if old is NULL or if allocation fails
  * 
- * Effects:
- * Allocates dynamic memory for a new Activity structure and its strings.
- * 
  * Side Effects:
- * None
+ * Allocates dynamic memory for a new Activity structure and its strings.
  */
 Activity copyActivity(Activity old); //used on node rotation (tree, on node delete)
 
@@ -117,9 +108,6 @@ Activity copyActivity(Activity old); //used on node rotation (tree, on node dele
  * - Return NULL if a is NULL and the return type is char*
  * - Return 0 if a is NULL and the return type is not char*
  * - getActivityPriorityFormatted returns a textual representation of the priority
- * 
- * Effects:
- * No effect on the program state.
  * 
  * Side Effects:
  * None.
@@ -163,9 +151,6 @@ short unsigned int getActivityPriority(Activity a);
  * - The corresponding field is updated if a is not NULL
  * - For strings: the old string is freed and the new one is copied
  * - No effect if a is NULL
- * 
- * Effects:
- * Modify the activity's fields and manage memory for strings.
  * 
  * Side Effects:
  * - String memory deallocation and allocation

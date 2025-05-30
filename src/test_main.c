@@ -26,12 +26,8 @@
  * - Returns 0 if the files are identical line by line
  * - Returns 1 if the files differ or if an error occurs
  * 
- * Effects:
- * - Opens both files in read mode
- * - Reads and compares each line of the two files
- * - Closes the files at the end of the operation
- * 
  * Side Effects:
+ * - Opens both files in read mode
  * - Prints error messages to stdout in case of file opening problems
  * - Dynamically allocates and deallocates memory for each line read
  * - Modifies file position pointers during reading
@@ -107,11 +103,6 @@ int compareFiles(const char* filenameA, const char* filenameB) {
  * - Returns 0 if the test passes (output file equals oracle)
  * - Returns 1 if the test fails
  * 
- * Effects:
- * - Loads activities from the test file
- * - Saves activities to an output file
- * - Compares the output with the oracle file
- * 
  * Side Effects:
  * - Creates the file "tc_1_output.txt"
  * - Allocates and deallocates memory for the activity container
@@ -144,11 +135,6 @@ int tc_1() {
  * Postconditions:
  * - Returns 0 if the test passes
  * - Returns 1 if the test fails or the activity is not found
- * 
- * Effects:
- * - Loads the activity container
- * - Retrieves the activity with ID 1
- * - Prints activity details to file
  * 
  * Side Effects:
  * - Creates the file "tc_2_output.txt"
@@ -198,12 +184,6 @@ int tc_2() {
  * Postconditions:
  * - Returns 0 if the test passes
  * - Returns 1 if the test fails or errors occur
- * 
- * Effects:
- * - Loads the activity from the input file
- * - Modifies the specific field of the activity based on the test number
- * - Saves the modified activity to the output file
- * - Compares the output with the oracle file
  * 
  * Side Effects:
  * - Creates temporary output files
@@ -268,10 +248,6 @@ int tc_3_to_11(int numTest, char* fileIn, char* fileOut, char* fileOracle) {
  * - Returns 0 if the test passes
  * - Returns 1 if the test fails
  * 
- * Effects:
- * - Loads all activities from the file
- * - Prints the complete list of activities to file
- * 
  * Side Effects:
  * - Creates the file "tc_12_output.txt"
  * - Allocates and deallocates memory for the container
@@ -305,10 +281,6 @@ int tc_12() {
  * Postconditions:
  * - Returns 0 if the test passes
  * - Returns 1 if the test fails
- * 
- * Effects:
- * - Loads activities from the file
- * - Generates and prints the progress report
  * 
  * Side Effects:
  * - Creates the file "tc_13_output.txt"
@@ -345,10 +317,6 @@ int tc_13() {
  * - Returns 0 if the test passes
  * - Returns 1 if the test fails
  * 
- * Effects:
- * - Loads activities from the file
- * - Generates the weekly report for the specified timestamp (1746613562)
- * 
  * Side Effects:
  * - Creates the file "tc_14_output.txt"
  * - Allocates and deallocates memory for the container
@@ -384,11 +352,6 @@ int tc_14() {
  * - Returns 0 if the test passes (output file equals oracle)
  * - Returns 1 if the test fails
  * 
- * Effects:
- * - Loads activities from the test file
- * - Saves activities to an output file
- * - Compares the output with the oracle file
- * 
  * Side Effects:
  * - Creates the file "tc_15_output.txt"
  * - Allocates and deallocates memory for the activity container
@@ -421,10 +384,6 @@ int tc_15() {
  * Postconditions:
  * - Returns 0 if the test passes
  * - Returns 1 if the test fails
- * 
- * Effects:
- * - Loads activities from the file
- * - Generates the weekly report for the specified timestamp (1746613562)
  * 
  * Side Effects:
  * - Creates the file "tc_16_output.txt"
@@ -464,10 +423,6 @@ int tc_16() {
  * - The specified test is executed
  * - Results are printed to console
  * - If the file is valid, results are also written to file
- * 
- * Effects:
- * - Executes the test case corresponding to the specified number
- * - Prints the test result
  * 
  * Side Effects:
  * - Prints messages to stdout
@@ -541,11 +496,6 @@ void execTest(int numTest, FILE* fileWithTestsResult) {
  * Postconditions:
  * - Returns 0 (implicit) at the end of execution
  * - All tests are executed in sequence
- * 
- * Effects:
- * - Opens a file to save test results
- * - Executes all test cases from 1 to 14
- * - Provides user feedback on results
  * 
  * Side Effects:
  * - Creates the file "TESTS_RESULT.txt" if possible

@@ -16,9 +16,6 @@
  * - The returned value equals 'a' if 'a > b', otherwise it equals 'b'
  * - The returned value is always greater than or equal to both input parameters
  *
- * Effects:
- * - No modification of program state
- *
  * Side Effects:
  * - None
  */
@@ -46,11 +43,8 @@ int max(int a, int b) {
  * - '*minOut' contains the remaining minutes (minIn % 60)
  * - '*minOut' is always between 0 and 59
  * 
- * Effects:
- * - Modifies the values pointed to by 'hoursOut' and 'minOut'
- * 
  * Side Effects:
- * - None
+ * - Modifies the values pointed to by 'hoursOut' and 'minOut'
  */
 void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned int * minOut) {
 	*hoursOut = minIn / 60;
@@ -74,10 +68,6 @@ void minToHoursAnMinutes(unsigned int minIn, unsigned int * hoursOut, unsigned i
  * - Returns a pointer to a dynamically allocated string containing the read line (without newline character)
  * - Returns NULL if a read error or memory allocation error occurs
  * - The returned string is null-terminated with '\0'
- * 
- * Effects:
- * - Advances the current position in the file
- * - Dynamically allocates memory for the string
  * 
  * Side Effects:
  * - Heap memory allocation (must be freed by the caller)
@@ -139,11 +129,8 @@ char* readLine(FILE* file) {
  * - If 'str' is valid, returns a pointer to a new identical string allocated dynamically
  * - Returns NULL if memory allocation fails
  * 
- * Effects:
- * - Dynamically allocates memory for the new string
- * 
  * Side Effects:
- * - Heap memory allocation (must be freed by the caller)
+ * - Dynamically allocates memory for the new string (must be freed by the caller)
  */
 char* copyString(const char* str) {
 	if (str == NULL) return NULL;
@@ -172,10 +159,6 @@ char* copyString(const char* str) {
  * Postconditions:
  * - Returns an unsigned int value between 'minLimit' and 'maxLimit' (inclusive)
  * - The returned value is the one entered by the user
- * 
- * Effects:
- * - Reads from standard input
- * - Displays error messages if input is not valid
  * 
  * Side Effects:
  * - Output to stdout (error messages)
@@ -218,9 +201,6 @@ unsigned int getChoiceWithLimits(unsigned int minLimit, unsigned int maxLimit) {
  * Postconditions:
  * - Returns an unsigned int value between 0 and 'limit' (inclusive)
  * 
- * Effects:
- * - Delegates behavior to 'getChoiceWithLimits(0, limit)'
- * 
  * Side Effects:
  * - Same as 'getChoiceWithLimits'
  */
@@ -246,15 +226,10 @@ unsigned int getChoice(unsigned int limit) {
  * - If the user enters an empty string or an error occurs, returns NULL
  * - The returned string does not contain the newline character
  * 
- * Effects:
- * - Displays the prompt on stdout (if not NULL)
- * - Reads from standard input
- * - Dynamically allocates memory if input is valid
- * 
  * Side Effects:
  * - Output to stdout (prompt)
  * - Reading from stdin
- * - Heap memory allocation (must be freed by the caller)
+ * - Dynamically allocates memory (must be freed by the caller)
  */
 char* getInfoFromUser(const char* prompt) {
 	char* info = NULL;
@@ -295,9 +270,6 @@ char* getInfoFromUser(const char* prompt) {
  * - If one or more parameters are not valid, returns 0
  * - The timestamp represents the specified date/time
  * 
- * Effects:
- * - No modification of program state
- * 
  * Side Effects:
  * - None
  */
@@ -316,8 +288,6 @@ time_t dateToEpoch(int year, int month, int day, int hour, int min) {
 	date.tm_mday = day;
 	date.tm_mon = month - 1;
 	date.tm_year = year - 1900;
-	//date.tm_wday = 0;
-	//date.tm_isdst = 0;
 	
 	return mktime(&date);
 }
@@ -339,11 +309,6 @@ time_t dateToEpoch(int year, int month, int day, int hour, int min) {
  * - Returns a valid Unix timestamp corresponding to the date/time entered by the user
  * - All entered values respect the specified limits (year: 2000-2037, etc.)
  * - Takes leap years into account for day validation
- * 
- * Effects:
- * - Displays prompts on stdout
- * - Reads from standard input
- * - Validates user input
  * 
  * Side Effects:
  * - Output to stdout (prompts and error messages)
@@ -390,11 +355,9 @@ time_t getDateFromUser() {
  * - Displays the formatted confirmation menu
  * - If 'confirmInfo' is not NULL, displays the warning message
  * 
- * Effects:
- * - Displays output on stdout
- * 
  * Side Effects:
- * - Output to stdout
+ * - Displays the formatted confirmation menu
+ * - If 'confirmInfo' is not NULL, displays the warning message
  */
 void displayConfirmMenu(const char* confirmInfo) {
 	printf("\n=========================\n");
@@ -420,10 +383,6 @@ void displayConfirmMenu(const char* confirmInfo) {
  * Postconditions:
  * - Returns 0 or 1 based on user choice
  * - The user must necessarily choose one of the two valid options
- * 
- * Effects:
- * - Displays the confirmation menu
- * - Reads user choice
  * 
  * Side Effects:
  * - Output to stdout (menu)

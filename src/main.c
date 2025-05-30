@@ -22,12 +22,6 @@
  * - The initial menu has been printed to standard output
  * - The cursor is positioned after the choice request
  * 
- * Effects:
- * - Prints the formatted initial menu with options:
- *   - Load activities from file
- *   - Create new empty container
- *   - Exit program
- * 
  * Side Effects:
  * - Output to stdout
  */
@@ -56,14 +50,6 @@ void displayStartMenu() {
  * Postconditions:
  * - The main menu has been printed to standard output
  * - The cursor is positioned after the choice request
- * 
- * Effects:
- * - Prints the formatted main menu with options:
- *   - View activities
- *   - Add/Delete activities
- *   - View reports and details
- *   - Save to file
- *   - Exit
  * 
  * Side Effects:
  * - Output to stdout
@@ -101,12 +87,6 @@ void displayMainMenu() {
  * - Returns a valid ActivitiesContainer if user chooses option 1 or 2
  * - Returns NULL if user chooses to exit (option 0)
  * - Memory allocated for userFile is freed if necessary
- * 
- * Effects:
- * - Option 0: Terminates execution
- * - Option 1: Loads activities from file (default or user-specified)
- * - Option 2: Creates a new empty container
- * - Default: Confirmation message and exit
  * 
  * Side Effects:
  * - Input from stdin
@@ -170,16 +150,6 @@ ActivitiesContainer handleStartMenu() {
  * - Returns the chosen option number in other cases
  * - Container may be modified by operations 2 and 3
  * - If option 0 is confirmed, container is deallocated and program terminates
- * 
- * Effects:
- * - Option 0: Requests confirmation and exits deallocating memory
- * - Option 1: Displays all activities
- * - Option 2: Adds new activity (may modify container)
- * - Option 3: Deletes specified activity (may modify container)
- * - Option 4: Displays activity progress
- * - Option 5: Displays weekly report
- * - Option 6: Displays details of a specific activity
- * - Option 7: Saves activities to file
  * 
  * Side Effects:
  * - Input from stdin
