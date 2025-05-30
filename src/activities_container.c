@@ -531,7 +531,7 @@ ActivitiesContainer readActivitiesFromFile(const char* filename, int* count) {
 	if(newContainer == NULL) return NULL;
 	
 	if (filename == NULL) {
-		printf("Il nome di file fornito è NULL. Verrà creato un contenitore vuoto per le attività.\n", filename);
+		printf("Il nome di file fornito è NULL. Verrà creato un contenitore vuoto per le attività.\n");
 		*count = 0;
 		return newContainer;
 	} 
