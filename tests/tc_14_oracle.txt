@@ -10,11 +10,11 @@ Data: 1746613562
 
 
 === Attività IN CORSO (ordinate per percentuale di completamento):
-[8] Prova 1 | Descr 1 | Corso 1 | MEDIA | 5% | 30 min | 570 min | 600 min | SCADENZA: 10/06/2025 13:00
-[1] Prima activity | La mia pri | Programmaz | ALTA | 8% | 600 min | 6600 min | 7200 min | SCADENZA: 30/05/2025 12:26
-[5] Terza activity | La mia ter | PSD  | ALTA | 15% | 600 min | 3400 min | 4000 min | SCADENZA: 10/06/2025 14:30
+[8] Prova 1 | Descr 1 | Corso 1 | MEDIA | 5% | 30 min | 570 min | 600 min | SCADENZA: 15/06/2030 13:00
+[1] Prima activity | La mia pri | Programmaz | ALTA | 8% | 600 min | 6600 min | 7200 min | SCADENZA: 15/06/2030 13:00
+[5] Terza activity | La mia ter | PSD  | ALTA | 15% | 600 min | 3400 min | 4000 min | SCADENZA: 15/06/2030 13:00
 [10] aaa | bbb | ccc | BASSA | 16% | 5 min | 25 min | 30 min | SCADENZA: Non impostata
-[3] Seconda activity | La mia sec | Analisi I | MEDIA | 30% | 600 min | 1400 min | 2000 min | SCADENZA: 20/06/2025 12:00
+[3] Seconda activity | La mia sec | Analisi I | MEDIA | 30% | 600 min | 1400 min | 2000 min | SCADENZA: 15/06/2030 13:00
 
 
 === Attività IN RITARDO (ordinate per data di scadenza):

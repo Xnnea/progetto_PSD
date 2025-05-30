@@ -3,7 +3,7 @@ Prima activity
 La mia prima activity di studio
 Programmazione I
 1746613562
-1748600762
+1907751600
 0
 7200
 600
@@ -13,7 +13,7 @@ Seconda activity
 La mia seconda activity di studio
 Analisi I
 1746612500
-1750413600
+1907751600
 0
 2000
 600
@@ -23,7 +23,7 @@ Terza activity
 La mia terza activity di studio
 PSD 
 1746613562
-1749558600
+1907751600
 0
 4000
 600
@@ -43,7 +43,7 @@ Prova 1
 Descr 1
 Corso 1
 1747679621
-1749553200
+1907751600
 0
 600
 30

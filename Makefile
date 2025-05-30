@@ -18,6 +18,8 @@ dirstructure:
 clean:
 	rm -f $(BIN_DIR)/$(NAME)
 	rm -f $(TESTS_DIR)/$(NAME)_test
+	rm -f $(TESTS_DIR)/tc_*_output.txt
+	rm -f $(TESTS_DIR)/TESTS_RESULT.txt
 	
 test:
 	$(CC) $(SOURCE_TESTS) -o $(TESTS_DIR)/$(NAME)_test
