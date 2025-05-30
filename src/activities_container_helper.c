@@ -419,7 +419,7 @@ void printTreeActivitiesProgressToFile(TreeNode root, FILE* file) {
  *   - 'yetToBeginList': activities not yet started
  * 
  * Side Effects:
- * - None
+ * - Memory allocation
  */
 void buildInOrderSupportListsForActivitiesReport(TreeNode root, ActivitiesContainerSupportList completedList, ActivitiesContainerSupportList ongoingList, ActivitiesContainerSupportList expiredList, ActivitiesContainerSupportList yetToBeginList, time_t beginDate, time_t nowDate) {
 	if (root != NULL) {
